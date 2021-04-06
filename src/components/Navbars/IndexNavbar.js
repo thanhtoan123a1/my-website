@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { withTranslation } from 'react-i18next';
 // reactstrap components
 import {
   Button,
@@ -17,9 +17,14 @@ import {
   UncontrolledTooltip,
 } from "reactstrap";
 
-function IndexNavbar() {
+function IndexNavbar({ t, i18n }) {
   const [navbarColor, setNavbarColor] = React.useState("navbar-transparent");
   const [collapseOpen, setCollapseOpen] = React.useState(false);
+
+  const changeLanguage = language => {
+    i18n.changeLanguage(language);
+  }
+
   React.useEffect(() => {
     const updateNavbarColor = () => {
       if (
@@ -58,10 +63,10 @@ function IndexNavbar() {
               target="_blank"
               id="navbar-brand"
             >
-              Now UI Kit React
+              Tran Van Thanh Toan
             </NavbarBrand>
             <UncontrolledTooltip target="#navbar-brand">
-              Designed by Invision. Coded by Creative Tim
+              Hover in my name?
             </UncontrolledTooltip>
             <button
               className="navbar-toggler navbar-toggler"
@@ -106,19 +111,18 @@ function IndexNavbar() {
                   onClick={(e) => e.preventDefault()}
                 >
                   <i className="now-ui-icons design_app mr-1"></i>
-                  <p>Components</p>
+                  <p>{t('language')}</p>
                 </DropdownToggle>
                 <DropdownMenu>
-                  <DropdownItem to="/index" tag={Link}>
+                  <DropdownItem onClick={() => changeLanguage('vn')}>
                     <i className="now-ui-icons business_chart-pie-36 mr-1"></i>
-                    All components
+                    Vietnamese
                   </DropdownItem>
                   <DropdownItem
-                    href="https://demos.creative-tim.com/now-ui-kit-react/#/documentation/introduction?ref=nukr-index-navbar"
-                    target="_blank"
+                    onClick={() => changeLanguage('en')}
                   >
                     <i className="now-ui-icons design_bullet-list-67 mr-1"></i>
-                    Documentation
+                    English
                   </DropdownItem>
                 </DropdownMenu>
               </UncontrolledDropdown>
@@ -131,7 +135,7 @@ function IndexNavbar() {
                   onClick={(e) => e.preventDefault()}
                 >
                   <i className="now-ui-icons arrows-1_share-66 mr-1"></i>
-                  <p>Upgrade to PRO</p>
+                  <p>Up load your article</p>
                 </Button>
                 <UncontrolledTooltip target="#upgrade-to-pro">
                   Cooming soon!
@@ -139,7 +143,7 @@ function IndexNavbar() {
               </NavItem>
               <NavItem>
                 <NavLink
-                  href="https://twitter.com/CreativeTim?ref=creativetim"
+                  href="https://twitter.com/ToanTra78269600"
                   target="_blank"
                   id="twitter-tooltip"
                 >
@@ -152,7 +156,7 @@ function IndexNavbar() {
               </NavItem>
               <NavItem>
                 <NavLink
-                  href="https://www.facebook.com/CreativeTim?ref=creativetim"
+                  href="https://www.facebook.com/thanhtoan123a1/"
                   target="_blank"
                   id="facebook-tooltip"
                 >
@@ -165,7 +169,7 @@ function IndexNavbar() {
               </NavItem>
               <NavItem>
                 <NavLink
-                  href="https://www.instagram.com/CreativeTimOfficial?ref=creativetim"
+                  href="https://www.instagram.com/toan.tvt/"
                   target="_blank"
                   id="instagram-tooltip"
                 >
@@ -184,4 +188,4 @@ function IndexNavbar() {
   );
 }
 
-export default IndexNavbar;
+export default withTranslation('translations')(IndexNavbar);

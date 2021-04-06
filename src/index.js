@@ -31,31 +31,36 @@ import LoginPage from "views/examples/LoginPage.js";
 import LandingPage from "views/examples/LandingPage.js";
 import ProfilePage from "views/examples/ProfilePage.js";
 
+import { I18nextProvider } from 'react-i18next';
+import i18n from './i18n/i18n.js';
+
 ReactDOM.render(
-  <BrowserRouter>
-    <Switch>
+  <I18nextProvider i18n={ i18n }>
+    <BrowserRouter>
       <Switch>
-        <Route path="/index" render={(props) => <Index {...props} />} />
-        <Route
-          path="/nucleo-icons"
-          render={(props) => <NucleoIcons {...props} />}
-        />
-        <Route
-          path="/landing-page"
-          render={(props) => <LandingPage {...props} />}
-        />
-        <Route
-          path="/profile-page"
-          render={(props) => <ProfilePage {...props} />}
-        />
-        <Route
-          path="/login-page"
-          render={(props) => <LoginPage {...props} />}
-        />
-        <Redirect to="/index" />
-        <Redirect from="/" to="/index" />
+        <Switch>
+          <Route path="/" render={(props) => <Index {...props} />} />
+          <Route
+            path="/nucleo-icons"
+            render={(props) => <NucleoIcons {...props} />}
+          />
+          <Route
+            path="/landing-page"
+            render={(props) => <LandingPage {...props} />}
+          />
+          <Route
+            path="/profile-page"
+            render={(props) => <ProfilePage {...props} />}
+          />
+          <Route
+            path="/login-page"
+            render={(props) => <LoginPage {...props} />}
+          />
+          <Redirect to="/index" />
+          <Redirect from="/" to="/index" />
+        </Switch>
       </Switch>
-    </Switch>
-  </BrowserRouter>,
+    </BrowserRouter>
+  </I18nextProvider>,
   document.getElementById("root")
 );

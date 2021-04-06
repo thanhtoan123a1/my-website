@@ -1,5 +1,6 @@
 /*eslint-disable*/
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 // reactstrap components
 import { Container } from "reactstrap";
@@ -7,6 +8,7 @@ import { Container } from "reactstrap";
 
 function IndexHeader() {
   let pageHeader = React.createRef();
+  const { t } = useTranslation();
 
   React.useEffect(() => {
     if (window.innerWidth > 991) {
@@ -37,12 +39,12 @@ function IndexHeader() {
             <img
               alt="..."
               className="n-logo"
-              src={require("assets/img/now-logo.png")}
+              src={require("assets/img/favicon-page.png")}
             ></img>
-            <h1 className="h1-seo">Now UI Kit.</h1>
-            <h3>A beautiful Bootstrap 4 UI kit. Yours free.</h3>
+            <h1 className="h1-seo">{t('forFuture')}</h1>
+            <h3>{t('websiteDescription')}</h3>
           </div>
-          <h6 className="category category-absolute">
+          {/* <h6 className="category category-absolute">
             Designed by{" "}
             <a href="http://invisionapp.com/?ref=creativetim" target="_blank">
               <img
@@ -63,7 +65,7 @@ function IndexHeader() {
               ></img>
             </a>
             .
-          </h6>
+          </h6> */}
         </Container>
       </div>
     </>
