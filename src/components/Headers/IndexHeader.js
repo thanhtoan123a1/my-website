@@ -1,12 +1,13 @@
 /*eslint-disable*/
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { withOrientationChange } from 'react-device-detect';
 
 // reactstrap components
 import { Container } from "reactstrap";
 // core components
 
-function IndexHeader() {
+function IndexHeader({ isPortrait }) {
   let pageHeader = React.createRef();
   const { t } = useTranslation();
 
@@ -30,7 +31,7 @@ function IndexHeader() {
         <div
           className="page-header-image"
           style={{
-            backgroundImage: "url(" + require("assets/img/header.jpg") + ")",
+            backgroundImage: "url(" + require(isPortrait ? "assets/img/header_mobile.png" : "assets/img/header.png") + ")",
           }}
           ref={pageHeader}
         ></div>
@@ -72,4 +73,4 @@ function IndexHeader() {
   );
 }
 
-export default IndexHeader;
+export default withOrientationChange(IndexHeader);
