@@ -37,11 +37,6 @@ function IndexHeader({ isPortrait }) {
         ></div>
         <Container>
           <div className="content-center brand">
-            <img
-              alt="..."
-              className="n-logo"
-              src={require("assets/img/favicon-page.png")}
-            ></img>
             <h1 className="h1-seo">{t('forFuture')}</h1>
             <h3>{t('websiteDescription')}</h3>
           </div>
