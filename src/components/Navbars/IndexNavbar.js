@@ -2,7 +2,6 @@ import React from "react";
 import { withTranslation } from 'react-i18next';
 // reactstrap components
 import {
-  Button,
   Collapse,
   DropdownToggle,
   DropdownMenu,
@@ -93,9 +92,9 @@ function IndexNavbar({ t, i18n }) {
                   href="#pablo"
                   onClick={(e) => {
                     e.preventDefault();
-                    document
-                      .getElementById("download-section")
-                      .scrollIntoView();
+                    // document
+                    //   .getElementById("download-section")
+                    //   .scrollIntoView();
                   }}
                 >
                   <i className="now-ui-icons arrows-1_cloud-download-93"></i>
@@ -126,7 +125,7 @@ function IndexNavbar({ t, i18n }) {
                   </DropdownItem>
                 </DropdownMenu>
               </UncontrolledDropdown>
-              <NavItem>
+              {/* <NavItem>
                 <Button
                   className="nav-link btn-neutral"
                   color="info"
@@ -140,7 +139,7 @@ function IndexNavbar({ t, i18n }) {
                 <UncontrolledTooltip target="#upgrade-to-pro">
                   Cooming soon!
                 </UncontrolledTooltip>
-              </NavItem>
+              </NavItem> */}
               <NavItem>
                 <NavLink
                   href="https://twitter.com/ToanTra78269600"

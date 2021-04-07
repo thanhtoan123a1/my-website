@@ -12,15 +12,15 @@ function DarkFooter() {
           <ul>
             <li>
               <a
-                href="https://www.creative-tim.com?ref=nukr-dark-footer"
+                href="https://www.facebook.com/thanhtoan123a1/"
                 target="_blank"
               >
-                Creative Tim
+                Toan Tran Van Thanh
               </a>
             </li>
             <li>
               <a
-                href="http://presentation.creative-tim.com?ref=nukr-dark-footer"
+                href="https://www.facebook.com/thanhtoan123a1/"
                 target="_blank"
               >
                 About Us
@@ -28,7 +28,7 @@ function DarkFooter() {
             </li>
             <li>
               <a
-                href="http://blog.creative-tim.com?ref=nukr-dark-footer"
+                href="https://www.facebook.com/thanhtoan123a1/"
                 target="_blank"
               >
                 Blog
@@ -39,17 +39,17 @@ function DarkFooter() {
         <div className="copyright" id="copyright">
           © {new Date().getFullYear()}, Designed by{" "}
           <a
-            href="https://www.invisionapp.com?ref=nukr-dark-footer"
+            href="https://www.facebook.com/thanhtoan123a1/"
             target="_blank"
           >
-            Invision
+            ToanTVT
           </a>
           . Coded by{" "}
           <a
-            href="https://www.creative-tim.com?ref=nukr-dark-footer"
+            href="https://www.facebook.com/thanhtoan123a1/"
             target="_blank"
           >
-            Creative Tim
+            ToanTVT
           </a>
           .
         </div>
