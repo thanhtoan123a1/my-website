@@ -58,8 +58,7 @@ function IndexNavbar({ t, i18n }) {
         <Container>
           <div className="navbar-translate">
             <NavbarBrand
-              href="https://demos.creative-tim.com/now-ui-kit-react/#/index?ref=nukr-index-navbar"
-              target="_blank"
+              href="/"
               id="navbar-brand"
             >
               Tran Van Thanh Toan
@@ -89,16 +88,10 @@ function IndexNavbar({ t, i18n }) {
             <Nav navbar>
               <NavItem>
                 <NavLink
-                  href="#pablo"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    // document
-                    //   .getElementById("download-section")
-                    //   .scrollIntoView();
-                  }}
+                  href="/profile-page"
                 >
-                  <i className="now-ui-icons arrows-1_cloud-download-93"></i>
-                  <p>Download</p>
+                  <i className="now-ui-icons users_circle-08"></i>
+                  <p>{t('profile')}</p>
                 </NavLink>
               </NavItem>
               <UncontrolledDropdown nav>

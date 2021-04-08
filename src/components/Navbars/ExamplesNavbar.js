@@ -119,7 +119,7 @@ function ExamplesNavbar() {
           >
             <Nav navbar>
               <NavItem>
-                <NavLink to="/index" tag={Link}>
+                <NavLink to="/top" tag={Link}>
                   Back to Kit
                 </NavLink>
               </NavItem>
