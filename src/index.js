@@ -17,7 +17,7 @@
 */
 import React from "react";
 import ReactDOM from "react-dom";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
 
 // styles for this kit
 import "assets/css/bootstrap.min.css";
@@ -29,7 +29,7 @@ import Index from "views/Index.js";
 import NucleoIcons from "views/NucleoIcons.js";
 import LoginPage from "views/examples/LoginPage.js";
 import LandingPage from "views/examples/LandingPage.js";
-import ProfilePage from "views/examples/ProfilePage.js";
+import ProfilePage from "views/profile/ProfilePage.js";
 
 import { I18nextProvider } from 'react-i18next';
 import i18n from './i18n/i18n.js';
@@ -39,7 +39,7 @@ ReactDOM.render(
     <BrowserRouter>
       <Switch>
         <Switch>
-          <Route path="/" render={(props) => <Index {...props} />} />
+          <Route path="/top" render={(props) => <Index {...props} />} />
           <Route
             path="/nucleo-icons"
             render={(props) => <NucleoIcons {...props} />}
@@ -56,6 +56,8 @@ ReactDOM.render(
             path="/login-page"
             render={(props) => <LoginPage {...props} />}
           />
+          <Redirect to="/top" />
+          <Redirect from="/" to="/top" />
         </Switch>
       </Switch>
     </BrowserRouter>

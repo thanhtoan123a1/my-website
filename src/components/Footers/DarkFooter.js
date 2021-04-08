@@ -39,10 +39,10 @@ function DarkFooter() {
         <div className="copyright" id="copyright">
           © {new Date().getFullYear()}, Designed by{" "}
           <a
-            href="https://www.facebook.com/thanhtoan123a1/"
+            href="https://www.invisionapp.com?ref=nukr-default-footer"
             target="_blank"
           >
-            ToanTVT
+            Invision
           </a>
           . Coded by{" "}
           <a

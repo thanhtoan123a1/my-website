@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from 'react-i18next';
 
 // reactstrap components
 import { Container } from "reactstrap";
@@ -7,6 +8,7 @@ import { Container } from "reactstrap";
 
 function ProfilePageHeader() {
   let pageHeader = React.createRef();
+  const { t } = useTranslation();
 
   React.useEffect(() => {
     if (window.innerWidth > 991) {
@@ -36,22 +38,22 @@ function ProfilePageHeader() {
         ></div>
         <Container>
           <div className="photo-container">
-            <img alt="..." src={require("assets/img/ryan.jpg")}></img>
+            <img alt="..." src={require("assets/img/my-portrait.jpg")}></img>
           </div>
-          <h3 className="title">Ryan Scheinder</h3>
-          <p className="category">Photographer</p>
+          <h3 className="title">Trần Văn Thanh Toàn</h3>
+          <p className="category">Developer</p>
           <div className="content">
             <div className="social-description">
-              <h2>26</h2>
-              <p>Comments</p>
+              <h2>0</h2>
+              <p>{t("posts")}</p>
             </div>
             <div className="social-description">
-              <h2>26</h2>
-              <p>Comments</p>
+              <h2>0</h2>
+              <p>{t("courses")}</p>
             </div>
             <div className="social-description">
-              <h2>48</h2>
-              <p>Bookmarks</p>
+              <h2>0</h2>
+              <p>{t("shares")}</p>
             </div>
           </div>
         </Container>

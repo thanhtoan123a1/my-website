@@ -11,6 +11,14 @@ i18n
           "language": "Language",
           "websiteDescription": "This is Toan's demo website",
           "forFuture": "For future",
+          "profile": "Profile",
+          "posts": "Post",
+          "shares": "Share(s)",
+          "courses": "Courses",
+          "follow": "Follow",
+          "followTwitter": "Follow me on Twitter",
+          "followInstagram": "Follow me on Instagram",
+          "followFacebook": "Follow me on Facebook",
         }
       },
       vn: {
@@ -18,6 +26,14 @@ i18n
           "language": "Ngôn ngữ",
           "websiteDescription": "Đây là website demo của Toàn",
           "forFuture": "Vì tương lai",
+          "profile": "Hồ sơ",
+          "posts": "Bài viết",
+          "shares": "Chia sẻ",
+          "courses": "Khóa học",
+          "follow": "Theo dõi",
+          "followTwitter": "Theo dõi tôi trên Twitter",
+          "followInstagram": "Theo dõi tôi trên Instagram",
+          "followFacebook": "Theo dõi tôi trên Facebook"
         }
       }
     },
