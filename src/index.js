@@ -33,6 +33,8 @@ import ProfilePage from "views/profile/ProfilePage.js";
 
 import { I18nextProvider } from 'react-i18next';
 import i18n from './i18n/i18n.js';
+import Courses from "views/courses/index.js";
+import Vlogs from "views/vlogs/index.js";
 
 ReactDOM.render(
   <I18nextProvider i18n={ i18n }>
@@ -55,6 +57,14 @@ ReactDOM.render(
           <Route
             path="/login-page"
             render={(props) => <LoginPage {...props} />}
+          />
+          <Route
+            path="/courses"
+            render={(props) => <Courses {...props} />}
+          />
+          <Route
+            path="/vlogs"
+            render={(props) => <Vlogs {...props} />}
           />
           <Redirect to="/top" />
           <Redirect from="/" to="/top" />

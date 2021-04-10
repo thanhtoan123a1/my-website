@@ -58,7 +58,7 @@ function ProfilePage() {
 
   return (
     <>
-    <IndexNavbar />
+      <IndexNavbar />
       <div className="wrapper">
         <ProfilePageHeader />
         <div className="section">
@@ -72,7 +72,7 @@ function ProfilePage() {
                 color="default"
                 id="tooltip515203352"
                 size="lg"
-                onClick={ () => openSocialNetwork(SOCIAL_NETWORKS.TW) }
+                onClick={() => openSocialNetwork(SOCIAL_NETWORKS.TW)}
               >
                 <i className="fab fa-twitter"></i>
               </Button>
@@ -84,7 +84,7 @@ function ProfilePage() {
                 color="default"
                 id="tooltip340339231"
                 size="lg"
-                onClick={ () => openSocialNetwork(SOCIAL_NETWORKS.IN) }
+                onClick={() => openSocialNetwork(SOCIAL_NETWORKS.IN)}
               >
                 <i className="fab fa-instagram"></i>
               </Button>
@@ -96,7 +96,7 @@ function ProfilePage() {
                 color="default"
                 id="tooltip12345214"
                 size="lg"
-                onClick={ () => openSocialNetwork(SOCIAL_NETWORKS.FB) }
+                onClick={() => openSocialNetwork(SOCIAL_NETWORKS.FB)}
               >
                 <i className="fab fa-facebook"></i>
               </Button>
@@ -104,7 +104,13 @@ function ProfilePage() {
                 {t('followFacebook')}
               </UncontrolledTooltip>
             </div>
-            <h3 className="title">About me</h3>
+            <h3 className="title">Some thing about me</h3>
+            <blockquote className="block-qoute">
+              <p><q className="quotes">It's never too late to beleive in yourself.</q></p>
+              <div className="author-name">Jack Ma</div>
+            </blockquote>
+            <h5 className="profile-category">
+            </h5>
             <h5 className="description">
               An artist of considerable range, Ryan — the name taken by
               Melbourne-raised, Brooklyn-based Nick Murphy — writes, performs

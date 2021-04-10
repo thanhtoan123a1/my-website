@@ -8,3 +8,8 @@ export const SOCIAL_NETWORKS = {
   IN: 'instagram',
   TW: 'twitter',
 }
+
+export const PAGES = {
+  VLOGS: 'vlogs',
+  COURSES: 'courses',
+}
