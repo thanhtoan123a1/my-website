@@ -36,6 +36,7 @@ i18n
           "toanNickname": "Toàn bơm",
           "hoaNickname": "Hòa hư hỏng",
           "subscribeYoutube": "Subscribe with Youtube",
+          "homePage": "Home page",
         }
       },
       vn: {
@@ -68,6 +69,7 @@ i18n
           "toanNickname": "Toàn bơm",
           "hoaNickname": "Hòa hư hỏng",
           "subscribeYoutube": "Đăng ký với Youtube",
+          "homePage": "Trang chủ",
         }
       }
     },

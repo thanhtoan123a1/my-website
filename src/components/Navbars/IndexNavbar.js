@@ -68,11 +68,8 @@ function IndexNavbar(props) {
               to="/"
               id="navbar-brand"
             >
-              Tran Van Thanh Toan
+              <p className="title-up">{t('homePage')}</p>
             </Link>
-            <UncontrolledTooltip target="#navbar-brand">
-              Hover in my name?
-            </UncontrolledTooltip>
             <button
               className="navbar-toggler navbar-toggler"
               onClick={() => {

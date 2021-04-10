@@ -19,14 +19,6 @@ function DarkFooter() {
                 href={FACEBOOK_HOME_PAGE}
                 target="_blank"
               >
-                Toan Tran Van Thanh
-              </a>
-            </li>
-            <li>
-              <a
-                href={FACEBOOK_HOME_PAGE}
-                target="_blank"
-              >
                 About Us
               </a>
             </li>
