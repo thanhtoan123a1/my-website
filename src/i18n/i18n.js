@@ -13,12 +13,13 @@ i18n
           "forFuture": "For future",
           "profile": "Profile",
           "posts": "Post",
-          "shares": "Share(s)",
+          "shares": "Shares",
           "courses": "Courses",
           "follow": "Follow",
           "followTwitter": "Follow me on Twitter",
           "followInstagram": "Follow me on Instagram",
           "followFacebook": "Follow me on Facebook",
+          "vlogs": "Vlogs",
         }
       },
       vn: {
@@ -33,7 +34,8 @@ i18n
           "follow": "Theo dõi",
           "followTwitter": "Theo dõi tôi trên Twitter",
           "followInstagram": "Theo dõi tôi trên Instagram",
-          "followFacebook": "Theo dõi tôi trên Facebook"
+          "followFacebook": "Theo dõi tôi trên Facebook",
+          "vlogs": "Vlogs",
         }
       }
     },

@@ -94,6 +94,22 @@ function IndexNavbar({ t, i18n }) {
                   <p>{t('profile')}</p>
                 </NavLink>
               </NavItem>
+              <NavItem>
+                <NavLink
+                  href="/courses"
+                >
+                  <i className="now-ui-icons education_agenda-bookmark"></i>
+                  <p>{t('courses')}</p>
+                </NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink
+                  href="/vlogs"
+                >
+                  <i className="now-ui-icons media-1_camera-compact"></i>
+                  <p>{t('vlogs')}</p>
+                </NavLink>
+              </NavItem>
               <UncontrolledDropdown nav>
                 <DropdownToggle
                   caret
@@ -107,13 +123,21 @@ function IndexNavbar({ t, i18n }) {
                 </DropdownToggle>
                 <DropdownMenu>
                   <DropdownItem onClick={() => changeLanguage('vn')}>
-                    <i className="now-ui-icons business_chart-pie-36 mr-1"></i>
+                    <img
+                      src={require("assets/img/flags/VN.png")}
+                      alt="vn-flag"
+                    />
+                    &nbsp;
                     Vietnamese
                   </DropdownItem>
                   <DropdownItem
                     onClick={() => changeLanguage('en')}
                   >
-                    <i className="now-ui-icons design_bullet-list-67 mr-1"></i>
+                    <img
+                      src={require("assets/img/flags/GB.png")}
+                      alt="gb-flag"
+                    />
+                    &nbsp;
                     English
                   </DropdownItem>
                 </DropdownMenu>

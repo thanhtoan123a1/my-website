@@ -411,3 +411,57 @@
         color: $white-color;
     }
 }
+
+//profile
+.profile-category {
+    font-weight: bold;
+    padding: 0 200px;
+}
+.quotes {
+    quotes: "„" "“";
+}
+.block-qoute {
+    position: relative;
+	margin: 40px 0;
+	padding: 35px 40px 20px 40px;
+	font-style: italic;
+	border-radius: 1px;
+	border: none;
+	box-shadow: 2px 2px 4px 2px #8880802e;
+	text-indent: 1.6em;
+}
+.author-name {
+    font-weight: bold;
+    padding-right: 10px;
+    text-align: right;
+}
+
+//vlogs
+.youtube-player-list {
+    width: 100%;
+    height: 100%;
+}
+.youtube-card-wrapper {
+    padding: 50px 0;
+    cursor: pointer;
+}
+.youtube-preview {
+    height: 300px;
+}
+.youtube-card {
+    font-size: 120%;
+    display: flex;
+    flex-direction: column;
+    &__title {
+        font-size: 120%;
+        font-weight: bold;
+    }
+    &__description {
+        text-align: justify;
+    }
+}
+
+.youtube-card:hover {
+    background-color: $opacity-gray-8;
+    box-shadow: 5px 5px 5px #888888;
+}
