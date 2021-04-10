@@ -1,5 +1,7 @@
 import React from "react";
-import { withTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
+import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 // reactstrap components
 import {
   Collapse,
@@ -7,7 +9,6 @@ import {
   DropdownMenu,
   DropdownItem,
   UncontrolledDropdown,
-  NavbarBrand,
   Navbar,
   NavItem,
   NavLink,
@@ -16,9 +17,11 @@ import {
   UncontrolledTooltip,
 } from "reactstrap";
 
-function IndexNavbar({ t, i18n }) {
+function IndexNavbar(props) {
   const [navbarColor, setNavbarColor] = React.useState("navbar-transparent");
   const [collapseOpen, setCollapseOpen] = React.useState(false);
+  const { t, i18n } = useTranslation();
+  const { isLogin, userData } = props;
 
   const changeLanguage = language => {
     i18n.changeLanguage(language);
@@ -57,12 +60,13 @@ function IndexNavbar({ t, i18n }) {
       <Navbar className={"fixed-top " + navbarColor} expand="lg" color="info">
         <Container>
           <div className="navbar-translate">
-            <NavbarBrand
-              href="/"
+            <Link
+              className="nav-link"
+              to="/"
               id="navbar-brand"
             >
               Tran Van Thanh Toan
-            </NavbarBrand>
+            </Link>
             <UncontrolledTooltip target="#navbar-brand">
               Hover in my name?
             </UncontrolledTooltip>
@@ -87,38 +91,59 @@ function IndexNavbar({ t, i18n }) {
           >
             <Nav navbar>
               <NavItem>
-                <NavLink
-                  href="/profile-page"
+                <Link
+                  className="nav-link"
+                  to="/profile-page"
                 >
-                  <i className="now-ui-icons users_circle-08"></i>
+                  <i className="now-ui-icons travel_info"></i>
                   <p>{t('profile')}</p>
-                </NavLink>
+                </Link>
               </NavItem>
               <NavItem>
-                <NavLink
-                  href="/courses"
+                <Link
+                  className="nav-link"
+                  to="/courses"
                 >
                   <i className="now-ui-icons education_agenda-bookmark"></i>
                   <p>{t('courses')}</p>
-                </NavLink>
+                </Link>
               </NavItem>
               <NavItem>
-                <NavLink
-                  href="/vlogs"
+                <Link
+                  className="nav-link"
+                  to="/vlogs"
                 >
                   <i className="now-ui-icons media-1_camera-compact"></i>
                   <p>{t('vlogs')}</p>
-                </NavLink>
+                </Link>
+              </NavItem>
+              <NavItem>
+                {
+                  isLogin ?
+                    <Link
+                      className="nav-link"
+                      to="/profile-page"
+                    >
+                      <i className="now-ui-icons users_circle-08"></i>
+                      <p>{userData.name}</p>
+                    </Link> :
+                    <Link
+                      className="nav-link"
+                      to="/login-page"
+                    >
+                      <i className="now-ui-icons users_circle-08"></i>
+                      <p>{t('login')}</p>
+                    </Link>
+                }
               </NavItem>
               <UncontrolledDropdown nav>
                 <DropdownToggle
                   caret
                   color="default"
-                  href="#pablo"
                   nav
                   onClick={(e) => e.preventDefault()}
                 >
-                  <i className="now-ui-icons design_app mr-1"></i>
+                  <i className="now-ui-icons business_globe mr-1"></i>
                   <p>{t('language')}</p>
                 </DropdownToggle>
                 <DropdownMenu>
@@ -204,4 +229,11 @@ function IndexNavbar({ t, i18n }) {
   );
 }
 
-export default withTranslation('translations')(IndexNavbar);
+const mapStateToProps = state => ({
+  isLogin: state.auth.isLogin,
+  isChecking: state.auth.isChecking,
+  errorMessage: state.auth.error,
+  userData: state.auth.data,
+});
+
+export default connect(mapStateToProps)(IndexNavbar);

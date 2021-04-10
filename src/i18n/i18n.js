@@ -20,6 +20,12 @@ i18n
           "followInstagram": "Follow me on Instagram",
           "followFacebook": "Follow me on Facebook",
           "vlogs": "Vlogs",
+          "loginPageTitle": "A place to learn and share knowledge",
+          "email": "Email",
+          "password": "Password",
+          "login": "Login",
+          "featureInDevelop": "The feature is in development",
+          "needHelp": "Need help?",
         }
       },
       vn: {
@@ -36,6 +42,12 @@ i18n
           "followInstagram": "Theo dõi tôi trên Instagram",
           "followFacebook": "Theo dõi tôi trên Facebook",
           "vlogs": "Vlogs",
+          "loginPageTitle": "Nơi học tập và chia sẻ các kiến thức, trải nghiệm cuộc sống hàng ngày",
+          "email": "Email",
+          "password": "Mật khẩu",
+          "login": "Đăng nhập",
+          "featureInDevelop": "Tính năng đang trong giai đoạn phát triển",
+          "needHelp": "Bạn cần trợ giúp?",
         }
       }
     },

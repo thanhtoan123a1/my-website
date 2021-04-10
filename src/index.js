@@ -28,9 +28,9 @@ import "assets/demo/nucleo-icons-page-styles.css?v=1.4.0";
 // pages for this kit
 import Index from "views/Index.js";
 import NucleoIcons from "views/NucleoIcons.js";
-import LoginPage from "views/examples/LoginPage.js";
 import LandingPage from "views/examples/LandingPage.js";
 import ProfilePage from "views/profile/ProfilePage.js";
+import LoginPage from "views/login/LoginPage.js";
 
 import { I18nextProvider } from 'react-i18next';
 import i18n from './i18n/i18n.js';
