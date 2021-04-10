@@ -18,6 +18,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
+import { Provider } from "react-redux";
 
 // styles for this kit
 import "assets/css/bootstrap.min.css";
@@ -35,42 +36,45 @@ import { I18nextProvider } from 'react-i18next';
 import i18n from './i18n/i18n.js';
 import Courses from "views/courses/index.js";
 import Vlogs from "views/vlogs/index.js";
+import configureStore from "redux/store/index.js";
 
 ReactDOM.render(
-  <I18nextProvider i18n={ i18n }>
-    <BrowserRouter>
-      <Switch>
+  <I18nextProvider i18n={i18n}>
+    <Provider store={configureStore()}>
+      <BrowserRouter>
         <Switch>
-          <Route path="/top" render={(props) => <Index {...props} />} />
-          <Route
-            path="/nucleo-icons"
-            render={(props) => <NucleoIcons {...props} />}
-          />
-          <Route
-            path="/landing-page"
-            render={(props) => <LandingPage {...props} />}
-          />
-          <Route
-            path="/profile-page"
-            render={(props) => <ProfilePage {...props} />}
-          />
-          <Route
-            path="/login-page"
-            render={(props) => <LoginPage {...props} />}
-          />
-          <Route
-            path="/courses"
-            render={(props) => <Courses {...props} />}
-          />
-          <Route
-            path="/vlogs"
-            render={(props) => <Vlogs {...props} />}
-          />
-          <Redirect to="/top" />
-          <Redirect from="/" to="/top" />
+          <Switch>
+            <Route path="/top" render={(props) => <Index {...props} />} />
+            <Route
+              path="/nucleo-icons"
+              render={(props) => <NucleoIcons {...props} />}
+            />
+            <Route
+              path="/landing-page"
+              render={(props) => <LandingPage {...props} />}
+            />
+            <Route
+              path="/profile-page"
+              render={(props) => <ProfilePage {...props} />}
+            />
+            <Route
+              path="/login-page"
+              render={(props) => <LoginPage {...props} />}
+            />
+            <Route
+              path="/courses"
+              render={(props) => <Courses {...props} />}
+            />
+            <Route
+              path="/vlogs"
+              render={(props) => <Vlogs {...props} />}
+            />
+            <Redirect to="/top" />
+            <Redirect from="/" to="/top" />
+          </Switch>
         </Switch>
-      </Switch>
-    </BrowserRouter>
+      </BrowserRouter>
+    </Provider>
   </I18nextProvider>,
   document.getElementById("root")
 );
