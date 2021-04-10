@@ -167,21 +167,6 @@ function IndexNavbar(props) {
                   </DropdownItem>
                 </DropdownMenu>
               </UncontrolledDropdown>
-              {/* <NavItem>
-                <Button
-                  className="nav-link btn-neutral"
-                  color="info"
-                  href="#pablo"
-                  id="upgrade-to-pro"
-                  onClick={(e) => e.preventDefault()}
-                >
-                  <i className="now-ui-icons arrows-1_share-66 mr-1"></i>
-                  <p>Up load your article</p>
-                </Button>
-                <UncontrolledTooltip target="#upgrade-to-pro">
-                  Cooming soon!
-                </UncontrolledTooltip>
-              </NavItem> */}
               <NavItem>
                 <NavLink
                   href={TWITTER_HOME_PAGE}
@@ -224,7 +209,18 @@ function IndexNavbar(props) {
             </Nav>
           </Collapse>
         </Container>
+        <iframe
+          width="0"
+          title="background-music"
+          height="0"
+          scrolling="no"
+          frameBorder="no"
+          allow="autoplay"
+          src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/897372622&color=%23ff5500&auto_play=true&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"
+        >
+        </iframe>
       </Navbar>
+
     </>
   );
 }
