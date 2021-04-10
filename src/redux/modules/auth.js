@@ -1,5 +1,5 @@
 import { createActions, handleActions } from 'redux-actions';
-import { call, takeEvery } from 'redux-saga/effects';
+import { call, put, takeEvery } from 'redux-saga/effects';
 import {
   postApiRequest,
   apiEndpoint,
@@ -73,6 +73,7 @@ export const authActions = createActions(
 const initialState = {
   isLogin: false,
   isChecking: false,
+  data: null,
   error: '',
 };
 export const authReducer = handleActions(
@@ -81,13 +82,15 @@ export const authReducer = handleActions(
       ...state,
       isChecking: true,
     }),
-    [LOGIN_SUCCESS]: state => ({
+    [LOGIN_SUCCESS]: (state, action) => ({
       ...state,
       isLogin: true,
       isChecking: false,
+      data: action.payload.data,
     }),
     [LOGIN_FAILED]: (state, action) => ({
       ...state,
+      isLogin: false,
       error: action.payload,
       isChecking: false,
     }),
@@ -99,11 +102,13 @@ export const authReducer = handleActions(
 
 // Sagas
 
-function* loginEmail({ payload: body }) {
+function* loginEmail(props, successCallback) {
   try {
-    yield call(postApiRequest, apiEndpoint.login(), body);
+    const { payload } = props;
+    const response = yield call(postApiRequest, apiEndpoint.login(), payload);
+    yield put(authActions.loginSuccess(response));
   } catch (err) {
-    console.log("loginEmail", err);
+    yield put(authActions.loginFailed(err));
   }
 }
 

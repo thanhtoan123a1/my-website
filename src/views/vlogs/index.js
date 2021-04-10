@@ -38,10 +38,9 @@ const mockApiVn = {
 };
 
 function renderYoutubeCard(history) {
-  console.log(mockApiVn);
   return mockApiVn.vlogs.map((card, index) => (
-    <>
-      <div className="youtube-card-wrapper" key={index}>
+    <div key={index}>
+      <div className="youtube-card-wrapper">
         <Row>
           <Col md="6" className="youtube-preview">
             <iframe className="youtube-player-list"
@@ -67,7 +66,7 @@ function renderYoutubeCard(history) {
         </Row>
       </div>
       <hr />
-    </>
+    </div>
 
   )
   )
