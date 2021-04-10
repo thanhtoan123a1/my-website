@@ -102,7 +102,7 @@ export const authReducer = handleActions(
 
 // Sagas
 
-function* loginEmail(props, successCallback) {
+function* loginEmail(props) {
   try {
     const { payload } = props;
     const response = yield call(postApiRequest, apiEndpoint.login(), payload);

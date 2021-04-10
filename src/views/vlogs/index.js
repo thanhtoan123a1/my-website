@@ -3,42 +3,25 @@ import React from "react";
 // reactstrap components
 import {
   Button,
-  Input,
-  InputGroupAddon,
-  InputGroupText,
-  InputGroup,
   Container,
   Row,
   Col,
 } from "reactstrap";
 
 // core components
-import DefaultFooter from "components/Footers/DefaultFooter.js";
 import IndexNavbar from "components/Navbars/IndexNavbar";
 import CoverHeader from "components/Headers/CoverHeader";
 import { PAGES } from "help/constants";
 import { withRouter } from "react-router";
 import { useTranslation } from "react-i18next";
+import { connect } from "react-redux";
+import { vlogsActions } from "redux/modules/vlog";
+import DarkFooter from "components/Footers/DarkFooter";
+import { FACEBOOK_HOME_PAGE } from "help/constants";
+import { YOUTUBE_HOME_PAGE } from "help/constants";
 
-const mockApiVn = {
-  vlogs: [
-    {
-      title: "Đánh cá buổi tối",
-      src: "https://www.youtube.com/embed/q0ph9SbyLOc",
-      id: "1",
-      description: "Vào một buổi tối thứ 7 đẹp trời mình và những người bạn rủ nhau đi đánh kích giải trí. Địa điểm là một bãi lúa đã được gặt ở thôn Gò pháo.",
-    },
-    {
-      title: "Đánh cá buổi tối",
-      src: "https://www.youtube.com/embed/q0ph9SbyLOc",
-      id: "2",
-      description: "Vào một buổi tối thứ 7 đẹp trời mình và những người bạn rủ nhau đi đánh kích giải trí. Địa điểm là một bãi lúa đã được gặt ở thôn Gò pháo.",
-    },
-  ],
-};
-
-function renderYoutubeCard(history) {
-  return mockApiVn.vlogs.map((card, index) => (
+function renderYoutubeCard(history, vlogs) {
+  return vlogs.map((card, index) => (
     <div key={index}>
       <div className="youtube-card-wrapper">
         <Row>
@@ -47,7 +30,7 @@ function renderYoutubeCard(history) {
               id="youtube-player"
               type="text/html"
               title={card.title}
-              src="https://www.youtube.com/embed/q0ph9SbyLOc"
+              src={card.src}
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
               frameBorder="0"
@@ -55,12 +38,22 @@ function renderYoutubeCard(history) {
               &lt;br /&gt;
           </iframe>
           </Col>
-          <Col md="6" className="youtube-card" onClick={() => { history.push(`/vlog-details?id=${card.id}`) }}>
+          <Col md="6" className="youtube-card" onClick={() => { window.open(card.src, '_blank') }}>
             <div className="youtube-card__title">
               {card.title}
             </div>
             <div className="youtube-card__description">
               {card.description}
+            </div>
+            <div className="youtube-card__footer">
+              <div className="now-ui-icons ui-1_calendar-60" />
+              &nbsp;
+              {card.created_at}
+            </div>
+            <div className="youtube-card__footer">
+              <div className="now-ui-icons location_pin" />
+              &nbsp;
+              {card.location}
             </div>
           </Col>
         </Row>
@@ -72,16 +65,17 @@ function renderYoutubeCard(history) {
   )
 }
 
-function Vlogs({ history }) {
-  const [firstFocus, setFirstFocus] = React.useState(false);
-  const [lastFocus, setLastFocus] = React.useState(false);
+function Vlogs(props) {
   const { t } = useTranslation();
+  const { history, dispatch, vlogs } = props;
   React.useEffect(() => {
     document.body.classList.add("landing-page");
     document.body.classList.add("sidebar-collapse");
     document.documentElement.classList.remove("nav-open");
     window.scrollTo(0, 0);
     document.body.scrollTop = 0;
+    /* eslint-disable */
+    dispatch(vlogsActions.getVlogs());
     return function cleanup() {
       document.body.classList.remove("landing-page");
       document.body.classList.remove("sidebar-collapse");
@@ -92,100 +86,31 @@ function Vlogs({ history }) {
       <IndexNavbar />
       <div className="wrapper">
         <CoverHeader
-          title={t("vlogs")}
+          title={
+            <div className="youtube-subscribe" onClick={(e) => window.open(YOUTUBE_HOME_PAGE, '_blank')}>
+              <i className="fab fa-youtube"></i>
+              &nbsp;
+              {t('subscribeYoutube')}
+            </div>
+          }
           page={PAGES.VLOGS}
         />
         <div className="section section-about-us">
           <Container>
             <Row>
               <Col className="ml-auto mr-auto text-center" md="8">
-                <h2 className="title">Who we are?</h2>
+                <h2 className="title">{t('vlogsQuestionTitle')}</h2>
                 <h5 className="description">
-                  According to the National Oceanic and Atmospheric
-                  Administration, Ted, Scambos, NSIDClead scentist, puts the
-                  potentially record low maximum sea ice extent tihs year down
-                  to low ice extent in the Pacific and a late drop in ice extent
-                  in the Barents Sea.
+                  {t('vlogsDescription')}
                 </h5>
               </Col>
             </Row>
-            {renderYoutubeCard(history)}
-            <div className="separator separator-primary"></div>
-            <div className="section-story-overview">
-              <Row>
-                <Col md="6">
-                  <div
-                    className="image-container image-left"
-                    style={{
-                      backgroundImage:
-                        "url(" + require("assets/img/login.jpg") + ")",
-                    }}
-                  >
-                    <p className="blockquote blockquote-info">
-                      "Over the span of the satellite record, Arctic sea ice has
-                      been declining significantly, while sea ice in the
-                      Antarctichas increased very slightly" <br></br>
-                      <br></br>
-                      <small>-NOAA</small>
-                    </p>
-                  </div>
-                  <div
-                    className="image-container"
-                    style={{
-                      backgroundImage:
-                        "url(" + require("assets/img/bg3.jpg") + ")",
-                    }}
-                  ></div>
-                </Col>
-                <Col md="5">
-                  <div
-                    className="image-container image-right"
-                    style={{
-                      backgroundImage:
-                        "url(" + require("assets/img/bg1.jpg") + ")",
-                    }}
-                  ></div>
-                  <h3>
-                    So what does the new record for the lowest level of winter
-                    ice actually mean
-                  </h3>
-                  <p>
-                    The Arctic Ocean freezes every winter and much of the
-                    sea-ice then thaws every summer, and that process will
-                    continue whatever happens with climate change. Even if the
-                    Arctic continues to be one of the fastest-warming regions of
-                    the world, it will always be plunged into bitterly cold
-                    polar dark every winter. And year-by-year, for all kinds of
-                    natural reasons, there’s huge variety of the state of the
-                    ice.
-                  </p>
-                  <p>
-                    For a start, it does not automatically follow that a record
-                    amount of ice will melt this summer. More important for
-                    determining the size of the annual thaw is the state of the
-                    weather as the midnight sun approaches and temperatures
-                    rise. But over the more than 30 years of satellite records,
-                    scientists have observed a clear pattern of decline,
-                    decade-by-decade.
-                  </p>
-                  <p>
-                    The Arctic Ocean freezes every winter and much of the
-                    sea-ice then thaws every summer, and that process will
-                    continue whatever happens with climate change. Even if the
-                    Arctic continues to be one of the fastest-warming regions of
-                    the world, it will always be plunged into bitterly cold
-                    polar dark every winter. And year-by-year, for all kinds of
-                    natural reasons, there’s huge variety of the state of the
-                    ice.
-                  </p>
-                </Col>
-              </Row>
-            </div>
+            {renderYoutubeCard(history, vlogs || [])}
           </Container>
         </div>
         <div className="section section-team text-center">
           <Container>
-            <h2 className="title">Here is our team</h2>
+            <h2 className="title">{t('hereMyTeam')}</h2>
             <div className="team">
               <Row>
                 <Col md="4">
@@ -193,40 +118,17 @@ function Vlogs({ history }) {
                     <img
                       alt="..."
                       className="rounded-circle img-fluid img-raised"
-                      src={require("assets/img/avatar.jpg")}
+                      src={require("assets/img/hoa-avatar.jpg")}
                     ></img>
-                    <h4 className="title">Romina Hadid</h4>
-                    <p className="category text-info">Model</p>
+                    <h4 className="title">Hòa Nguyễn</h4>
+                    <p className="category text-info">{t('hoaNickname')}</p>
                     <p className="description">
-                      You can write here details about one of your team members.
-                      You can give more details about what they do. Feel free to
-                      add some{" "}
-                      <a href="#pablo" onClick={(e) => e.preventDefault()}>
-                        links
-                      </a>{" "}
-                      for people to be able to follow them outside the site.
+                      {t('hoaDescription')}
                     </p>
                     <Button
                       className="btn-icon btn-round"
                       color="info"
-                      href="#pablo"
-                      onClick={(e) => e.preventDefault()}
-                    >
-                      <i className="fab fa-twitter"></i>
-                    </Button>
-                    <Button
-                      className="btn-icon btn-round"
-                      color="info"
-                      href="#pablo"
-                      onClick={(e) => e.preventDefault()}
-                    >
-                      <i className="fab fa-instagram"></i>
-                    </Button>
-                    <Button
-                      className="btn-icon btn-round"
-                      color="info"
-                      href="#pablo"
-                      onClick={(e) => e.preventDefault()}
+                      onClick={(e) => window.open('https://www.facebook.com/nguyenhoa123a10', '_blank')}
                     >
                       <i className="fab fa-facebook-square"></i>
                     </Button>
@@ -237,34 +139,26 @@ function Vlogs({ history }) {
                     <img
                       alt="..."
                       className="rounded-circle img-fluid img-raised"
-                      src={require("assets/img/ryan.jpg")}
+                      src={require("assets/img/my-portrait.jpg")}
                     ></img>
-                    <h4 className="title">Ryan Tompson</h4>
-                    <p className="category text-info">Designer</p>
+                    <h4 className="title">Thanh Toàn</h4>
+                    <p className="category text-info">{t('toanNickname')}</p>
                     <p className="description">
-                      You can write here details about one of your team members.
-                      You can give more details about what they do. Feel free to
-                      add some{" "}
-                      <a href="#pablo" onClick={(e) => e.preventDefault()}>
-                        links
-                      </a>{" "}
-                      for people to be able to follow them outside the site.
+                      {t('toanDescription')}
                     </p>
                     <Button
                       className="btn-icon btn-round"
                       color="info"
-                      href="#pablo"
-                      onClick={(e) => e.preventDefault()}
+                      onClick={(e) => window.open(FACEBOOK_HOME_PAGE, '_blank')}
                     >
-                      <i className="fab fa-twitter"></i>
+                      <i className="fab fa-facebook"></i>
                     </Button>
                     <Button
                       className="btn-icon btn-round"
                       color="info"
-                      href="#pablo"
-                      onClick={(e) => e.preventDefault()}
+                      onClick={(e) => window.open(YOUTUBE_HOME_PAGE, '_blank')}
                     >
-                      <i className="fab fa-linkedin"></i>
+                      <i className="fab fa-youtube"></i>
                     </Button>
                   </div>
                 </Col>
@@ -273,42 +167,19 @@ function Vlogs({ history }) {
                     <img
                       alt="..."
                       className="rounded-circle img-fluid img-raised"
-                      src={require("assets/img/eva.jpg")}
+                      src={require("assets/img/manh-avatar.jpg")}
                     ></img>
-                    <h4 className="title">Eva Jenner</h4>
-                    <p className="category text-info">Fashion</p>
+                    <h4 className="title">Lê Mạnh</h4>
+                    <p className="category text-info">{t('manhNickname')}</p>
                     <p className="description">
-                      You can write here details about one of your team members.
-                      You can give more details about what they do. Feel free to
-                      add some{" "}
-                      <a href="#pablo" onClick={(e) => e.preventDefault()}>
-                        links
-                      </a>{" "}
-                      for people to be able to follow them outside the site.
+                      {t('manhDescription')}
                     </p>
                     <Button
                       className="btn-icon btn-round"
                       color="info"
-                      href="#pablo"
-                      onClick={(e) => e.preventDefault()}
+                      onClick={(e) => window.open('https://www.facebook.com/profile.php?id=100026716162744', '_blank')}
                     >
-                      <i className="fab fa-google-plus"></i>
-                    </Button>
-                    <Button
-                      className="btn-icon btn-round"
-                      color="info"
-                      href="#pablo"
-                      onClick={(e) => e.preventDefault()}
-                    >
-                      <i className="fab fa-youtube"></i>
-                    </Button>
-                    <Button
-                      className="btn-icon btn-round"
-                      color="info"
-                      href="#pablo"
-                      onClick={(e) => e.preventDefault()}
-                    >
-                      <i className="fab fa-twitter"></i>
+                      <i className="fab fa-facebook"></i>
                     </Button>
                   </div>
                 </Col>
@@ -316,75 +187,14 @@ function Vlogs({ history }) {
             </div>
           </Container>
         </div>
-        <div className="section section-contact-us text-center">
-          <Container>
-            <h2 className="title">Want to work with us?</h2>
-            <p className="description">Your project is very important to us.</p>
-            <Row>
-              <Col className="text-center ml-auto mr-auto" lg="6" md="8">
-                <InputGroup
-                  className={
-                    "input-lg" + (firstFocus ? " input-group-focus" : "")
-                  }
-                >
-                  <InputGroupAddon addonType="prepend">
-                    <InputGroupText>
-                      <i className="now-ui-icons users_circle-08"></i>
-                    </InputGroupText>
-                  </InputGroupAddon>
-                  <Input
-                    placeholder="First Name..."
-                    type="text"
-                    onFocus={() => setFirstFocus(true)}
-                    onBlur={() => setFirstFocus(false)}
-                  ></Input>
-                </InputGroup>
-                <InputGroup
-                  className={
-                    "input-lg" + (lastFocus ? " input-group-focus" : "")
-                  }
-                >
-                  <InputGroupAddon addonType="prepend">
-                    <InputGroupText>
-                      <i className="now-ui-icons ui-1_email-85"></i>
-                    </InputGroupText>
-                  </InputGroupAddon>
-                  <Input
-                    placeholder="Email..."
-                    type="text"
-                    onFocus={() => setLastFocus(true)}
-                    onBlur={() => setLastFocus(false)}
-                  ></Input>
-                </InputGroup>
-                <div className="textarea-container">
-                  <Input
-                    cols="80"
-                    name="name"
-                    placeholder="Type a message..."
-                    rows="4"
-                    type="textarea"
-                  ></Input>
-                </div>
-                <div className="send-button">
-                  <Button
-                    block
-                    className="btn-round"
-                    color="info"
-                    href="#pablo"
-                    onClick={(e) => e.preventDefault()}
-                    size="lg"
-                  >
-                    Send Message
-                  </Button>
-                </div>
-              </Col>
-            </Row>
-          </Container>
-        </div>
-        <DefaultFooter />
+        <DarkFooter />
       </div>
     </>
   );
 }
 
-export default withRouter(Vlogs);
+const mapStateToProps = state => ({
+  vlogs: state.vlogs.vlogs,
+});
+
+export default withRouter(connect(mapStateToProps)(Vlogs));

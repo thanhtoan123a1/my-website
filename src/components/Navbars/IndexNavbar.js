@@ -2,6 +2,9 @@ import React from "react";
 import { useTranslation } from 'react-i18next';
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import { TWITTER_HOME_PAGE } from "help/constants";
+import { FACEBOOK_HOME_PAGE } from "help/constants";
+import { INSTAGRAM_HOME_PAGE } from "help/constants";
 // reactstrap components
 import {
   Collapse,
@@ -184,7 +187,7 @@ function IndexNavbar(props) {
               </NavItem> */}
               <NavItem>
                 <NavLink
-                  href="https://twitter.com/ToanTra78269600"
+                  href={TWITTER_HOME_PAGE}
                   target="_blank"
                   id="twitter-tooltip"
                 >
@@ -197,7 +200,7 @@ function IndexNavbar(props) {
               </NavItem>
               <NavItem>
                 <NavLink
-                  href="https://www.facebook.com/thanhtoan123a1/"
+                  href={FACEBOOK_HOME_PAGE}
                   target="_blank"
                   id="facebook-tooltip"
                 >
@@ -210,7 +213,7 @@ function IndexNavbar(props) {
               </NavItem>
               <NavItem>
                 <NavLink
-                  href="https://www.instagram.com/toan.tvt/"
+                  href={INSTAGRAM_HOME_PAGE}
                   target="_blank"
                   id="instagram-tooltip"
                 >

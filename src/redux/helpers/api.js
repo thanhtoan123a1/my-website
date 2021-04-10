@@ -2,6 +2,7 @@ import axios from 'axios';
 
 export const apiEndpoint = {
   login: () => `/login`,
+  getVlogs: () => `/get-vlogs`,
 };
 
 const baseURL = process.env.NODE_ENV === 'production' ? "https://toantvt.herokuapp.com" : "http://localhost:3000/";

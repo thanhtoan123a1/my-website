@@ -467,9 +467,25 @@
     &__description {
         text-align: justify;
     }
+    &__footer {
+        display: flex;
+        align-items: center;
+        padding: 15px 0 15px 0;
+    }
+}
+
+.youtube-subscribe {
+    cursor: pointer;
+}
+
+.youtube-subscribe:hover {
+    border: 1px solid rgba(255, 255, 255, 0.192);
+    box-shadow: 5px 5px 5px #88888831;
+    padding: 15px;
+    border-radius: 2px;
 }
 
 .youtube-card:hover {
     background-color: $opacity-gray-8;
-    box-shadow: 5px 5px 5px #888888;
+    box-shadow: 5px 5px 5px #88888831;
 }
