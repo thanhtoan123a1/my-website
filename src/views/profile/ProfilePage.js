@@ -20,21 +20,24 @@ import {
 import ProfilePageHeader from "components/Headers/ProfilePageHeader.js";
 import IndexNavbar from "components/Navbars/IndexNavbar";
 import DarkFooter from "components/Footers/DarkFooter";
+import { FACEBOOK_HOME_PAGE } from "help/constants";
+import { TWITTER_HOME_PAGE } from "help/constants";
+import { INSTAGRAM_HOME_PAGE } from "help/constants";
 
 function openSocialNetwork(socialNetwork) {
   let redirectLink = '';
   switch (socialNetwork) {
     case SOCIAL_NETWORKS.FB:
-      redirectLink = 'https://www.facebook.com/thanhtoan123a1/';
+      redirectLink = FACEBOOK_HOME_PAGE;
       break;
     case SOCIAL_NETWORKS.IN:
-      redirectLink = 'https://www.instagram.com/toan.tvt/';
+      redirectLink = INSTAGRAM_HOME_PAGE;
       break;
     case SOCIAL_NETWORKS.TW:
-      redirectLink = 'https://twitter.com/ToanTra78269600';
+      redirectLink = TWITTER_HOME_PAGE;
       break;
     default:
-      redirectLink = 'https://www.facebook.com/thanhtoan123a1/';
+      redirectLink = FACEBOOK_HOME_PAGE;
       break;
   }
 

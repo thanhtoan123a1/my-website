@@ -1,10 +1,14 @@
 /*eslint-disable*/
+import { FACEBOOK_HOME_PAGE } from "help/constants";
 import React from "react";
+import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
 
 // reactstrap components
 import { Container } from "reactstrap";
 
 function DarkFooter() {
+  const { t } = useTranslation()
   return (
     <footer className="footer" data-background-color="black">
       <Container>
@@ -12,7 +16,7 @@ function DarkFooter() {
           <ul>
             <li>
               <a
-                href="https://www.facebook.com/thanhtoan123a1/"
+                href={FACEBOOK_HOME_PAGE}
                 target="_blank"
               >
                 Toan Tran Van Thanh
@@ -20,19 +24,18 @@ function DarkFooter() {
             </li>
             <li>
               <a
-                href="https://www.facebook.com/thanhtoan123a1/"
+                href={FACEBOOK_HOME_PAGE}
                 target="_blank"
               >
                 About Us
               </a>
             </li>
             <li>
-              <a
-                href="https://www.facebook.com/thanhtoan123a1/"
-                target="_blank"
+              <Link
+                to="/vlogs"
               >
-                Blog
-              </a>
+                {t('vlogs')}
+              </Link>
             </li>
           </ul>
         </nav>
@@ -46,7 +49,7 @@ function DarkFooter() {
           </a>
           . Coded by{" "}
           <a
-            href="https://www.facebook.com/thanhtoan123a1/"
+            href={FACEBOOK_HOME_PAGE}
             target="_blank"
           >
             ToanTVT

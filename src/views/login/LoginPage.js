@@ -22,6 +22,7 @@ import {
 import DarkFooter from "components/Footers/DarkFooter";
 import IndexNavbar from "components/Navbars/IndexNavbar";
 import { Redirect } from "react-router";
+import { FACEBOOK_HOME_PAGE } from "help/constants";
 
 function LoginPage(props) {
   const [firstFocus, setFirstFocus] = useState(false);
@@ -141,7 +142,7 @@ function LoginPage(props) {
                           className="link"
                           href="# "
                           onClick={(e) => {
-                            window.open('https://www.facebook.com/thanhtoan123a1/', '_blank');
+                            window.open(FACEBOOK_HOME_PAGE, '_blank');
                           }}
                         >
                           {t('needHelp')}

@@ -26,6 +26,16 @@ i18n
           "login": "Login",
           "featureInDevelop": "The feature is in development",
           "needHelp": "Need help?",
+          "hereMyTeam": "Here is our team",
+          "hoaDescription": "Needing to get married urgently, if you agree, you can get married at night",
+          "toanDescription": "Single, whoever asks to go out is ok",
+          "manhDescription": "Like Hoa hu hong, needing to get married urgently",
+          "vlogsDescription": "We keep beautiful memories together, each experience will be a very beautiful memory",
+          "vlogsQuestionTitle": "Why we have these experiences?",
+          "manhNickname": "Mạnh mõm",
+          "toanNickname": "Toàn bơm",
+          "hoaNickname": "Hòa hư hỏng",
+          "subscribeYoutube": "Subscribe with Youtube",
         }
       },
       vn: {
@@ -48,6 +58,16 @@ i18n
           "login": "Đăng nhập",
           "featureInDevelop": "Tính năng đang trong giai đoạn phát triển",
           "needHelp": "Bạn cần trợ giúp?",
+          "hereMyTeam": "Đây là team của tôi",
+          "hoaDescription": "Đang cần lấy vợ gấp, nếu đồng ý có thể cưới ngay trong đêm",
+          "toanDescription": "Độc thân vui vẻ, ai rủ đi chơi thì đi luôn :v",
+          "manhDescription": "Như Hòa hư hỏng, cần lấy vợ gấp",
+          "vlogsDescription": "Chúng tôi lưu giữ những kỷ niệm đẹp với nhau, mỗi trải nghiệm sau này sẽ là một phần ký ức rất đẹp",
+          "vlogsQuestionTitle": "Tại sao lại có những trải nghiệm này?",
+          "manhNickname": "Mạnh mõm",
+          "toanNickname": "Toàn bơm",
+          "hoaNickname": "Hòa hư hỏng",
+          "subscribeYoutube": "Đăng ký với Youtube",
         }
       }
     },
