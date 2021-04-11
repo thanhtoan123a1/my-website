@@ -19,8 +19,6 @@ import {
 } from "reactstrap";
 
 // core components
-import DarkFooter from "components/Footers/DarkFooter";
-import IndexNavbar from "components/Navbars/IndexNavbar";
 import { Redirect } from "react-router";
 import { FACEBOOK_HOME_PAGE } from "help/constants";
 
@@ -54,110 +52,106 @@ function LoginPage(props) {
   }
 
   return (
-    <>
-      <IndexNavbar />
-      <div className="page-header clear-filter" filter-color="blue">
-        <div
-          className="page-header-image"
-          style={{
-            backgroundImage: "url(https://picsum.photos/2000/1171",
-          }}
-        ></div>
-        <div className="content">
-          <Container>
-            <div className="login-page-title">
-              {t('loginPageTitle')}
-            </div>
-            <Col className="ml-auto mr-auto" md="4">
-              <Card className="card-login card-plain">
-                <Form action="" className="form" method="">
-                  <CardBody>
-                    <InputGroup
-                      className={
-                        "no-border input-lg" +
-                        (firstFocus ? " input-group-focus" : "")
-                      }
-                    >
-                      <InputGroupAddon addonType="prepend">
-                        <InputGroupText>
-                          <i className="now-ui-icons ui-1_email-85"></i>
-                        </InputGroupText>
-                      </InputGroupAddon>
-                      <Input
-                        placeholder={t('email')}
-                        type="text"
-                        onFocus={() => setFirstFocus(true)}
-                        onBlur={() => setFirstFocus(false)}
-                        onChange={(e) => { setEmail(e.target.value) }}
-                      ></Input>
-                    </InputGroup>
-                    <InputGroup
-                      className={
-                        "no-border input-lg" +
-                        (lastFocus ? " input-group-focus" : "")
-                      }
-                    >
-                      <InputGroupAddon addonType="prepend">
-                        <InputGroupText>
-                          <i className="now-ui-icons ui-1_lock-circle-open"></i>
-                        </InputGroupText>
-                      </InputGroupAddon>
-                      <Input
-                        placeholder={t('password')}
-                        type="password"
-                        onFocus={() => setLastFocus(true)}
-                        onBlur={() => setLastFocus(false)}
-                        onChange={(e) => { setPassword(e.target.value) }}
-                      ></Input>
-                    </InputGroup>
-                  </CardBody>
-                  <CardFooter className="text-center">
-                    <Button
-                      block
-                      className="btn-round"
-                      color="info"
-                      onClick={(e) => {
-                        login();
-                      }}
-                      size="lg"
-                    >
-                      {t('login')}
-                    </Button>
-                    <div className="pull-left">
-                      <h6>
-                        <a
-                          href="# "
-                          className="link"
-                          onClick={(e) => {
-                            window.alert(t('featureInDevelop'));
-                          }}
-                        >
-                          {t('createAccount')}
-                        </a>
-                      </h6>
-                    </div>
-                    <div className="pull-right">
-                      <h6>
-                        <a
-                          className="link"
-                          href="# "
-                          onClick={(e) => {
-                            window.open(FACEBOOK_HOME_PAGE, '_blank');
-                          }}
-                        >
-                          {t('needHelp')}
-                        </a>
-                      </h6>
-                    </div>
-                  </CardFooter>
-                </Form>
-              </Card>
-            </Col>
-          </Container>
-        </div>
-        <DarkFooter />
+    <div className="page-header clear-filter" filter-color="blue">
+      <div
+        className="page-header-image"
+        style={{
+          backgroundImage: "url(https://picsum.photos/2000/1171",
+        }}
+      ></div>
+      <div className="content">
+        <Container>
+          <div className="login-page-title">
+            {t('loginPageTitle')}
+          </div>
+          <Col className="ml-auto mr-auto" md="4">
+            <Card className="card-login card-plain">
+              <Form action="" className="form" method="">
+                <CardBody>
+                  <InputGroup
+                    className={
+                      "no-border input-lg" +
+                      (firstFocus ? " input-group-focus" : "")
+                    }
+                  >
+                    <InputGroupAddon addonType="prepend">
+                      <InputGroupText>
+                        <i className="now-ui-icons ui-1_email-85"></i>
+                      </InputGroupText>
+                    </InputGroupAddon>
+                    <Input
+                      placeholder={t('email')}
+                      type="text"
+                      onFocus={() => setFirstFocus(true)}
+                      onBlur={() => setFirstFocus(false)}
+                      onChange={(e) => { setEmail(e.target.value) }}
+                    ></Input>
+                  </InputGroup>
+                  <InputGroup
+                    className={
+                      "no-border input-lg" +
+                      (lastFocus ? " input-group-focus" : "")
+                    }
+                  >
+                    <InputGroupAddon addonType="prepend">
+                      <InputGroupText>
+                        <i className="now-ui-icons ui-1_lock-circle-open"></i>
+                      </InputGroupText>
+                    </InputGroupAddon>
+                    <Input
+                      placeholder={t('password')}
+                      type="password"
+                      onFocus={() => setLastFocus(true)}
+                      onBlur={() => setLastFocus(false)}
+                      onChange={(e) => { setPassword(e.target.value) }}
+                    ></Input>
+                  </InputGroup>
+                </CardBody>
+                <CardFooter className="text-center">
+                  <Button
+                    block
+                    className="btn-round"
+                    color="info"
+                    onClick={(e) => {
+                      login();
+                    }}
+                    size="lg"
+                  >
+                    {t('login')}
+                  </Button>
+                  <div className="pull-left">
+                    <h6>
+                      <a
+                        href="# "
+                        className="link"
+                        onClick={(e) => {
+                          window.alert(t('featureInDevelop'));
+                        }}
+                      >
+                        {t('createAccount')}
+                      </a>
+                    </h6>
+                  </div>
+                  <div className="pull-right">
+                    <h6>
+                      <a
+                        className="link"
+                        href="# "
+                        onClick={(e) => {
+                          window.open(FACEBOOK_HOME_PAGE, '_blank');
+                        }}
+                      >
+                        {t('needHelp')}
+                      </a>
+                    </h6>
+                  </div>
+                </CardFooter>
+              </Form>
+            </Card>
+          </Col>
+        </Container>
       </div>
-    </>
+    </div>
   );
 }
 

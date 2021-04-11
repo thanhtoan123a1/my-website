@@ -9,18 +9,15 @@ import {
 } from "reactstrap";
 
 // core components
-import IndexNavbar from "components/Navbars/IndexNavbar";
 import CoverHeader from "components/Headers/CoverHeader";
 import { PAGES } from "help/constants";
-import { withRouter } from "react-router";
 import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";
 import { vlogsActions } from "redux/modules/vlog";
-import DarkFooter from "components/Footers/DarkFooter";
 import { FACEBOOK_HOME_PAGE } from "help/constants";
 import { YOUTUBE_HOME_PAGE } from "help/constants";
 
-function renderYoutubeCard(history, vlogs) {
+function renderYoutubeCard(vlogs) {
   return vlogs.map((card, index) => (
     <div key={index}>
       <div className="youtube-card-wrapper">
@@ -67,7 +64,7 @@ function renderYoutubeCard(history, vlogs) {
 
 function Vlogs(props) {
   const { t } = useTranslation();
-  const { history, dispatch, vlogs } = props;
+  const { dispatch, vlogs } = props;
   React.useEffect(() => {
     document.body.classList.add("landing-page");
     document.body.classList.add("sidebar-collapse");
@@ -82,114 +79,110 @@ function Vlogs(props) {
     };
   }, []);
   return (
-    <>
-      <IndexNavbar />
-      <div className="wrapper">
-        <CoverHeader
-          title={
-            <div className="youtube-subscribe" onClick={(e) => window.open(YOUTUBE_HOME_PAGE, '_blank')}>
-              <i className="fab fa-youtube"></i>
+    <div className="wrapper">
+      <CoverHeader
+        title={
+          <div className="youtube-subscribe" onClick={(e) => window.open(YOUTUBE_HOME_PAGE, '_blank')}>
+            <i className="fab fa-youtube"></i>
               &nbsp;
               {t('subscribeYoutube')}
-            </div>
-          }
-          page={PAGES.VLOGS}
-        />
-        <div className="section section-about-us">
-          <Container>
+          </div>
+        }
+        page={PAGES.VLOGS}
+      />
+      <div className="section section-about-us">
+        <Container>
+          <Row>
+            <Col className="ml-auto mr-auto text-center" md="8">
+              <h2 className="title">{t('vlogsQuestionTitle')}</h2>
+              <h5 className="description">
+                {t('vlogsDescription')}
+              </h5>
+            </Col>
+          </Row>
+          {renderYoutubeCard(vlogs || [])}
+        </Container>
+      </div>
+      <div className="section section-team text-center">
+        <Container>
+          <h2 className="title">{t('hereMyTeam')}</h2>
+          <div className="team">
             <Row>
-              <Col className="ml-auto mr-auto text-center" md="8">
-                <h2 className="title">{t('vlogsQuestionTitle')}</h2>
-                <h5 className="description">
-                  {t('vlogsDescription')}
-                </h5>
+              <Col md="4">
+                <div className="team-player">
+                  <img
+                    alt="..."
+                    className="rounded-circle img-fluid img-raised"
+                    src={require("assets/img/hoa-avatar.jpg")}
+                  ></img>
+                  <h4 className="title">Hòa Nguyễn</h4>
+                  <p className="category text-info">{t('hoaNickname')}</p>
+                  <p className="description">
+                    {t('hoaDescription')}
+                  </p>
+                  <Button
+                    className="btn-icon btn-round"
+                    color="info"
+                    onClick={(e) => window.open('https://www.facebook.com/nguyenhoa123a10', '_blank')}
+                  >
+                    <i className="fab fa-facebook-square"></i>
+                  </Button>
+                </div>
+              </Col>
+              <Col md="4">
+                <div className="team-player">
+                  <img
+                    alt="..."
+                    className="rounded-circle img-fluid img-raised"
+                    src={require("assets/img/my-portrait.jpg")}
+                  ></img>
+                  <h4 className="title">Thanh Toàn</h4>
+                  <p className="category text-info">{t('toanNickname')}</p>
+                  <p className="description">
+                    {t('toanDescription')}
+                  </p>
+                  <Button
+                    className="btn-icon btn-round"
+                    color="info"
+                    onClick={(e) => window.open(FACEBOOK_HOME_PAGE, '_blank')}
+                  >
+                    <i className="fab fa-facebook"></i>
+                  </Button>
+                  <Button
+                    className="btn-icon btn-round"
+                    color="info"
+                    onClick={(e) => window.open(YOUTUBE_HOME_PAGE, '_blank')}
+                  >
+                    <i className="fab fa-youtube"></i>
+                  </Button>
+                </div>
+              </Col>
+              <Col md="4">
+                <div className="team-player">
+                  <img
+                    alt="..."
+                    className="rounded-circle img-fluid img-raised"
+                    src={require("assets/img/manh-avatar.jpg")}
+                  ></img>
+                  <h4 className="title">Lê Mạnh</h4>
+                  <p className="category text-info">{t('manhNickname')}</p>
+                  <p className="description">
+                    {t('manhDescription')}
+                  </p>
+                  <Button
+                    className="btn-icon btn-round"
+                    color="info"
+                    onClick={(e) => window.open('https://www.facebook.com/profile.php?id=100026716162744', '_blank')}
+                  >
+                    <i className="fab fa-facebook"></i>
+                  </Button>
+                </div>
               </Col>
             </Row>
-            {renderYoutubeCard(history, vlogs || [])}
-          </Container>
-        </div>
-        <div className="section section-team text-center">
-          <Container>
-            <h2 className="title">{t('hereMyTeam')}</h2>
-            <div className="team">
-              <Row>
-                <Col md="4">
-                  <div className="team-player">
-                    <img
-                      alt="..."
-                      className="rounded-circle img-fluid img-raised"
-                      src={require("assets/img/hoa-avatar.jpg")}
-                    ></img>
-                    <h4 className="title">Hòa Nguyễn</h4>
-                    <p className="category text-info">{t('hoaNickname')}</p>
-                    <p className="description">
-                      {t('hoaDescription')}
-                    </p>
-                    <Button
-                      className="btn-icon btn-round"
-                      color="info"
-                      onClick={(e) => window.open('https://www.facebook.com/nguyenhoa123a10', '_blank')}
-                    >
-                      <i className="fab fa-facebook-square"></i>
-                    </Button>
-                  </div>
-                </Col>
-                <Col md="4">
-                  <div className="team-player">
-                    <img
-                      alt="..."
-                      className="rounded-circle img-fluid img-raised"
-                      src={require("assets/img/my-portrait.jpg")}
-                    ></img>
-                    <h4 className="title">Thanh Toàn</h4>
-                    <p className="category text-info">{t('toanNickname')}</p>
-                    <p className="description">
-                      {t('toanDescription')}
-                    </p>
-                    <Button
-                      className="btn-icon btn-round"
-                      color="info"
-                      onClick={(e) => window.open(FACEBOOK_HOME_PAGE, '_blank')}
-                    >
-                      <i className="fab fa-facebook"></i>
-                    </Button>
-                    <Button
-                      className="btn-icon btn-round"
-                      color="info"
-                      onClick={(e) => window.open(YOUTUBE_HOME_PAGE, '_blank')}
-                    >
-                      <i className="fab fa-youtube"></i>
-                    </Button>
-                  </div>
-                </Col>
-                <Col md="4">
-                  <div className="team-player">
-                    <img
-                      alt="..."
-                      className="rounded-circle img-fluid img-raised"
-                      src={require("assets/img/manh-avatar.jpg")}
-                    ></img>
-                    <h4 className="title">Lê Mạnh</h4>
-                    <p className="category text-info">{t('manhNickname')}</p>
-                    <p className="description">
-                      {t('manhDescription')}
-                    </p>
-                    <Button
-                      className="btn-icon btn-round"
-                      color="info"
-                      onClick={(e) => window.open('https://www.facebook.com/profile.php?id=100026716162744', '_blank')}
-                    >
-                      <i className="fab fa-facebook"></i>
-                    </Button>
-                  </div>
-                </Col>
-              </Row>
-            </div>
-          </Container>
-        </div>
-        <DarkFooter />
+          </div>
+        </Container>
       </div>
-    </>
+    </div>
   );
 }
 
@@ -197,4 +190,4 @@ const mapStateToProps = state => ({
   vlogs: state.vlogs.vlogs,
 });
 
-export default withRouter(connect(mapStateToProps)(Vlogs));
+export default connect(mapStateToProps)(Vlogs);

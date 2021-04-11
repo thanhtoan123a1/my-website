@@ -2,7 +2,6 @@ import React from "react";
 import { useTranslation } from 'react-i18next';
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import { TWITTER_HOME_PAGE } from "help/constants";
 import { FACEBOOK_HOME_PAGE } from "help/constants";
 import { INSTAGRAM_HOME_PAGE } from "help/constants";
 // reactstrap components
@@ -19,6 +18,7 @@ import {
   Container,
   UncontrolledTooltip,
 } from "reactstrap";
+import { YOUTUBE_HOME_PAGE } from "help/constants";
 
 function IndexNavbar(props) {
   const [navbarColor, setNavbarColor] = React.useState("navbar-transparent");
@@ -167,32 +167,17 @@ function IndexNavbar(props) {
                   </DropdownItem>
                 </DropdownMenu>
               </UncontrolledDropdown>
-              {/* <NavItem>
-                <Button
-                  className="nav-link btn-neutral"
-                  color="info"
-                  href="#pablo"
-                  id="upgrade-to-pro"
-                  onClick={(e) => e.preventDefault()}
-                >
-                  <i className="now-ui-icons arrows-1_share-66 mr-1"></i>
-                  <p>Up load your article</p>
-                </Button>
-                <UncontrolledTooltip target="#upgrade-to-pro">
-                  Cooming soon!
-                </UncontrolledTooltip>
-              </NavItem> */}
               <NavItem>
                 <NavLink
-                  href={TWITTER_HOME_PAGE}
+                  href={YOUTUBE_HOME_PAGE}
                   target="_blank"
-                  id="twitter-tooltip"
+                  id="youtube-tooltip"
                 >
-                  <i className="fab fa-twitter"></i>
+                  <i className="fab fa-youtube"></i>
                   <p className="d-lg-none d-xl-none">Twitter</p>
                 </NavLink>
-                <UncontrolledTooltip target="#twitter-tooltip">
-                  Follow us on Twitter
+                <UncontrolledTooltip target="#youtube-tooltip">
+                  {t('subscribeYoutube')}
                 </UncontrolledTooltip>
               </NavItem>
               <NavItem>
@@ -205,7 +190,7 @@ function IndexNavbar(props) {
                   <p className="d-lg-none d-xl-none">Facebook</p>
                 </NavLink>
                 <UncontrolledTooltip target="#facebook-tooltip">
-                  Like us on Facebook
+                  {t('addFriendFacebook')}
                 </UncontrolledTooltip>
               </NavItem>
               <NavItem>
@@ -218,13 +203,14 @@ function IndexNavbar(props) {
                   <p className="d-lg-none d-xl-none">Instagram</p>
                 </NavLink>
                 <UncontrolledTooltip target="#instagram-tooltip">
-                  Follow us on Instagram
+                  {t('followInstagram')}
                 </UncontrolledTooltip>
               </NavItem>
             </Nav>
           </Collapse>
         </Container>
       </Navbar>
+
     </>
   );
 }
