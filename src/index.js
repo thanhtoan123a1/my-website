@@ -37,11 +37,14 @@ import i18n from './i18n/i18n.js';
 import Courses from "views/courses/index.js";
 import Vlogs from "views/vlogs/index.js";
 import configureStore from "redux/store/index.js";
+import DarkFooter from "components/Footers/DarkFooter.js";
+import IndexNavbar from "components/Navbars/IndexNavbar.js";
 
 ReactDOM.render(
   <I18nextProvider i18n={i18n}>
     <Provider store={configureStore()}>
       <BrowserRouter>
+        <IndexNavbar />
         <Switch>
           <Switch>
             <Route path="/top" render={(props) => <Index {...props} />} />
@@ -73,6 +76,7 @@ ReactDOM.render(
             <Redirect from="/" to="/top" />
           </Switch>
         </Switch>
+        <DarkFooter />
       </BrowserRouter>
     </Provider>
   </I18nextProvider>,
