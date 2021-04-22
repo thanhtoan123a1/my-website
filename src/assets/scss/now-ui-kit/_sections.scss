@@ -489,3 +489,12 @@
     background-color: $opacity-gray-8;
     box-shadow: 5px 5px 5px #88888831;
 }
+
+.link-no-style {
+    text-decoration: none;
+    &:focus, &:hover, &:visited, &:link, &:active {
+        text-decoration: none;
+        color: initial;
+    }
+    color: initial;
+}

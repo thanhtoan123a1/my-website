@@ -39,6 +39,7 @@ import Vlogs from "views/vlogs/index.js";
 import configureStore from "redux/store/index.js";
 import DarkFooter from "components/Footers/DarkFooter.js";
 import IndexNavbar from "components/Navbars/IndexNavbar.js";
+import Slug from "views/courses/slug.js";
 
 ReactDOM.render(
   <I18nextProvider i18n={i18n}>
@@ -65,12 +66,18 @@ ReactDOM.render(
               render={(props) => <LoginPage {...props} />}
             />
             <Route
+              exact
               path="/courses"
               render={(props) => <Courses {...props} />}
             />
             <Route
               path="/vlogs"
               render={(props) => <Vlogs {...props} />}
+            />
+            <Route
+              exact
+              path="/courses/:slug"
+              render={(props) => <Slug {...props} />}
             />
             <Redirect to="/top" />
             <Redirect from="/" to="/top" />
