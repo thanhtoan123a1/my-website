@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { connect } from 'react-redux';
 import { authActions } from 'redux/modules/auth';
+import firebase from 'redux/helpers/firebase';
 import { useTranslation } from "react-i18next";
 
 // reactstrap components
@@ -27,19 +28,27 @@ function LoginPage(props) {
   const [lastFocus, setLastFocus] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [users, setUsers] = useState(false);
 
   const { t } = useTranslation();
 
+  const firebaseRef = firebase.firestore().collection('users');
+
+  async function getUsers() {
+    setLoading(true);
+    await firebaseRef.get().then(snapshot => {
+      console.log("snapshot", snapshot);
+      const users = snapshot.docs.map(doc => doc.data());
+      setUsers(users);
+      setLoading(false);
+    });
+  }
+  console.log("firebaseRef", firebaseRef);
+
   useEffect(() => {
-    document.body.classList.add("login-page");
-    document.body.classList.add("sidebar-collapse");
-    document.documentElement.classList.remove("nav-open");
-    window.scrollTo(0, 0);
-    document.body.scrollTop = 0;
-    return function cleanup() {
-      document.body.classList.remove("login-page");
-      document.body.classList.remove("sidebar-collapse");
-    };
+    getUsers();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   function login() {
@@ -50,6 +59,8 @@ function LoginPage(props) {
   if (props.isLogin) {
     return <Redirect to="/" />;
   }
+
+  console.log("users", users, loading);
 
   return (
     <div className="page-header clear-filter" filter-color="blue">
