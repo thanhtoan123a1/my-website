@@ -37,6 +37,13 @@ i18n
           "subscribeYoutube": "Subscribe with Youtube",
           "homePage": "Home page",
           "updatedAt": "Updated at",
+          "signUp": "Sign up",
+          "confirmPassword": "Confirm password",
+          "passwordDoNotMatch": "Password and Confirm password do not match",
+          "logoutConfirm": "Do you want to logout?",
+          "resetPassword": "Reset password",
+          "forgotPassword": "Forgot password?",
+          "resetPasswordInstructions": "Check your inbox for further instructions",
         }
       },
       vn: {
@@ -70,6 +77,13 @@ i18n
           "subscribeYoutube": "Đăng ký với Youtube",
           "homePage": "Trang chủ",
           "updatedAt": "Cập nhật",
+          "signUp": "Đăng ký",
+          "confirmPassword": "Nhập lại password",
+          "passwordDoNotMatch": "Password không trùng khớp",
+          "logoutConfirm": "Bạn muốn đăng xuất?",
+          "resetPassword": "Đặt lại mật khẩu",
+          "forgotPassword": "Quên mật khẩu?",
+          "resetPasswordInstructions": "Kiểm tra hộp thư đến của bạn để được hướng dẫn thêm",
         }
       }
     },
