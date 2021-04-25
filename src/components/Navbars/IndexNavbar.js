@@ -19,16 +19,23 @@ import {
   UncontrolledTooltip,
 } from "reactstrap";
 import { YOUTUBE_HOME_PAGE } from "help/constants";
+import { useAuth } from "components/contexts/AuthContext";
 
 function IndexNavbar(props) {
   const [navbarColor, setNavbarColor] = React.useState("navbar-transparent");
   const [collapseOpen, setCollapseOpen] = React.useState(false);
   const { t, i18n } = useTranslation();
-  const { isLogin, userData } = props;
+  const { logout, currentUser } = useAuth();
 
   const changeLanguage = language => {
     i18n.changeLanguage(language);
   }
+
+  function handleLogout() {
+    if(window.confirm(t('logoutConfirm'))) {
+      logout();
+    };
+  };
 
   React.useEffect(() => {
     const updateNavbarColor = () => {
@@ -119,14 +126,17 @@ function IndexNavbar(props) {
               </NavItem>
               <NavItem>
                 {
-                  isLogin ?
-                    <Link
+                  currentUser ?
+                    <div
                       className="nav-link"
-                      to="/profile-page"
+                      onClick={e => {
+                        handleLogout();
+                      }}
+                      style={{ color: 'white' }}
                     >
                       <i className="now-ui-icons users_circle-08"></i>
-                      <p>{userData.name}</p>
-                    </Link> :
+                      <p>{currentUser.email}</p>
+                    </div> :
                     <Link
                       className="nav-link"
                       to="/login-page"

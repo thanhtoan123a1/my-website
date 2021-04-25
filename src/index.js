@@ -40,51 +40,55 @@ import configureStore from "redux/store/index.js";
 import DarkFooter from "components/Footers/DarkFooter.js";
 import IndexNavbar from "components/Navbars/IndexNavbar.js";
 import Slug from "views/courses/slug.js";
+import { AuthProvider } from "components/contexts/AuthContext.js";
+import PrivateRoute from "components/PrivateRoute.js";
 
 ReactDOM.render(
   <I18nextProvider i18n={i18n}>
     <Provider store={configureStore()}>
-      <BrowserRouter>
-        <IndexNavbar />
-        <Switch>
+      <AuthProvider>
+        <BrowserRouter>
+          <IndexNavbar />
           <Switch>
-            <Route path="/top" render={(props) => <Index {...props} />} />
-            <Route
-              path="/nucleo-icons"
-              render={(props) => <NucleoIcons {...props} />}
-            />
-            <Route
-              path="/landing-page"
-              render={(props) => <LandingPage {...props} />}
-            />
-            <Route
-              path="/profile-page"
-              render={(props) => <ProfilePage {...props} />}
-            />
-            <Route
-              path="/login-page"
-              render={(props) => <LoginPage {...props} />}
-            />
-            <Route
-              exact
-              path="/courses"
-              render={(props) => <Courses {...props} />}
-            />
-            <Route
-              path="/vlogs"
-              render={(props) => <Vlogs {...props} />}
-            />
-            <Route
-              exact
-              path="/courses/:slug"
-              render={(props) => <Slug {...props} />}
-            />
-            <Redirect to="/top" />
-            <Redirect from="/" to="/top" />
+            <Switch>
+              <Route path="/top" render={(props) => <Index {...props} />} />
+              <Route
+                path="/nucleo-icons"
+                render={(props) => <NucleoIcons {...props} />}
+              />
+              <Route
+                path="/landing-page"
+                render={(props) => <LandingPage {...props} />}
+              />
+              <Route
+                path="/profile-page"
+                render={(props) => <ProfilePage {...props} />}
+              />
+              <Route
+                path="/login-page"
+                render={(props) => <LoginPage {...props} />}
+              />
+              <PrivateRoute
+                exact
+                path="/courses"
+                component={Courses}
+              />
+              <Route
+                path="/vlogs"
+                render={(props) => <Vlogs {...props} />}
+              />
+              <Route
+                exact
+                path="/courses/:slug"
+                render={(props) => <Slug {...props} />}
+              />
+              <Redirect to="/top" />
+              <Redirect from="/" to="/top" />
+            </Switch>
           </Switch>
-        </Switch>
-        <DarkFooter />
-      </BrowserRouter>
+          <DarkFooter />
+        </BrowserRouter>
+      </AuthProvider>
     </Provider>
   </I18nextProvider>,
   document.getElementById("root")

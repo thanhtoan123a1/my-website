@@ -1,10 +1,11 @@
-export default {
-  apiKey: process.env.FIREBASE_API_KEY,
-  authDomain: process.env.FIREBASE_AUTH_DOMAIN,
-  projectId: process.env.FIREBASE_PROJECT_ID,
-  databaseUrl: process.env.FIREBASE_DATABASE_URL,
-  storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.FIREBASE_MESSAGE_SENDER_ID,
-  appId: process.env.FIREBASE_APP_ID,
-  measurementId: process.env.FIREBASE_MEASUREMENT_ID
+const firebaseConfig = {
+  apiKey: "AIzaSyDDrF1ClKGvQ0CNF_wKQfrJIpjKjhIpWgI",
+  authDomain: "my-website-ba5a0.firebaseapp.com",
+  projectId: "my-website-ba5a0",
+  storageBucket: "my-website-ba5a0.appspot.com",
+  messagingSenderId: "267850696179",
+  appId: "1:267850696179:web:1be64ccb562f16b4873e86",
+  measurementId: "G-46GERGKLJR"
 };
+
+export default firebaseConfig;
