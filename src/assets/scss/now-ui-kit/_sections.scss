@@ -498,3 +498,44 @@
     }
     color: initial;
 }
+
+.down-time-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 10%;
+    &__row {
+        width: 88%;
+    }
+    .time-element {
+        display: flex;
+        &__wrapper {
+            width: 80%;
+            margin: auto;
+            border: 2px solid #00b9f7;
+            border-radius: 1px;
+            display: flex;
+            flex-direction: column;
+            padding: 36px;
+        }
+    }
+    .time-number {
+        height: 64px;
+        font-family: 'pt sans', sans-serif;
+        font-weight: 300;
+        font-size: 60px;
+        line-height: 50px;
+        color: #f7f7f7;
+    }
+    .time-text {
+        height: 20px;
+        font-family: 'pt sans', sans-serif;
+        font-weight: 300;
+        font-size: 24px;
+        line-height: 38px;
+        color: #00b9f7;
+    }
+}
+
+.landing-page-description-text {
+    margin-top: 25px;
+}
