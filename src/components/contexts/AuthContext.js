@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { auth } from "redux/helpers/firebase";
+import firebase from 'firebase/app';
 
 const AuthContext = React.createContext();
 export function useAuth() {
@@ -21,6 +22,14 @@ export function AuthProvider({ children }) {
   function resetPassword(email) {
     return auth.sendPasswordResetEmail(email);
   }
+  function loginFacebook() {
+    const facebookAuth = new firebase.auth.FacebookAuthProvider();
+    return auth.signInWithPopup(facebookAuth);
+  }
+  function loginGoogle() {
+    const googleAuth = new firebase.auth.GoogleAuthProvider();
+    return auth.signInWithPopup(googleAuth);
+  }
   
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(user => {
@@ -37,6 +46,8 @@ export function AuthProvider({ children }) {
     login,
     logout,
     resetPassword,
+    loginFacebook,
+    loginGoogle,
   }
 
   return (

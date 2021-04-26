@@ -44,6 +44,8 @@ i18n
           "resetPassword": "Reset password",
           "forgotPassword": "Forgot password?",
           "resetPasswordInstructions": "Check your inbox for further instructions",
+          "loginWithFacebook": "Login with Facebook",
+          "loginWithGoogle": "Login with Google",
         }
       },
       vn: {
@@ -84,6 +86,8 @@ i18n
           "resetPassword": "Đặt lại mật khẩu",
           "forgotPassword": "Quên mật khẩu?",
           "resetPasswordInstructions": "Kiểm tra hộp thư đến của bạn để được hướng dẫn thêm",
+          "loginWithFacebook": "Đăng nhập qua Facebook",
+          "loginWithGoogle": "Đăng nhập qua Google",
         }
       }
     },
