@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { connect } from 'react-redux';
+import React, { useState } from "react";
+import { connect } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "components/contexts/AuthContext";
-import { useHistory } from 'react-router-dom';
 
 // reactstrap components
 import {
@@ -21,30 +20,44 @@ import {
 
 // core components
 import { Redirect } from "react-router";
-const LOGIN = 'LOGIN';
-const SIGNUP = 'SIGNUP';
-const RESET = 'RESET';
+
+const LOGIN = "LOGIN";
+const SIGNUP = "SIGNUP";
+const RESET = "RESET";
 
 function LoginPage() {
   const [firstFocus, setFirstFocus] = useState(false);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const { signup, login, currentUser, resetPassword } = useAuth();
+  const {
+    signup,
+    login,
+    currentUser,
+    resetPassword,
+    loginFacebook,
+    loginGoogle,
+  } = useAuth();
   const [page, setPage] = useState(LOGIN);
-
-  const history = useHistory();
 
   const { t } = useTranslation();
 
   function switchPage(newPage) {
-    setPage(newPage)
+    setPage(newPage);
   }
 
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+  React.useEffect(() => {
+    document.body.classList.add("login-page");
+    document.body.classList.add("sidebar-collapse");
+    document.documentElement.classList.remove("nav-open");
+    window.scrollTo(0, 0);
+    document.body.scrollTop = 0;
+    return function cleanup() {
+      document.body.classList.remove("login-page");
+      document.body.classList.remove("sidebar-collapse");
+    };
   }, []);
 
   function handleClicks() {
@@ -57,30 +70,50 @@ function LoginPage() {
     }
   }
 
+  async function handleLoginFacebook() {
+    try {
+      setError("");
+      await loginFacebook();
+      setLoading(false);
+    } catch (err) {
+      setLoading(false);
+      setError(err.message);
+    }
+  }
+
+  async function handleLoginGoogle() {
+    try {
+      setError("");
+      await loginGoogle();
+      setLoading(false);
+    } catch (err) {
+      setLoading(false);
+      setError(err.message);
+    }
+  }
+
   async function handleSignup() {
     if (password === confirmPassword) {
       setLoading(true);
       try {
-        setError('');
+        setError("");
         await signup(email, password);
-        history.push('/top');
         setLoading(false);
       } catch (err) {
         setLoading(false);
         setError(err.message);
       }
     } else {
-      setError(t('passwordDoNotMatch'));
+      setError(t("passwordDoNotMatch"));
     }
   }
 
   async function handleLogin() {
     setLoading(true);
     try {
-      setError('');
+      setError("");
       await login(email, password);
       setLoading(false);
-      history.push('/top');
     } catch (err) {
       setLoading(false);
       setError(err.message);
@@ -90,10 +123,10 @@ function LoginPage() {
   async function handleResetPassword() {
     setLoading(true);
     try {
-      setError('');
+      setError("");
       await resetPassword(email);
       setLoading(false);
-      setError(t('resetPasswordInstructions'));
+      setError(t("resetPasswordInstructions"));
     } catch (err) {
       setLoading(false);
       setError(err.message);
@@ -114,9 +147,7 @@ function LoginPage() {
       ></div>
       <div className="content">
         <Container>
-          <div className="login-page-title">
-            {t('loginPageTitle')}
-          </div>
+          <div className="login-page-title">{t("loginPageTitle")}</div>
           <Col className="ml-auto mr-auto" md="4">
             <Card className="card-login card-plain">
               <Form action="" className="form" method="">
@@ -133,65 +164,95 @@ function LoginPage() {
                       </InputGroupText>
                     </InputGroupAddon>
                     <Input
-                      placeholder={t('email')}
+                      placeholder={t("email")}
                       type="text"
                       onFocus={() => setFirstFocus(true)}
                       onBlur={() => setFirstFocus(false)}
-                      onChange={(e) => { setEmail(e.target.value) }}
+                      onChange={(e) => {
+                        setEmail(e.target.value);
+                      }}
                     ></Input>
                   </InputGroup>
-                  {
-                    page !== RESET &&
-                    <InputGroup
-                      className={
-                        "no-border input-lg"
-                      }
-                    >
+                  {page !== RESET && (
+                    <InputGroup className={"no-border input-lg"}>
                       <InputGroupAddon addonType="prepend">
                         <InputGroupText>
                           <i className="now-ui-icons ui-1_lock-circle-open"></i>
                         </InputGroupText>
                       </InputGroupAddon>
                       <Input
-                        placeholder={t('password')}
+                        placeholder={t("password")}
                         type="password"
-                        onChange={(e) => { setPassword(e.target.value) }}
+                        onChange={(e) => {
+                          setPassword(e.target.value);
+                        }}
                       ></Input>
                     </InputGroup>
-                  }
-                  {
-                    page === SIGNUP &&
-                    < InputGroup
-                      className={
-                        "no-border input-lg"
-                      }
-                    >
+                  )}
+                  {page === SIGNUP && (
+                    <InputGroup className={"no-border input-lg"}>
                       <InputGroupAddon addonType="prepend">
                         <InputGroupText>
                           <i className="now-ui-icons ui-1_lock-circle-open"></i>
                         </InputGroupText>
                       </InputGroupAddon>
                       <Input
-                        placeholder={t('confirmPassword')}
+                        placeholder={t("confirmPassword")}
                         type="password"
-                        onChange={(e) => { setConfirmPassword(e.target.value) }}
+                        onChange={(e) => {
+                          setConfirmPassword(e.target.value);
+                        }}
                       ></Input>
                     </InputGroup>
-                  }
-                  <div style={{ color: 'red' }}>{error}</div>
+                  )}
+                  <div style={{ color: "red" }}>{error}</div>
                 </CardBody>
                 <CardFooter className="text-center">
                   <Button
                     block
                     className="btn-round"
-                    color="info"
+                    color="success"
                     onClick={(e) => {
                       handleClicks();
                     }}
                     size="lg"
                   >
-                    {loading ? "Loading..." : t(page === LOGIN ? 'login' : page === SIGNUP ? 'signUp' : 'resetPassword')}
+                    {loading
+                      ? "Loading..."
+                      : t(
+                          page === LOGIN
+                            ? "login"
+                            : page === SIGNUP
+                            ? "signUp"
+                            : "resetPassword"
+                        )}
                   </Button>
+                  {page !== RESET && (
+                    <>
+                      <Button
+                        block
+                        // className="btn-round"
+                        color="info"
+                        onClick={(e) => {
+                          handleLoginFacebook();
+                        }}
+                        size="lg"
+                      >
+                        {t("loginWithFacebook")}
+                      </Button>
+                      <Button
+                        block
+                        // className="btn-round"
+                        color="danger"
+                        onClick={(e) => {
+                          handleLoginGoogle();
+                        }}
+                        size="lg"
+                      >
+                        {t("loginWithGoogle")}
+                      </Button>
+                    </>
+                  )}
                   <div className="pull-left">
                     <h6>
                       <a
@@ -202,7 +263,7 @@ function LoginPage() {
                           switchPage(page === LOGIN ? SIGNUP : LOGIN);
                         }}
                       >
-                        {t(page === LOGIN ? 'createAccount' : 'login')}
+                        {t(page === LOGIN ? "createAccount" : "login")}
                       </a>
                     </h6>
                   </div>
@@ -216,7 +277,7 @@ function LoginPage() {
                           switchPage(RESET);
                         }}
                       >
-                        {t('forgotPassword')}
+                        {t("forgotPassword")}
                       </a>
                     </h6>
                   </div>
@@ -226,11 +287,11 @@ function LoginPage() {
           </Col>
         </Container>
       </div>
-    </div >
+    </div>
   );
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   isLogin: state.auth.isLogin,
   isChecking: state.auth.isChecking,
   errorMessage: state.auth.error,
