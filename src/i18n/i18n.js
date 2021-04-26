@@ -46,6 +46,12 @@ i18n
           "resetPasswordInstructions": "Check your inbox for further instructions",
           "loginWithFacebook": "Login with Facebook",
           "loginWithGoogle": "Login with Google",
+          "seconds": "Seconds",
+          "hours": "Hours",
+          "minutes": "Minutes",
+          "days": "Days",
+          "newCourses": "New courses",
+          "comingSoon": "Coming soon",
         }
       },
       vn: {
@@ -88,6 +94,12 @@ i18n
           "resetPasswordInstructions": "Kiểm tra hộp thư đến của bạn để được hướng dẫn thêm",
           "loginWithFacebook": "Đăng nhập qua Facebook",
           "loginWithGoogle": "Đăng nhập qua Google",
+          "seconds": "Giây",
+          "hours": "Giờ",
+          "minutes": "Phút",
+          "days": "Ngày",
+          "newCourses": "Khóa học mới",
+          "comingSoon": "Coming soon",
         }
       }
     },
