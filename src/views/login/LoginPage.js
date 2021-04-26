@@ -213,6 +213,7 @@ function LoginPage() {
                     className="btn-round"
                     color="success"
                     onClick={(e) => {
+                      e.preventDefault();
                       handleClicks();
                     }}
                     size="lg"
@@ -234,6 +235,7 @@ function LoginPage() {
                         // className="btn-round"
                         color="info"
                         onClick={(e) => {
+                          e.preventDefault();
                           handleLoginFacebook();
                         }}
                         size="lg"
@@ -245,6 +247,7 @@ function LoginPage() {
                         // className="btn-round"
                         color="danger"
                         onClick={(e) => {
+                          e.preventDefault();
                           handleLoginGoogle();
                         }}
                         size="lg"
