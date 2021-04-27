@@ -9,7 +9,7 @@ const datePublish = new Date('June 01, 2021 00:00:00');
 // Random component
 const Completionist = () => <span>Bingo!</span>;
 
-const timeElement = (time, timeText) => <Col md="3" className="time-element" >
+const timeElement = (time, timeText) => <Col className="time-element col-6 col-md-3" >
   <div className="time-element__wrapper">
     <span className="time-number">{time}</span>
     <span className="time-text">{timeText}</span>
