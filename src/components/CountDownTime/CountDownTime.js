@@ -3,6 +3,7 @@ import Countdown from "react-countdown";
 import { useTranslation } from "react-i18next";
 import { Row } from "reactstrap";
 import Col from "reactstrap/lib/Col";
+import FlipNumbers from "react-flip-numbers";
 
 const datePublish = new Date('June 01, 2021 00:00:00');
 
@@ -11,7 +12,15 @@ const Completionist = () => <span>Bingo!</span>;
 
 const timeElement = (time, timeText) => <Col className="time-element col-6 col-md-3" >
   <div className="time-element__wrapper">
-    <span className="time-number">{time}</span>
+    <FlipNumbers play
+      width={50}
+      numberStyle={{
+        color: '#00b9f7',
+        textShadow: '0px 0px 5px #00b9f7',
+      }}
+      height={50}
+      numbers={`${time}`}
+      />
     <span className="time-text">{timeText}</span>
   </div>
 </Col>
