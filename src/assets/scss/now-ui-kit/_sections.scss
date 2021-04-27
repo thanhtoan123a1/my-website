@@ -509,25 +509,25 @@
     .time-element {
         display: flex;
         &__wrapper {
-            width: 80%;
+            width: 100%;
             margin: auto;
             border: 2px solid #00b9f7;
             border-radius: 1px;
             display: flex;
             flex-direction: column;
             padding: 36px;
+            padding: 30px 0;
         }
     }
     .time-number {
-        height: 64px;
         font-family: 'pt sans', sans-serif;
         font-weight: 300;
         font-size: 60px;
         line-height: 50px;
         color: #f7f7f7;
+        margin-bottom: 10px;
     }
     .time-text {
-        height: 20px;
         font-family: 'pt sans', sans-serif;
         font-weight: 300;
         font-size: 24px;
