@@ -1,23 +1,37 @@
-import React from "react";
+import React, { useState } from "react";
 
 // reactstrap components
 import {
   Container,
   Row,
   Col,
+  Input,
 } from "reactstrap";
 
 // core components
 import CoverHeader from "components/Headers/CoverHeader";
 import { useTranslation } from "react-i18next";
 import { PAGES } from "help/constants";
-import { client } from "help/client";
 import { Link } from "react-router-dom";
+import { connect } from "react-redux";
+import { coursesActions } from "redux/modules/courses";
+import CustomDropdown from "components/Dropdown";
 
 function formatDateTime(time) {
   const date = new Date(time);
   return date.toLocaleTimeString('en-US');
 }
+
+const items = [
+  { key: 'reactJs', value: 'ReactJS' },
+  { key: 'photoshop', value: 'Photoshop' },
+  { key: 'others', value: 'Others' },
+  { key: 'all', value: 'All' },
+];
+
+// miniseconds to call api when typing
+const WAIT_INTERVAL = 1000;
+const ENTER_KEY = 13;
 
 function renderCoursesCard(articles, updatedText) {
   return articles.map((card, index) => {
@@ -26,10 +40,10 @@ function renderCoursesCard(articles, updatedText) {
       <div className="youtube-card-wrapper">
         <Row>
           <Col md="6" className="youtube-preview">
-            <img src={coverImage.fields.file.url} alt={title} style={{width: '100%', height: 'auto'}} />
+            <img src={coverImage.fields.file.url} alt={title} style={{ width: '100%', height: 'auto' }} />
           </Col>
-            <Col md="6" className="youtube-card" >
-          <Link className="link-no-style" to={`/courses/${id}`}>
+          <Col md="6" className="youtube-card" >
+            <Link className="link-no-style" to={`/courses/${id}`}>
               <div className="youtube-card__title">
                 {title}
               </div>
@@ -46,8 +60,8 @@ function renderCoursesCard(articles, updatedText) {
                 &nbsp;
                 {type}
               </div>
-          </Link>
-            </Col>
+            </Link>
+          </Col>
         </Row>
       </div>
       <hr />
@@ -55,28 +69,57 @@ function renderCoursesCard(articles, updatedText) {
   })
 }
 
-function Courses() {
-  const [articles, setArticles] = React.useState(null);
+function Courses(props) {
   const { t } = useTranslation();
+  const { dispatch, courses } = props;
+  const [params, setParams] = useState({});
+  const interval = {
+    time: null,
+  };
+
   React.useEffect(() => {
     document.body.classList.add("landing-page");
     document.body.classList.add("sidebar-collapse");
     document.documentElement.classList.remove("nav-open");
     window.scrollTo(0, 0);
     document.body.scrollTop = 0;
-    client.getEntries()
-      .then(data => {
-        setArticles(data.items);
-      }).catch(err => {
-        console.log("err", err);
-      });
+    dispatch(coursesActions.getCourses());
     return function cleanup() {
       document.body.classList.remove("landing-page");
       document.body.classList.remove("sidebar-collapse");
     };
-  }, []);
+  }, [dispatch]);
 
-  if (!articles) return <div />;
+  const onSelect = tagId => {
+    const newParams = { ...params }
+    if (tagId === 'all') {
+      delete newParams['metadata.tags.sys.id[in]'];
+    } else {
+      newParams['metadata.tags.sys.id[in]'] = tagId;
+    }
+    setParams(newParams);
+    dispatch(coursesActions.getCourses(newParams));
+  }
+
+  const handleChangeSearch = (e) => {
+    const { value } = e.target;
+    const newParams = { ...params, 'fields.title[match]': value };
+    clearTimeout(interval.time);
+    setParams(newParams);
+    interval.time = setTimeout(() => {
+      dispatch(coursesActions.getCourses(newParams));
+    }, WAIT_INTERVAL);
+  }
+
+  const handleKeyDown = (e) => {
+    if (e.keyCode === ENTER_KEY) {
+      const { value } = e.target;
+      const newParams = { ...params, 'fields.title[match]': value };
+      dispatch(coursesActions.getCourses(newParams));
+    }
+  }
+
+  if (!courses) return <div />;
   return (
     <div className="wrapper">
       <CoverHeader
@@ -85,11 +128,25 @@ function Courses() {
       />
       <div className="section section-about-us">
         <Container>
-          {renderCoursesCard(articles, t("updatedAt"))}
+          <CustomDropdown items={items} onSelect={onSelect} />
+          <Input
+            type="search"
+            name="search"
+            placeholder="Search by keywords"
+            onChange={handleChangeSearch}
+            onKeyDown={handleKeyDown}
+          />
+          {renderCoursesCard(courses, t("updatedAt"))}
         </Container>
       </div>
     </div>
   );
 }
 
-export default Courses;
+const mapStateToProps = state => ({
+  courses: state.courses.courses,
+  isChecking: state.courses.isChecking,
+  error: state.courses.error,
+});
+
+export default connect(mapStateToProps)(Courses);
