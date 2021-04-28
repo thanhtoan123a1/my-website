@@ -10,11 +10,13 @@ import {
 import CoverHeader from "components/Headers/CoverHeader";
 import { useTranslation } from "react-i18next";
 import { PAGES } from "help/constants";
-import { client } from "help/client";
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
+import { connect } from "react-redux";
+import { Redirect } from "react-router";
+import { coursesActions } from "redux/modules/courses";
 
 function Slug(props) {
-  const [articles, setArticles] = React.useState(null);
+  const { course, error, dispatch } = props;
   const { t } = useTranslation();
   React.useEffect(() => {
     document.body.classList.add("landing-page");
@@ -22,22 +24,15 @@ function Slug(props) {
     document.documentElement.classList.remove("nav-open");
     window.scrollTo(0, 0);
     document.body.scrollTop = 0;
-    client.getEntries()
-      .then(data => {
-        const article = data.items.find(item => {
-          return item.sys.id === props.match.params.slug;
-        });
-        setArticles(article);
-      }).catch(err => {
-        console.log("err", err);
-      });
+    dispatch(coursesActions.getCoursesDetails(props.match.params.slug));
     return function cleanup() {
       document.body.classList.remove("landing-page");
       document.body.classList.remove("sidebar-collapse");
     };
-  }, [props.match.params.slug]);
+  }, [dispatch, props.match.params.slug]);
 
-  if (!articles) return <div />;
+  if (!course || !course.fields) return <div />;
+  if (error) return <Redirect to="/top" />;
   return (
     <div className="wrapper">
       <CoverHeader
@@ -47,9 +42,9 @@ function Slug(props) {
       <div className="section section-about-us">
         <Container>
           <Row>
-            {documentToReactComponents(articles.fields.document, {
+            {documentToReactComponents(course.fields.document, {
               renderNode: {
-                "embedded-asset-block": node => <img src={node.data.target.fields.file.url} alt={articles.fields.title} style={{ width: '100%', height: 'auto' }} />
+                "embedded-asset-block": node => <img src={node.data.target.fields.file.url} alt={course.fields.title} style={{ width: '100%', height: 'auto' }} />
               }
             })}
           </Row>
@@ -59,4 +54,10 @@ function Slug(props) {
   );
 }
 
-export default Slug;
+const mapStateToProps = state => ({
+  course: state.courses.coursesDetails,
+  isChecking: state.courses.isChecking,
+  error: state.courses.error,
+});
+
+export default connect(mapStateToProps)(Slug);

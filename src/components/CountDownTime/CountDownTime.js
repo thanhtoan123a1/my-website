@@ -5,7 +5,7 @@ import { Row } from "reactstrap";
 import Col from "reactstrap/lib/Col";
 import FlipNumbers from "react-flip-numbers";
 
-const datePublish = new Date('June 01, 2021 00:00:00');
+const publishDate = new Date('June 01, 2021 00:00:00');
 
 // Random component
 const Completionist = () => <span>Bingo!</span>;
@@ -45,7 +45,7 @@ function CountDownTime() {
     }
   };
   return (
-    <Countdown date={datePublish} renderer={renderer} />
+    <Countdown date={publishDate} renderer={renderer} />
   );
 }
 
