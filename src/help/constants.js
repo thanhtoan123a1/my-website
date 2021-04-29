@@ -18,3 +18,17 @@ export const FACEBOOK_HOME_PAGE = "https://www.facebook.com/thanhtoan123a1/";
 export const INSTAGRAM_HOME_PAGE = "https://www.instagram.com/toan.tvt/";
 export const YOUTUBE_HOME_PAGE = "https://www.youtube.com/channel/UC1Mlfyp8MwV_0RpbYeAp5UQ";
 export const TWITTER_HOME_PAGE = "https://twitter.com/ToanTra78269600";
+
+export const CONTENT_TYPE = {
+  ARTICLE: 'article',
+  VLOGS: 'vlogs',
+  LANDING_PAGE: 'landingPage',
+}
+
+export const CONTENTFUL_TAGS = {
+  REACTJS: 'reactJs',
+  OTHERS: 'others',
+  PHOTOSHOP: 'photoshop',
+  LANDING_PAGE: 'landingPage',
+  ALL: 'all',
+}

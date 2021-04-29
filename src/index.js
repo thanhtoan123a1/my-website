@@ -18,6 +18,7 @@ import LoginPage from "views/login/LoginPage.js";
 import { I18nextProvider } from 'react-i18next';
 import i18n from './i18n/i18n.js';
 import Courses from "views/courses/index.js";
+import NotFound from "views/notFound/index.js";
 import Vlogs from "views/vlogs/index.js";
 import configureStore from "redux/store/index.js";
 import DarkFooter from "components/Footers/DarkFooter.js";
@@ -59,6 +60,10 @@ ReactDOM.render(
               <Route
                 path="/vlogs"
                 render={(props) => <Vlogs {...props} />}
+              />
+              <Route
+                path="/not-found"
+                render={(props) => <NotFound {...props} />}
               />
               <Route
                 exact
