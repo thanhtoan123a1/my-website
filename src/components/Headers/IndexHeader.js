@@ -17,14 +17,14 @@ function IndexHeader(props) {
   const { courses, dispatch } = props;
 
   React.useEffect(() => {
+    const updateScroll = () => {
+      let windowScrollTop = window.pageYOffset / 3;
+      if (pageHeader.current) {
+        pageHeader.current.style.transform =
+          "translate3d(0," + windowScrollTop + "px,0)";
+      }
+    };
     if (window.innerWidth > 991) {
-      const updateScroll = () => {
-        let windowScrollTop = window.pageYOffset / 3;
-        if (pageHeader.current) {
-          pageHeader.current.style.transform =
-            "translate3d(0," + windowScrollTop + "px,0)";
-        }
-      };
       window.addEventListener("scroll", updateScroll);
     }
     dispatch(coursesActions.getCourses({

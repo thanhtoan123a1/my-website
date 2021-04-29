@@ -29,6 +29,13 @@ function DarkFooter() {
                 {t('vlogs')}
               </Link>
             </li>
+            <li>
+              <Link
+                to="/courses"
+              >
+                {t('courses')}
+              </Link>
+            </li>
           </ul>
         </nav>
         <div className="copyright" id="copyright">
