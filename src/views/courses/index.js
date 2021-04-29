@@ -1,23 +1,18 @@
 import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 
 // reactstrap components
-import { Container, Row, Col, Input } from "reactstrap";
+import { Container, Row, Input } from "reactstrap";
 
 // core components
 import CoverHeader from "components/Headers/CoverHeader";
 import { useTranslation } from "react-i18next";
 import { PAGES } from "help/constants";
-import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { coursesActions } from "redux/modules/courses";
 import CustomDropdown from "components/Dropdown";
 import { CONTENT_TYPE } from "help/constants";
 import { CONTENTFUL_TAGS } from "help/constants";
-
-function formatDateTime(time) {
-  const date = new Date(time);
-  return date.toLocaleTimeString("en-US");
-}
 
 const items = [
   { key: CONTENTFUL_TAGS.REACTJS, value: "ReactJS" },
@@ -30,56 +25,17 @@ const items = [
 const WAIT_INTERVAL = 1000;
 const ENTER_KEY = 13;
 
-function renderCoursesCard(articles, updatedText) {
-  return articles.map((card, index) => {
-    const {
-      fields: { title, description, coverImage },
-      sys: { updatedAt, type, id },
-    } = card;
-    return (
-      <div key={index}>
-        <div className="youtube-card-wrapper">
-          <Row>
-            <Col md="6" className="youtube-preview">
-              <img
-                src={coverImage.fields.file.url}
-                alt={title}
-                style={{ width: "100%", height: "auto" }}
-              />
-            </Col>
-            <Col md="6" className="youtube-card">
-              <Link className="link-no-style" to={`/courses/${id}`}>
-                <div className="youtube-card__title">{title}</div>
-                <div className="youtube-card__description">{description}</div>
-                <div className="youtube-card__footer">
-                  <div className="now-ui-icons ui-1_calendar-60" />
-                  &nbsp;
-                  {`${updatedText}: ${formatDateTime(updatedAt)}`}
-                </div>
-                <div className="youtube-card__footer">
-                  <div className="now-ui-icons location_pin" />
-                  &nbsp;
-                  {type}
-                </div>
-              </Link>
-            </Col>
-          </Row>
-        </div>
-        <hr />
-      </div>
-    );
-  });
-}
-
 function Courses(props) {
   const { t } = useTranslation();
-  const { dispatch, courses } = props;
+  const { dispatch, courses, isChecking } = props;
   const [params, setParams] = useState({
     content_type: CONTENT_TYPE.ARTICLE,
   });
   const interval = {
     time: null,
   };
+
+  const history = useHistory();
 
   React.useEffect(() => {
     document.body.classList.add("landing-page");
@@ -124,11 +80,120 @@ function Courses(props) {
     }
   };
 
-  if (!courses) return <div />;
+  function getTags(tags) {
+    if (tags && tags.length) {
+      return tags.map(tag => {
+        return items.find(item => item.key === tag.sys.id);
+      });
+    }
+    return [];
+  }
+
+  function handleClickTag(tagId) {
+    onSelect(tagId);
+  }
+
+  function handleClickArticle(courseId) {
+    history.push(`/courses/${courseId}`)
+  }
+
+  function renderFirstBlock(item) {
+    return (
+      <div onClick={() => handleClickArticle(item.sys.id)} className="course-section--first-block--card">
+        <img src={item.fields.coverImage.fields.file.url} alt="img" className="course-section--first-block__image" />
+        <div className="author-wrapper">
+          <img src={item.fields.author.fields.avatar.fields.file.url} alt="img" className="course-section--first-block__avatar" />
+          <div className="section-card-name">{item.fields.author.fields.userName}</div><div className="section-card-time">&nbsp;-&nbsp;1h</div>
+        </div>
+        <div className="section-card-title">{item.fields.title}</div>
+        <div className="section-card-description">{item.fields.description}</div>
+        <div className="section-card-tags">
+          {
+            getTags(item.metadata.tags).map(tag => {
+              return (
+                <span className="section-card-tags--item" onClick={e => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  handleClickTag(tag.key);
+                }}>
+                  #{tag.value}
+                </span>
+              );
+            })
+          }
+        </div>
+      </div>
+    );
+  }
+  function renderSecondBlock(item) {
+    return (
+      <div onClick={() => handleClickArticle(item.sys.id)} className="course-section--second-block--card">
+        <img src={item.fields.coverImage.fields.file.url} alt="img" className="course-section--second-block__image" />
+        <div className="section2-wrapper">
+          <div className="author-wrapper">
+            <img src={item.fields.author.fields.avatar.fields.file.url} alt="img" className="course-section--first-block__avatar" />
+            <div className="section-card-name">{item.fields.author.fields.userName}</div><div className="section-card-time">&nbsp;-&nbsp;1h</div>
+          </div>
+          <div className="section-card-title">{item.fields.title}</div>
+          <div className="section-card-description">{item.fields.description}</div>
+          <div className="section-card-tags">
+            {
+              getTags(item.metadata.tags).map(tag => {
+                return (
+                  <span className="section-card-tags--item" onClick={e => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    handleClickTag(tag.key);
+                  }}>
+                    #{tag.value}
+                  </span>
+                );
+              })
+            }
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  function renderNormalArticle(item) {
+    return (
+      <div onClick={() => handleClickArticle(item.sys.id)} className="normal-card">
+        <div className="normal-card--image-wrapper">
+          <img src={item.fields.coverImage.fields.file.url} alt="img" className="normal-card__image" />
+          <div className="normal-card__right">
+            <div className="section-card-title">{item.fields.title}</div>
+            <div className="section-card-description">{item.fields.description}</div>
+            <div className="author-wrapper">
+              <img src={item.fields.author.fields.avatar.fields.file.url} alt="img" className="course-section--first-block__avatar" />
+              <div className="section-card-name">{item.fields.author.fields.userName}</div><div className="section-card-time">&nbsp;-&nbsp;1h</div>
+            </div>
+            <div className="section-card-tags">
+              {
+                getTags(item.metadata.tags).map(tag => {
+                  return (
+                    <span className="section-card-tags--item" onClick={e => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      handleClickTag(tag.key);
+                    }}>
+                      #{tag.value}
+                    </span>
+                  );
+                })
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (isChecking || !courses || !courses.length) return <div />;
   return (
     <div className="wrapper">
       <CoverHeader title={t("courses")} page={PAGES.COURSES} />
-      <div className="section section-about-us">
+      <div className="section section-about-us section-course">
         <Container>
           <CustomDropdown items={items} onSelect={onSelect} />
           <Input
@@ -138,7 +203,32 @@ function Courses(props) {
             onChange={handleChangeSearch}
             onKeyDown={handleKeyDown}
           />
-          {renderCoursesCard(courses, t("updatedAt"))}
+          <br />
+          <Row>
+            <div className="col-8 course-section-right">
+              <div className="course-section-right--block">
+                <div className="course-section--first-block">
+                  {renderFirstBlock(courses[0])}
+                </div>
+                <div className="course-section--second-block">
+                  {courses[1] && renderSecondBlock(courses[1])}
+                </div>
+              </div>
+            </div>
+            <div className="col-4 course-section-left">
+              <div className="course-section-left--block">
+
+              </div>
+            </div>
+          </Row>
+          <Row>
+            {
+              courses.length > 2 &&
+              courses.slice(2).map(course => {
+                return renderNormalArticle(course);
+              })
+            }
+          </Row>
         </Container>
       </div>
     </div>

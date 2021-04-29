@@ -593,3 +593,182 @@
   background: rgba(0, 0, 0, 0.8);
   // background: white;
 }
+
+.section-course {
+  color: rgb(34, 43, 69);
+  background: white;
+  @media only screen and (max-width: 600px) {
+    font-size: 12px;
+  }
+}
+
+.section2-wrapper {
+  padding: 0 10px;
+  @media only screen and (max-width: 600px) {
+    padding: 0;
+  }
+}
+.author-wrapper {
+  margin-top: 4px;
+  display: flex;
+  align-items: center;
+  .section-card-name {
+    color: #0768ea;
+    margin-left: 5px;
+    font-size: 13px;
+  }
+  .section-card-time {
+    color: #49494e;
+    margin-left: 5px;
+    font-size: 13px;
+  }
+}
+.section-card-title {
+  font-weight: bold;
+  font-size: 150%;
+  @media only screen and (max-width: 600px) {
+    font-size: 110%;
+  }
+}
+.section-card-description {
+  font-size: 90%;
+}
+
+.normal-card {
+  margin-top: 40px;
+  height: 250px;
+  padding: 0 5px;
+  width: 100%;
+  display: flex;
+  cursor: pointer;
+  border-radius: 5px;
+  @media only screen and (max-width: 600px) {
+    padding: 0 5px;
+    height: 135px;
+  }
+  &--image-wrapper {
+    padding: 10px;
+    width: 100%;
+    display: flex;
+  }
+  &__image {
+    height: 100%;
+    width: 35%;
+    border-radius: 5px;
+    @media only screen and (max-width: 600px) {
+      width: 40%;
+    }
+  }
+  &__right {
+    height: 100%;
+    padding-left: 20px;
+    position: relative;
+  }
+}
+
+.normal-card:hover {
+  background-image: linear-gradient(#eaebee, #fbfbfc96);
+}
+
+.section-card-tags {
+  position: absolute;
+  bottom: 0;
+  z-index: 100;
+  &--item {
+    border-radius: 3px;
+    background-color: #d7d8da;
+    font-size: 90%;
+    color: cornflowerblue;
+    cursor: pointer;
+    margin-right: 3px;
+    padding: 2px;
+  }
+  &--item:hover {
+    color: green;
+  }
+}
+.course-section {
+  &--first-block {
+    width: 66.67%;
+    display: flex;
+    @media only screen and (max-width: 600px) {
+      width: 100%;
+    }
+    
+    &--card {
+      width: 98%;
+      position: relative;
+      margin-right: auto;
+      height: 450px;
+      cursor: pointer;
+      margin-bottom: 20px;
+      @media only screen and (max-width: 600px) {
+        width: 100%;
+        height: 350px;
+      }
+    }
+
+    &__image {
+      width: 100%;
+      border-radius: 5px;
+      height: 60%;
+      @media only screen and (max-width: 600px) {
+        height: 40%;
+      }
+    }
+    &__avatar {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+    }
+  }
+  &--second-block {
+    width: 33.33%;
+    display: flex;
+    @media only screen and (max-width: 600px) {
+      width: 100%;
+    }
+    &--card {
+      position: relative;
+      width: 98%;
+      margin-left: auto;
+      background-image: linear-gradient(#d7d8da, #fbfbfc96);
+      height: 450px;
+      border-top-left-radius: 5px;
+      border-top-right-radius: 5px;
+      margin-bottom: 20px;
+      cursor: pointer;
+      @media only screen and (max-width: 600px) {
+        width: 100%;
+        height: 350px;
+        background-image: none;
+      }
+    }
+    &__image {
+      width: 100%;
+      border-radius: 5px;
+      height: 40%;
+    }
+  }
+}
+.course-section-right {
+  padding-right: 5px;
+  padding-left: 5px;
+  &--block {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    @media only screen and (max-width: 600px) {
+      display: block;
+    }
+  }
+}
+.course-section-left {
+  padding-right: 5px;
+  padding-left: 5px;
+  &--block {
+    width: 100%;
+    height: 100%;
+    background-color: rgb(164, 164, 167);
+  }
+}
