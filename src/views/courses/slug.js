@@ -12,11 +12,10 @@ import { useTranslation } from "react-i18next";
 import { PAGES } from "help/constants";
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
 import { connect } from "react-redux";
-import { Redirect } from "react-router";
 import { coursesActions } from "redux/modules/courses";
 
 function Slug(props) {
-  const { course, error, dispatch } = props;
+  const { course, dispatch } = props;
   const { t } = useTranslation();
   React.useEffect(() => {
     document.body.classList.add("landing-page");
@@ -32,7 +31,6 @@ function Slug(props) {
   }, [dispatch, props.match.params.slug]);
 
   if (!course || !course.fields) return <div />;
-  if (error) return <Redirect to="/top" />;
   return (
     <div className="wrapper">
       <CoverHeader
