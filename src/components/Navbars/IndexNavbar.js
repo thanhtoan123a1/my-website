@@ -1,5 +1,5 @@
 import React from "react";
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { FACEBOOK_HOME_PAGE } from "help/constants";
@@ -20,22 +20,24 @@ import {
 } from "reactstrap";
 import { YOUTUBE_HOME_PAGE } from "help/constants";
 import { useAuth } from "components/contexts/AuthContext";
+import Loading from "components/Loading";
 
 function IndexNavbar(props) {
   const [navbarColor, setNavbarColor] = React.useState("navbar-transparent");
   const [collapseOpen, setCollapseOpen] = React.useState(false);
   const { t, i18n } = useTranslation();
   const { logout, currentUser } = useAuth();
+  const { isCoursesChecking } = props;
 
-  const changeLanguage = language => {
+  const changeLanguage = (language) => {
     i18n.changeLanguage(language);
-  }
+  };
 
   function handleLogout() {
-    if(window.confirm(t('logoutConfirm'))) {
+    if (window.confirm(t("logoutConfirm"))) {
       logout();
-    };
-  };
+    }
+  }
 
   React.useEffect(() => {
     const updateNavbarColor = () => {
@@ -70,12 +72,8 @@ function IndexNavbar(props) {
       <Navbar className={"fixed-top " + navbarColor} expand="lg" color="info">
         <Container>
           <div className="navbar-translate">
-            <Link
-              className="nav-link"
-              to="/"
-              id="navbar-brand"
-            >
-              <p className="title-up">{t('homePage')}</p>
+            <Link className="nav-link" to="/" id="navbar-brand">
+              <p className="title-up">{t("homePage")}</p>
             </Link>
             <button
               className="navbar-toggler navbar-toggler"
@@ -98,53 +96,41 @@ function IndexNavbar(props) {
           >
             <Nav navbar>
               <NavItem>
-                <Link
-                  className="nav-link"
-                  to="/profile-page"
-                >
+                <Link className="nav-link" to="/profile-page">
                   <i className="now-ui-icons travel_info"></i>
-                  <p>{t('profile')}</p>
+                  <p>{t("profile")}</p>
                 </Link>
               </NavItem>
               <NavItem>
-                <Link
-                  className="nav-link"
-                  to="/courses"
-                >
+                <Link className="nav-link" to="/courses">
                   <i className="now-ui-icons education_agenda-bookmark"></i>
-                  <p>{t('courses')}</p>
+                  <p>{t("courses")}</p>
                 </Link>
               </NavItem>
               <NavItem>
-                <Link
-                  className="nav-link"
-                  to="/vlogs"
-                >
+                <Link className="nav-link" to="/vlogs">
                   <i className="now-ui-icons media-1_camera-compact"></i>
-                  <p>{t('vlogs')}</p>
+                  <p>{t("vlogs")}</p>
                 </Link>
               </NavItem>
               <NavItem>
-                {
-                  currentUser ?
-                    <div
-                      className="nav-link"
-                      onClick={e => {
-                        handleLogout();
-                      }}
-                      style={{ color: 'white' }}
-                    >
-                      <i className="now-ui-icons users_circle-08"></i>
-                      <p>{currentUser.email}</p>
-                    </div> :
-                    <Link
-                      className="nav-link"
-                      to="/login-page"
-                    >
-                      <i className="now-ui-icons users_circle-08"></i>
-                      <p>{t('login')}</p>
-                    </Link>
-                }
+                {currentUser ? (
+                  <div
+                    className="nav-link"
+                    onClick={(e) => {
+                      handleLogout();
+                    }}
+                    style={{ color: "white" }}
+                  >
+                    <i className="now-ui-icons users_circle-08"></i>
+                    <p>{currentUser.email}</p>
+                  </div>
+                ) : (
+                  <Link className="nav-link" to="/login-page">
+                    <i className="now-ui-icons users_circle-08"></i>
+                    <p>{t("login")}</p>
+                  </Link>
+                )}
               </NavItem>
               <UncontrolledDropdown nav>
                 <DropdownToggle
@@ -154,26 +140,22 @@ function IndexNavbar(props) {
                   onClick={(e) => e.preventDefault()}
                 >
                   <i className="now-ui-icons business_globe mr-1"></i>
-                  <p>{t('language')}</p>
+                  <p>{t("language")}</p>
                 </DropdownToggle>
                 <DropdownMenu>
-                  <DropdownItem onClick={() => changeLanguage('vn')}>
+                  <DropdownItem onClick={() => changeLanguage("vn")}>
                     <img
                       src={require("assets/img/flags/VN.png")}
                       alt="vn-flag"
                     />
-                    &nbsp;
-                    Vietnamese
+                    &nbsp; Vietnamese
                   </DropdownItem>
-                  <DropdownItem
-                    onClick={() => changeLanguage('en')}
-                  >
+                  <DropdownItem onClick={() => changeLanguage("en")}>
                     <img
                       src={require("assets/img/flags/GB.png")}
                       alt="gb-flag"
                     />
-                    &nbsp;
-                    English
+                    &nbsp; English
                   </DropdownItem>
                 </DropdownMenu>
               </UncontrolledDropdown>
@@ -187,7 +169,7 @@ function IndexNavbar(props) {
                   <p className="d-lg-none d-xl-none">Twitter</p>
                 </NavLink>
                 <UncontrolledTooltip target="#youtube-tooltip">
-                  {t('subscribeYoutube')}
+                  {t("subscribeYoutube")}
                 </UncontrolledTooltip>
               </NavItem>
               <NavItem>
@@ -200,7 +182,7 @@ function IndexNavbar(props) {
                   <p className="d-lg-none d-xl-none">Facebook</p>
                 </NavLink>
                 <UncontrolledTooltip target="#facebook-tooltip">
-                  {t('addFriendFacebook')}
+                  {t("addFriendFacebook")}
                 </UncontrolledTooltip>
               </NavItem>
               <NavItem>
@@ -213,21 +195,20 @@ function IndexNavbar(props) {
                   <p className="d-lg-none d-xl-none">Instagram</p>
                 </NavLink>
                 <UncontrolledTooltip target="#instagram-tooltip">
-                  {t('followInstagram')}
+                  {t("followInstagram")}
                 </UncontrolledTooltip>
               </NavItem>
             </Nav>
           </Collapse>
         </Container>
       </Navbar>
-
+      {isCoursesChecking && <Loading />}
     </>
   );
 }
 
-const mapStateToProps = state => ({
-  isLogin: state.auth.isLogin,
-  isChecking: state.auth.isChecking,
+const mapStateToProps = (state) => ({
+  isCoursesChecking: state.courses.isChecking,
   errorMessage: state.auth.error,
   userData: state.auth.data,
 });

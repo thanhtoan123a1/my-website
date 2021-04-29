@@ -7,7 +7,7 @@ import { Container, Row, Col, Input } from "reactstrap";
 import CoverHeader from "components/Headers/CoverHeader";
 import { useTranslation } from "react-i18next";
 import { PAGES } from "help/constants";
-import { Link, Redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { coursesActions } from "redux/modules/courses";
 import CustomDropdown from "components/Dropdown";
@@ -73,7 +73,7 @@ function renderCoursesCard(articles, updatedText) {
 
 function Courses(props) {
   const { t } = useTranslation();
-  const { dispatch, courses, error } = props;
+  const { dispatch, courses } = props;
   const [params, setParams] = useState({
     content_type: CONTENT_TYPE.ARTICLE,
   });
@@ -123,8 +123,6 @@ function Courses(props) {
       dispatch(coursesActions.getCourses(newParams));
     }
   };
-
-  if (error) return <Redirect to="/not-found" />;
 
   if (!courses) return <div />;
   return (

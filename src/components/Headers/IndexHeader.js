@@ -9,13 +9,12 @@ import CustomCarousel from "components/Carousel";
 import { connect } from "react-redux";
 import { coursesActions } from "redux/modules/courses";
 import { CONTENT_TYPE, CONTENTFUL_TAGS } from "help/constants";
-import { Redirect } from "react-router";
 // core components
 
 function IndexHeader(props) {
   let pageHeader = React.createRef();
   const { t } = useTranslation();
-  const { courses, dispatch, error } = props;
+  const { courses, dispatch } = props;
 
   React.useEffect(() => {
     if (window.innerWidth > 991) {
@@ -26,19 +25,20 @@ function IndexHeader(props) {
             "translate3d(0," + windowScrollTop + "px,0)";
         }
       };
-      dispatch(coursesActions.getCourses({
-        content_type: CONTENT_TYPE.LANDING_PAGE,
-        "metadata.tags.sys.id[in]": CONTENTFUL_TAGS.LANDING_PAGE,
-        'order': 'fields.index',
-      }));
       window.addEventListener("scroll", updateScroll);
-      return function cleanup() {
-        window.removeEventListener("scroll", updateScroll);
-      };
     }
+    dispatch(coursesActions.getCourses({
+      content_type: CONTENT_TYPE.LANDING_PAGE,
+      "metadata.tags.sys.id[in]": CONTENTFUL_TAGS.LANDING_PAGE,
+      'order': 'fields.index',
+    }));
+    return function cleanup() {
+      if (window.innerWidth > 991) {
+        window.removeEventListener("scroll", updateScroll);
+      }
+    };
   }, []);
 
-  if (error) return <Redirect to="/not-found" />
   if (!courses || !courses.length) return <div />;
   const blocks = courses.map(course => {
     return {
