@@ -52,6 +52,7 @@ i18n
           "days": "Days",
           "newCourses": "New courses",
           "comingSoon": "Coming soon",
+          "notFound": "Not found",
         }
       },
       vn: {
@@ -100,6 +101,7 @@ i18n
           "days": "Ngày",
           "newCourses": "Khóa học mới",
           "comingSoon": "Coming soon",
+          "notFound": "Không tìm thấy trang",
         }
       }
     },

@@ -10,11 +10,6 @@ const GET_COURSES_DETAILS_FAILED = 'GET_COURSES_DETAILS_FAILED';
 const GET_COURSES_SUCCESS = 'GET_COURSES_SUCCESS';
 const GET_COURSES_FAILED = 'GET_COURSES_FAILED';
 
-// default 
-const defaultParams = {
-  'content_type': 'article',
-}
-
 export const coursesActions = createActions(
   GET_COURSES,
   GET_COURSES_SUCCESS,
@@ -41,6 +36,7 @@ export const coursesReducer = handleActions(
       ...state,
       isChecking: false,
       courses: action.payload.items,
+      error: '',
     }),
     [GET_COURSES_FAILED]: (state, action) => ({
       ...state,
@@ -55,6 +51,7 @@ export const coursesReducer = handleActions(
       ...state,
       isChecking: false,
       coursesDetails: action.payload,
+      error: '',
     }),
     [GET_COURSES_DETAILS_FAILED]: (state, action) => ({
       ...state,
@@ -71,7 +68,7 @@ export const coursesReducer = handleActions(
 
 function* getCourses(params) {
   try {
-    const response = yield call(getEntries, {...defaultParams, ...params.payload});
+    const response = yield call(getEntries, params.payload);
     yield put(coursesActions.getCoursesSuccess(response));
   } catch (err) {
     yield put(coursesActions.getCoursesFailed(err));

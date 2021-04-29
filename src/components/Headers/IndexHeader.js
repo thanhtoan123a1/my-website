@@ -1,42 +1,61 @@
 /*eslint-disable*/
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { withOrientationChange } from 'react-device-detect';
 
 // reactstrap components
 import { Container } from "reactstrap";
 import CountDownTime from "components/CountDownTime/CountDownTime";
+import CustomCarousel from "components/Carousel";
+import { connect } from "react-redux";
+import { coursesActions } from "redux/modules/courses";
+import { CONTENT_TYPE, CONTENTFUL_TAGS } from "help/constants";
+import { Redirect } from "react-router";
 // core components
 
-function IndexHeader({ isPortrait }) {
+function IndexHeader(props) {
   let pageHeader = React.createRef();
   const { t } = useTranslation();
+  const { courses, dispatch, error } = props;
 
   React.useEffect(() => {
     if (window.innerWidth > 991) {
       const updateScroll = () => {
         let windowScrollTop = window.pageYOffset / 3;
-        pageHeader.current.style.transform =
-          "translate3d(0," + windowScrollTop + "px,0)";
+        if (pageHeader.current) {
+          pageHeader.current.style.transform =
+            "translate3d(0," + windowScrollTop + "px,0)";
+        }
       };
+      dispatch(coursesActions.getCourses({
+        content_type: CONTENT_TYPE.LANDING_PAGE,
+        "metadata.tags.sys.id[in]": CONTENTFUL_TAGS.LANDING_PAGE,
+        'order': 'fields.index',
+      }));
       window.addEventListener("scroll", updateScroll);
       return function cleanup() {
         window.removeEventListener("scroll", updateScroll);
       };
     }
+  }, []);
+
+  if (error) return <Redirect to="/not-found" />
+  if (!courses || !courses.length) return <div />;
+  const blocks = courses.map(course => {
+    return {
+      src: course.fields.coverImage.fields.file.url,
+    }
   });
 
   return (
     <>
-      <div className="page-header clear-filter" filter-color="blue">
+      <div className="landing-page-header">
         <div
-          className="page-header-image"
-          style={{
-            backgroundImage: "url(" + require(isPortrait ? "assets/img/header_mobile.png" : "assets/img/header.png") + ")",
-          }}
+          className="carousel-wrapper"
           ref={pageHeader}
-        ></div>
-        <Container>
+        >
+          <CustomCarousel items={blocks} />
+        </div>
+        <Container className="time-down-container">
           <CountDownTime />
           <div className="row landing-page-description-text">
             <h1 className="h1-seo col-md-12">{t('newCourses')}</h1>
@@ -48,4 +67,10 @@ function IndexHeader({ isPortrait }) {
   );
 }
 
-export default withOrientationChange(IndexHeader);
+const mapStateToProps = state => ({
+  courses: state.courses.courses,
+  isChecking: state.courses.isChecking,
+  error: state.courses.error,
+});
+
+export default connect(mapStateToProps)(IndexHeader);
