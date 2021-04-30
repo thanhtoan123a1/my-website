@@ -14,7 +14,7 @@ import { CONTENT_TYPE, CONTENTFUL_TAGS } from "help/constants";
 function IndexHeader(props) {
   let pageHeader = React.createRef();
   const { t } = useTranslation();
-  const { courses, dispatch } = props;
+  const { langdingPageAccess, dispatch } = props;
 
   React.useEffect(() => {
     const updateScroll = () => {
@@ -27,7 +27,7 @@ function IndexHeader(props) {
     if (window.innerWidth > 991) {
       window.addEventListener("scroll", updateScroll);
     }
-    dispatch(coursesActions.getCourses({
+    dispatch(coursesActions.getLandingPageAsset({
       content_type: CONTENT_TYPE.LANDING_PAGE,
       "metadata.tags.sys.id[in]": CONTENTFUL_TAGS.LANDING_PAGE,
       'order': 'fields.index',
@@ -39,8 +39,8 @@ function IndexHeader(props) {
     };
   }, []);
 
-  if (!courses || !courses.length) return <div />;
-  const blocks = courses.map(course => {
+  if (!langdingPageAccess || !langdingPageAccess.length) return <div />;
+  const blocks = langdingPageAccess.map(course => {
     return {
       src: course.fields.coverImage.fields.file.url,
     }
@@ -68,7 +68,7 @@ function IndexHeader(props) {
 }
 
 const mapStateToProps = state => ({
-  courses: state.courses.courses,
+  langdingPageAccess: state.courses.langdingPageAccess,
   isChecking: state.courses.isChecking,
   error: state.courses.error,
 });

@@ -27,7 +27,7 @@ const ENTER_KEY = 13;
 
 function Courses(props) {
   const { t } = useTranslation();
-  const { dispatch, courses, isChecking } = props;
+  const { dispatch, courses } = props;
   const [params, setParams] = useState({
     content_type: CONTENT_TYPE.ARTICLE,
   });
@@ -111,7 +111,7 @@ function Courses(props) {
           {
             getTags(item.metadata.tags).map(tag => {
               return (
-                <span className="section-card-tags--item" onClick={e => {
+                <span key={tag.key} className="section-card-tags--item" onClick={e => {
                   e.preventDefault();
                   e.stopPropagation();
                   handleClickTag(tag.key);
@@ -140,7 +140,7 @@ function Courses(props) {
             {
               getTags(item.metadata.tags).map(tag => {
                 return (
-                  <span className="section-card-tags--item" onClick={e => {
+                  <span key={tag.key} className="section-card-tags--item" onClick={e => {
                     e.preventDefault();
                     e.stopPropagation();
                     handleClickTag(tag.key);
@@ -158,7 +158,7 @@ function Courses(props) {
 
   function renderNormalArticle(item) {
     return (
-      <div onClick={() => handleClickArticle(item.sys.id)} className="normal-card">
+      <div key={item.sys.id} onClick={() => handleClickArticle(item.sys.id)} className="normal-card">
         <div className="normal-card--image-wrapper">
           <img src={item.fields.coverImage.fields.file.url} alt="img" className="normal-card__image" />
           <div className="normal-card__right">
@@ -172,7 +172,7 @@ function Courses(props) {
               {
                 getTags(item.metadata.tags).map(tag => {
                   return (
-                    <span className="section-card-tags--item" onClick={e => {
+                    <span key={tag.key} className="section-card-tags--item" onClick={e => {
                       e.preventDefault();
                       e.stopPropagation();
                       handleClickTag(tag.key);
@@ -189,7 +189,7 @@ function Courses(props) {
     );
   }
 
-  if (isChecking || !courses || !courses.length) return <div />;
+  if (!courses || !courses.length) return <div />;
   return (
     <div className="wrapper">
       <CoverHeader title={t("courses")} page={PAGES.COURSES} />
@@ -237,7 +237,6 @@ function Courses(props) {
 
 const mapStateToProps = (state) => ({
   courses: state.courses.courses,
-  isChecking: state.courses.isChecking,
   error: state.courses.error,
 });
 

@@ -9,6 +9,9 @@ const GET_COURSES_DETAILS_SUCCESS = 'GET_COURSES_DETAILS_SUCCESS';
 const GET_COURSES_DETAILS_FAILED = 'GET_COURSES_DETAILS_FAILED';
 const GET_COURSES_SUCCESS = 'GET_COURSES_SUCCESS';
 const GET_COURSES_FAILED = 'GET_COURSES_FAILED';
+const GET_LANDING_PAGE_ASSET = 'GET_LANDING_PAGE_ASSET';
+const GET_LANDING_PAGE_ASSET_SUCCESS = 'GET_LANDING_PAGE_ASSET_SUCCESS';
+const GET_LANDING_PAGE_ASSET_FAILED = 'GET_LANDING_PAGE_ASSET_FAILED';
 
 export const coursesActions = createActions(
   GET_COURSES,
@@ -16,7 +19,10 @@ export const coursesActions = createActions(
   GET_COURSES_FAILED,
   GET_COURSES_DETAILS,
   GET_COURSES_DETAILS_SUCCESS,
-  GET_COURSES_DETAILS_FAILED
+  GET_COURSES_DETAILS_FAILED,
+  GET_LANDING_PAGE_ASSET,
+  GET_LANDING_PAGE_ASSET_SUCCESS,
+  GET_LANDING_PAGE_ASSET_FAILED,
 );
 
 // Reducer
@@ -25,6 +31,7 @@ const initialState = {
   coursesDetails: {},
   isChecking: false,
   error: '',
+  langdingPageAccess: [],
 };
 export const coursesReducer = handleActions(
   {
@@ -58,6 +65,21 @@ export const coursesReducer = handleActions(
       isChecking: false,
       error: action.payload,
     }),
+    [GET_LANDING_PAGE_ASSET]: state => ({
+      ...state,
+      isChecking: true,
+    }),
+    [GET_LANDING_PAGE_ASSET_SUCCESS]: (state, action) => ({
+      ...state,
+      isChecking: false,
+      langdingPageAccess: action.payload.items,
+      error: '',
+    }),
+    [GET_LANDING_PAGE_ASSET_FAILED]: (state, action) => ({
+      ...state,
+      isChecking: false,
+      error: action.payload,
+    }),
   },
   initialState,
 );
@@ -75,6 +97,15 @@ function* getCourses(params) {
   }
 }
 
+function* getLandingPageAsset(params) {
+  try {
+    const response = yield call(getEntries, params.payload);
+    yield put(coursesActions.getLandingPageAssetSuccess(response));
+  } catch (err) {
+    yield put(coursesActions.getLandingPageAssetFailed(err));
+  }
+}
+
 function* getCoursesDetails(params) {
   try {
     const response = yield call(getEntry, params.payload);
@@ -87,5 +118,6 @@ function* getCoursesDetails(params) {
 
 export const coursesSagas = [
   takeEvery(GET_COURSES, getCourses),
+  takeEvery(GET_LANDING_PAGE_ASSET, getLandingPageAsset),
   takeEvery(GET_COURSES_DETAILS, getCoursesDetails),
 ];
