@@ -10,15 +10,13 @@ import { useTranslation } from "react-i18next";
 import { PAGES } from "help/constants";
 import { connect } from "react-redux";
 import { coursesActions } from "redux/modules/courses";
-import CustomDropdown from "components/Dropdown";
 import { CONTENT_TYPE } from "help/constants";
 import { CONTENTFUL_TAGS } from "help/constants";
 
 const items = [
-  { key: CONTENTFUL_TAGS.REACTJS, value: "ReactJS" },
-  { key: CONTENTFUL_TAGS.PHOTOSHOP, value: "Photoshop" },
-  { key: CONTENTFUL_TAGS.OTHERS, value: "Others" },
-  { key: CONTENTFUL_TAGS.ALL, value: "All" },
+  { key: CONTENTFUL_TAGS.REACTJS, value: "ReactJS", img: require("assets/img/icons/react.png") },
+  { key: CONTENTFUL_TAGS.PHOTOSHOP, value: "Photoshop", img: require("assets/img/icons/photoshop.jpg") },
+  { key: CONTENTFUL_TAGS.OTHERS, value: "Others", img: require("assets/img/icons/everything.png") },
 ];
 
 // miniseconds to call api when typing
@@ -125,6 +123,30 @@ function Courses(props) {
       </div>
     );
   }
+
+  function renderRightBlocks() {
+    return (
+      items.map(item => {
+        return <div
+          key={item.key}
+          className="small-card-wrapper row"
+          onClick={() => {
+            handleClickTag(item.key);
+          }}>
+          <img src={item.img} className="small-card-wrapper--image col-md-6 col-sm-12" alt="img" />
+          <div className="small-card-wrapper__block col-md-6 col-sm-12">
+            <div className="small-card-wrapper--tilte">
+              {item.value}
+            </div>
+            <span className="section-card-tags--item small-card-wrapper--tag" >
+              #{item.value}
+            </span>
+          </div>
+        </div>
+      })
+    );
+  }
+
   function renderSecondBlock(item) {
     return (
       <div onClick={() => handleClickArticle(item.sys.id)} className="course-section--second-block--card">
@@ -195,7 +217,6 @@ function Courses(props) {
       <CoverHeader title={t("courses")} page={PAGES.COURSES} />
       <div className="section section-about-us section-course">
         <Container>
-          <CustomDropdown items={items} onSelect={onSelect} />
           <Input
             type="search"
             name="search"
@@ -205,8 +226,8 @@ function Courses(props) {
           />
           <br />
           <Row>
-            <div className="col-8 course-section-right">
-              <div className="course-section-right--block">
+            <div className="col-8 course-section-left">
+              <div className="course-section-left--block">
                 <div className="course-section--first-block">
                   {renderFirstBlock(courses[0])}
                 </div>
@@ -215,9 +236,14 @@ function Courses(props) {
                 </div>
               </div>
             </div>
-            <div className="col-4 course-section-left">
-              <div className="course-section-left--block">
-
+            <div className="col-4 course-section-right">
+              <div className="course-section-right--block">
+                <div className="section-card-title">
+                  {t('topics')}
+                </div>
+                <Container>
+                  {renderRightBlocks()}
+                </Container>
               </div>
             </div>
           </Row>
@@ -231,7 +257,7 @@ function Courses(props) {
           </Row>
         </Container>
       </div>
-    </div>
+    </div >
   );
 }
 
