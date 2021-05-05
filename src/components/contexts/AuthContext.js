@@ -16,8 +16,8 @@ export function AuthProvider({ children }) {
   function signup(email, password) {
     return auth.createUserWithEmailAndPassword(email, password);
   }
-  function logout() {
-    return auth.signOut();
+  async function logout() {
+    return await auth.signOut();
   }
   function resetPassword(email) {
     return auth.sendPasswordResetEmail(email);

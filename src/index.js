@@ -44,9 +44,10 @@ ReactDOM.render(
                 path="/landing-page"
                 render={(props) => <LandingPage {...props} />}
               />
-              <Route
+              <PrivateRoute
+                exact
                 path="/profile-page"
-                render={(props) => <ProfilePage {...props} />}
+                component={ProfilePage}
               />
               <Route
                 path="/login-page"
@@ -65,10 +66,10 @@ ReactDOM.render(
                 path="/not-found"
                 render={(props) => <NotFound {...props} />}
               />
-              <Route
+              <PrivateRoute
                 exact
                 path="/courses/:slug"
-                render={(props) => <Slug {...props} />}
+                component={Slug}
               />
               <Redirect to="/top" />
               <Redirect from="/" to="/top" />

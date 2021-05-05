@@ -40,9 +40,9 @@ function Slug(props) {
   function handleUpload() {
     const body = {
       createdAt: new Date(),
-      userName: '',
+      userName: currentUser.displayName,
       email: currentUser.email,
-      avatar: "http://images.ctfassets.net/wew8a337s7oc/5BKRvIAHGrurgYeWRv1heE/ed93512f19f385e40dd1f1f73d7baa68/25791096_1173048532827338_6844968991832809549_o.jpg",
+      avatar: currentUser.photoURL,
       content: commentContent,
       media: url,
     }
@@ -55,7 +55,7 @@ function Slug(props) {
         <img src={comment.avatar} alt={comment.avtar} className="comment-blocks--image" />
         <div className="comment-content">
           <div className="comment-content__name">
-            {comment.email}
+            {comment.userName || 'Unknown'} - <span className="comment-content__email">{comment.email}</span>
           </div>
           <div className="comment-content__text">
             {comment.content}

@@ -1,14 +1,14 @@
 import React from "react";
-import { useTranslation } from 'react-i18next';
 
 // reactstrap components
 import { Container } from "reactstrap";
 
 // core components
 
-function ProfilePageHeader() {
+function ProfilePageHeader(props) {
   let pageHeader = React.createRef();
-  const { t } = useTranslation();
+  const { onEdit, currentUser } = props;
+  console.log("currentUser", currentUser);
 
   React.useEffect(() => {
     if (window.innerWidth > 991) {
@@ -37,25 +37,14 @@ function ProfilePageHeader() {
           ref={pageHeader}
         ></div>
         <Container>
-          <div className="photo-container">
-            <img alt="..." src={require("assets/img/my-portrait.jpg")}></img>
+          <div className="photo-wrapper">
+            <div className="photo-container">
+              <img alt="..." src={currentUser.photoURL ? currentUser.photoURL : require("assets/img/my-portrait.jpg")} className="photo-container__avatar"></img>
+            </div>
+            <div className="photo-wrapper--button" onClick={onEdit} />
           </div>
-          <h3 className="title">Trần Văn Thanh Toàn</h3>
+          <h3 className="title">{currentUser.displayName}</h3>
           <p className="category">Developer</p>
-          <div className="content">
-            <div className="social-description">
-              <h2>0</h2>
-              <p>{t("posts")}</p>
-            </div>
-            <div className="social-description">
-              <h2>0</h2>
-              <p>{t("courses")}</p>
-            </div>
-            <div className="social-description">
-              <h2>0</h2>
-              <p>{t("shares")}</p>
-            </div>
-          </div>
         </Container>
       </div>
     </>

@@ -6,15 +6,12 @@ import { useTranslation } from "react-i18next";
 import { Container } from "reactstrap";
 import CountDownTime from "components/CountDownTime/CountDownTime";
 import CustomCarousel from "components/Carousel";
-import { connect } from "react-redux";
-import { coursesActions } from "redux/modules/courses";
-import { CONTENT_TYPE, CONTENTFUL_TAGS } from "help/constants";
 // core components
 
-function IndexHeader(props) {
+function TopHeader(props) {
   let pageHeader = React.createRef();
   const { t } = useTranslation();
-  const { langdingPageAccess, dispatch } = props;
+  const { langdingPageAccess } = props;
 
   React.useEffect(() => {
     const updateScroll = () => {
@@ -27,11 +24,6 @@ function IndexHeader(props) {
     if (window.innerWidth > 991) {
       window.addEventListener("scroll", updateScroll);
     }
-    dispatch(coursesActions.getLandingPageAsset({
-      content_type: CONTENT_TYPE.LANDING_PAGE,
-      "metadata.tags.sys.id[in]": CONTENTFUL_TAGS.LANDING_PAGE,
-      'order': 'fields.index',
-    }));
     return function cleanup() {
       if (window.innerWidth > 991) {
         window.removeEventListener("scroll", updateScroll);
@@ -67,10 +59,4 @@ function IndexHeader(props) {
   );
 }
 
-const mapStateToProps = state => ({
-  langdingPageAccess: state.courses.langdingPageAccess,
-  isChecking: state.courses.isChecking,
-  error: state.courses.error,
-});
-
-export default connect(mapStateToProps)(IndexHeader);
+export default TopHeader;
