@@ -54,6 +54,10 @@ i18n
           "comingSoon": "Coming soon",
           "notFound": "Not found",
           "topics": "Topics",
+          "createAccount": "Create account",
+          "chooseFile": "Choose a file",
+          "uploadNewAvatar": "Upload new avatar",
+          "save": "Save",
         }
       },
       vn: {
@@ -104,6 +108,10 @@ i18n
           "comingSoon": "Coming soon",
           "notFound": "Không tìm thấy trang",
           "topics": "Các chủ đề",
+          "createAccount": "Tạo tài khoản",
+          "chooseFile": "Chọn một ảnh",
+          "uploadNewAvatar": "Tải lên ảnh đại diện mới",
+          "save": "Lưu",
         }
       }
     },

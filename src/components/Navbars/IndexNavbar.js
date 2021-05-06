@@ -1,7 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { FACEBOOK_HOME_PAGE } from "help/constants";
 import { INSTAGRAM_HOME_PAGE } from "help/constants";
 // reactstrap components
@@ -27,6 +27,7 @@ function IndexNavbar(props) {
   const [collapseOpen, setCollapseOpen] = React.useState(false);
   const { t, i18n } = useTranslation();
   const { logout, currentUser } = useAuth();
+  const history = useHistory();
   const { isCoursesChecking } = props;
 
   const changeLanguage = (language) => {
@@ -35,7 +36,9 @@ function IndexNavbar(props) {
 
   function handleLogout() {
     if (window.confirm(t("logoutConfirm"))) {
-      logout();
+      logout().then(() => {
+        history.push('/login-page');
+      });
     }
   }
 
@@ -108,7 +111,7 @@ function IndexNavbar(props) {
                 {currentUser ? (
                   <div
                     className="nav-link"
-                    onClick={(e) => {
+                    onClick={() => {
                       handleLogout();
                     }}
                     style={{ color: "white" }}

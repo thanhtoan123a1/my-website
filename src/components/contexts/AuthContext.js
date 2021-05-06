@@ -16,8 +16,8 @@ export function AuthProvider({ children }) {
   function signup(email, password) {
     return auth.createUserWithEmailAndPassword(email, password);
   }
-  function logout() {
-    return auth.signOut();
+  async function logout() {
+    return await auth.signOut();
   }
   function resetPassword(email) {
     return auth.sendPasswordResetEmail(email);
@@ -29,6 +29,10 @@ export function AuthProvider({ children }) {
   function loginGoogle() {
     const googleAuth = new firebase.auth.GoogleAuthProvider();
     return auth.signInWithPopup(googleAuth);
+  }
+
+  function updateProfile(body) {
+    return currentUser.updateProfile(body);
   }
   
   useEffect(() => {
@@ -48,6 +52,7 @@ export function AuthProvider({ children }) {
     resetPassword,
     loginFacebook,
     loginGoogle,
+    updateProfile,
   }
 
   return (
