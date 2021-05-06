@@ -11,7 +11,7 @@ import CustomCarousel from "components/Carousel";
 function TopHeader(props) {
   let pageHeader = React.createRef();
   const { t } = useTranslation();
-  const { langdingPageAccess } = props;
+  const { landingPageAccess } = props;
 
   React.useEffect(() => {
     const updateScroll = () => {
@@ -31,8 +31,8 @@ function TopHeader(props) {
     };
   }, []);
 
-  if (!langdingPageAccess || !langdingPageAccess.length) return <div />;
-  const blocks = langdingPageAccess.map(course => {
+  if (!landingPageAccess || !landingPageAccess.length) return <div />;
+  const blocks = landingPageAccess.map(course => {
     return {
       src: course.fields.coverImage.fields.file.url,
     }

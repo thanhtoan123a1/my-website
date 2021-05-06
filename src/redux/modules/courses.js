@@ -1,6 +1,7 @@
 import { createActions, handleActions } from 'redux-actions';
 import { call, put, takeEvery } from 'redux-saga/effects';
 import { getEntries, getEntry } from 'redux/helpers/contentful';
+import { loveClicks, deleteAComment } from 'redux/helpers/firebase';
 import { uploadImage, getCoursesComments, addCoursesComment } from 'redux/helpers/firebase';
 
 // Actions
@@ -22,6 +23,8 @@ const GET_COMMENTS_FAILED = 'GET_COMMENTS_FAILED';
 const ADD_COMMENT = 'ADD_COMMENT';
 const ADD_COMMENT_SUCCESS = 'ADD_COMMENT_SUCCESS';
 const ADD_COMMENT_FAILED = 'ADD_COMMENT_FAILED';
+const LOVE_COMMENT = 'LOVE_COMMENT';
+const DELETE_COMMENT = 'DELETE_COMMENT';
 
 export const coursesActions = createActions(
   GET_COURSES,
@@ -42,6 +45,8 @@ export const coursesActions = createActions(
   ADD_COMMENT,
   ADD_COMMENT_SUCCESS,
   ADD_COMMENT_FAILED,
+  LOVE_COMMENT,
+  DELETE_COMMENT,
 );
 
 // Reducer
@@ -50,7 +55,7 @@ const initialState = {
   coursesDetails: {},
   isChecking: false,
   error: '',
-  langdingPageAccess: [],
+  landingPageAccess: [],
   comments: [],
 };
 export const coursesReducer = handleActions(
@@ -121,7 +126,7 @@ export const coursesReducer = handleActions(
     [GET_LANDING_PAGE_ASSET_SUCCESS]: (state, action) => ({
       ...state,
       isChecking: false,
-      langdingPageAccess: action.payload.items,
+      landingPageAccess: action.payload.items,
       error: '',
     }),
     [GET_LANDING_PAGE_ASSET_FAILED]: (state, action) => ({
@@ -196,6 +201,24 @@ function* addComment(params) {
   }
 }
 
+function* loveComment(params) {
+  try {
+    yield call(loveClicks, params.payload);
+    yield put(coursesActions.getComments(params.payload.courseId));
+  } catch (err) {
+    yield put(coursesActions.getCommentsFailed(err));
+  }
+}
+
+function* deleteComment(params) {
+  try {
+    yield call(deleteAComment, params.payload);
+    yield put(coursesActions.getComments(params.payload.courseId));
+  } catch (err) {
+    yield put(coursesActions.getCommentsFailed(err));
+  }
+}
+
 
 export const coursesSagas = [
   takeEvery(GET_COURSES, getCourses),
@@ -204,4 +227,6 @@ export const coursesSagas = [
   takeEvery(UPLOAD_FILE, uploadFile),
   takeEvery(GET_COMMENTS, getComments),
   takeEvery(ADD_COMMENT, addComment),
+  takeEvery(LOVE_COMMENT, loveComment),
+  takeEvery(DELETE_COMMENT, deleteComment),
 ];
