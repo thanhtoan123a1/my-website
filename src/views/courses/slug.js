@@ -52,10 +52,10 @@ function Slug(props) {
   function renderCommentBlock(comment) {
     return (
       <div key={comment.id} className="comment-blocks">
-        <img src={comment.avatar} alt={comment.avtar} className="comment-blocks--image" />
+        <img src={comment.avatar} alt={comment.avatar} className="comment-blocks--image" />
         <div className="comment-content">
           <div className="comment-content__name">
-            {comment.userName || 'Unknown'} - <span className="comment-content__email">{comment.email}</span>
+            {comment.email}
           </div>
           <div className="comment-content__text">
             {comment.content}

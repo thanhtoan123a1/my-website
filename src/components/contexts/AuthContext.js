@@ -30,6 +30,10 @@ export function AuthProvider({ children }) {
     const googleAuth = new firebase.auth.GoogleAuthProvider();
     return auth.signInWithPopup(googleAuth);
   }
+
+  function updateProfile(body) {
+    return currentUser.updateProfile(body);
+  }
   
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(user => {
@@ -48,6 +52,7 @@ export function AuthProvider({ children }) {
     resetPassword,
     loginFacebook,
     loginGoogle,
+    updateProfile,
   }
 
   return (

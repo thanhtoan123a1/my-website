@@ -19,7 +19,6 @@ function EditImage(props) {
   function handleSave() {
     onSave(preview);
   }
-  console.log("preview", preview);
 
   return (
     <>

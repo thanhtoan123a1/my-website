@@ -1,14 +1,26 @@
-import React from "react";
+import React, { useState } from "react";
 
 // reactstrap components
-import { Container } from "reactstrap";
+import { Container, Input } from "reactstrap";
 
 // core components
 
 function ProfilePageHeader(props) {
   let pageHeader = React.createRef();
-  const { onEdit, currentUser } = props;
-  console.log("currentUser", currentUser);
+  const { onEdit, currentUser, onEditName } = props;
+  const [editNameMode, setEditNameMode] = useState(false);
+  const oldName = currentUser.displayName || "Unknown";
+  const [name, setName] = useState(oldName);
+
+  function onChangeDisplayName(e) {
+    const value = e.target.value;
+    setName(value);
+  }
+
+  function handleSaveName() {
+    onEditName(name.trim());
+    setTimeout(() => setEditNameMode(false), 1000);
+  }
 
   React.useEffect(() => {
     if (window.innerWidth > 991) {
@@ -22,7 +34,7 @@ function ProfilePageHeader(props) {
         window.removeEventListener("scroll", updateScroll);
       };
     }
-  });
+  }, [pageHeader]);
   return (
     <>
       <div
@@ -38,13 +50,67 @@ function ProfilePageHeader(props) {
         ></div>
         <Container>
           <div className="photo-wrapper">
-            <div className="photo-container">
-              <img alt="..." src={currentUser.photoURL ? currentUser.photoURL : require("assets/img/my-portrait.jpg")} className="photo-container__avatar"></img>
+            <div
+              className="photo-container"
+              onClick={() =>
+                window.open(
+                  currentUser.photoURL
+                    ? currentUser.photoURL
+                    : require("assets/img/icons/user.png"),
+                  "_blank"
+                )
+              }
+            >
+              <img
+                alt="..."
+                src={
+                  currentUser.photoURL
+                    ? currentUser.photoURL
+                    : require("assets/img/icons/user.png")
+                }
+                className="photo-container__avatar"
+              ></img>
             </div>
-            <div className="photo-wrapper--button" onClick={onEdit} />
+            <div className="photo-wrapper--image">
+              <img
+                src={require("assets/img/icons/camera.png")}
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  onEdit();
+                }}
+                alt="button-edit"
+              />
+            </div>
           </div>
-          <h3 className="title">{currentUser.displayName}</h3>
-          <p className="category">Developer</p>
+          <h3 className="title input-display-name">
+            {editNameMode ? (
+              <Input
+                value={name}
+                className="input-title"
+                onChange={onChangeDisplayName}
+              />
+            ) : (
+              currentUser.displayName || "Unknown"
+            )}
+            {editNameMode && (
+              <img
+                className="photo-wrapper--edit-name"
+                src={require("assets/img/icons/confirm.png")}
+                onClick={handleSaveName}
+                alt="button-edit"
+              />
+            )}
+            <img
+              className="photo-wrapper--edit-name"
+              src={require(`assets/img/icons/${
+                editNameMode ? "cancel.png" : "edit-box.png"
+              }`)}
+              onClick={() => setEditNameMode(!editNameMode)}
+              alt="button-edit"
+            />
+          </h3>
+          <p>{currentUser.email}</p>
         </Container>
       </div>
     </>
