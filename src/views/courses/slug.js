@@ -154,7 +154,7 @@ function Slug(props) {
                   />
                 </label>
               </div>
-              <div className="comment-send">
+              <div className="comment-send" onClick={handleUpload}>
                 <img src={require("assets/img/icons/send.png")} alt="send" />
               </div>
               {progress !== 0 && progress !== 100 && <Progress value={100} />}
