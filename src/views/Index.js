@@ -26,7 +26,7 @@ import { Redirect } from "react-router";
 
 function Top(props) {
 
-  const { langdingPageAccess, dispatch } = props;
+  const { landingPageAccess, dispatch } = props;
 
   React.useEffect(() => {
     document.body.classList.add("index-page");
@@ -48,7 +48,7 @@ function Top(props) {
   if (currentUser && (!currentUser.displayName || !currentUser.photoURL)) return <Redirect to="/profile-page" />;
   return (
     <div className="wrapper">
-      <TopHeader langdingPageAccess={langdingPageAccess} />
+      <TopHeader landingPageAccess={landingPageAccess} />
       {/* <div className="main">
         <Images />
         <BasicElements />
@@ -70,7 +70,7 @@ function Top(props) {
 }
 
 const mapStateToProps = state => ({
-  langdingPageAccess: state.courses.langdingPageAccess,
+  landingPageAccess: state.courses.landingPageAccess,
   isChecking: state.courses.isChecking,
   error: state.courses.error,
 });

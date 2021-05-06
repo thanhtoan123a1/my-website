@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 // reactstrap components
-import { Container, Progress, Row } from "reactstrap";
+import { Container, Progress, Row, Tooltip } from "reactstrap";
 
 // core components
 import CoverHeader from "components/Headers/CoverHeader";
@@ -10,6 +10,9 @@ import { connect } from "react-redux";
 import { coursesActions } from "redux/modules/courses";
 import { useAuth } from "components/contexts/AuthContext";
 import { useTranslation } from "react-i18next";
+import { timeAgo } from "help/functions";
+import { TIME } from "help/constants";
+import { DATE_FORMAT } from "help/constants";
 
 function Slug(props) {
   const { course, dispatch, comments } = props;
@@ -18,6 +21,8 @@ function Slug(props) {
   const [commentContent, setCommentContent] = useState("");
   const [url, setUrl] = useState(null);
   const [progress, setProgress] = useState(0);
+  const [tooltipOpen, setTooltipOpen] = useState(false);
+  const toggle = () => setTooltipOpen(!tooltipOpen);
   React.useEffect(() => {
     document.body.classList.add("landing-page");
     document.body.classList.add("sidebar-collapse");
@@ -33,6 +38,35 @@ function Slug(props) {
     };
   }, [dispatch, props.match.params.slug]);
 
+  function convertOffset(offset) {
+    switch (offset) {
+      case TIME.SECONDS:
+        return t("seconds");
+      case TIME.MINUTES:
+        return t("minutes");
+      case TIME.HOURS:
+        return t("hours");
+      case TIME.DAYS:
+        return t("days");
+      case TIME.MONTHS:
+        return t("months");
+      case TIME.YEARS:
+        return t("years");
+      default:
+        return t("seconds");
+    }
+  }
+
+  function handleDeleteComment(comment) {
+    if (window.confirm(t("deleteComment"))) {
+      dispatch(
+        coursesActions.deleteComment({
+          courseId: props.match.params.slug,
+          commentId: comment.id,
+        })
+      );
+    }
+  }
   function handleUpload() {
     if (commentContent || url) {
       const body = {
@@ -51,7 +85,36 @@ function Slug(props) {
     }
   }
 
+  function handleLoveAction(comment) {
+    const loveList = comment.loveList;
+    let data = [];
+    if (loveList && loveList.length) {
+      if (loveList.includes(currentUser.email)) {
+        data = loveList.filter((item) => {
+          return item !== currentUser.email;
+        });
+      } else {
+        data = [...loveList, currentUser.email];
+      }
+    } else {
+      data.push(currentUser.email);
+    }
+    dispatch(
+      coursesActions.loveComment({
+        courseId: props.match.params.slug,
+        data,
+        commentId: comment.id,
+      })
+    );
+  }
+
   function renderCommentBlock(comment) {
+    const createdAt = timeAgo(new Date(comment.createdAt.seconds * 1000));
+    const timeAgoText = `${createdAt.number} ${convertOffset(
+      createdAt.offset
+    ).toLocaleLowerCase()} ${t("ago").toLocaleLowerCase()}`;
+    const loveList = comment.loveList || [];
+    const hoverLoveText = loveList.join("\n");
     return (
       <div key={comment.id} className="comment-blocks">
         <img
@@ -59,19 +122,63 @@ function Slug(props) {
           alt={comment.avatar}
           className="comment-blocks--image"
         />
-        <div className="comment-content">
-          <div className="comment-content__name">{comment.email}</div>
-          <div className="comment-content__text">{comment.content}</div>
-          {comment.media && (
-            <img
-              src={comment.media}
-              alt={comment.media}
-              onClick={() => {
-                window.open(comment.media, "_blank");
-              }}
-              className="comment-content__media"
-            />
-          )}
+        <div className="comment-content-wrapper">
+          <div className="comment-content">
+            <div className="comment-content__name">{comment.email}</div>
+            <div className="comment-content__text">{comment.content}</div>
+            {comment.media && (
+              <img
+                src={comment.media}
+                alt={comment.media}
+                onClick={() => {
+                  window.open(comment.media, "_blank");
+                }}
+                className="comment-content__media"
+              />
+            )}
+            {comment.email === currentUser.email && (
+              <div
+                className="delete-comment"
+                onClick={() => handleDeleteComment(comment)}
+              >
+                <img src={require("assets/img/icons/x.png")} alt="delete" />
+              </div>
+            )}
+            {loveList.length > 0 && (
+              <div
+                className="like-number-wrapper"
+                id={comment.id}
+                title={hoverLoveText}
+              >
+                <img
+                  src={require("assets/img/icons/love.png")}
+                  alt="like"
+                  className="number-like"
+                />
+                {loveList.length}
+                <Tooltip
+                  isOpen={tooltipOpen}
+                  target={comment.id}
+                  toggle={toggle}
+                >
+                  {hoverLoveText}
+                </Tooltip>
+              </div>
+            )}
+          </div>
+          <div className="like-wrapper">
+            <div
+              className={`like-text ${
+                loveList.includes(currentUser.email)
+                  ? "active-like"
+                  : "normal-like"
+              }`}
+              onClick={() => handleLoveAction(comment)}
+            >
+              {t("love")}
+            </div>
+            <span>{timeAgoText}</span>
+          </div>
         </div>
       </div>
     );
@@ -118,11 +225,19 @@ function Slug(props) {
                   <img
                     src={node.data.target.fields.file.url}
                     alt={course.fields.title}
-                    style={{ width: "100%", height: "auto" }}
+                    style={{ width: "100%", alignSelf: "center" }}
                   />
                 ),
               },
             })}
+            <div className="date-wrapper">
+              <i>
+                {new Date(course.sys.createdAt).toLocaleString(
+                  "en-US",
+                  DATE_FORMAT.NORMAL
+                )}
+              </i>
+            </div>
           </Row>
           <Row className="content-wrapper courses-comment-wrapper">
             {comments && comments.length > 0 && (
@@ -147,7 +262,10 @@ function Slug(props) {
                   className="courses-details-comment--file"
                   onChange={handleChangeFile}
                 />
-                <label htmlFor="input-file">
+                <label
+                  className={url ? "image-active" : ""}
+                  htmlFor="input-file"
+                >
                   <img
                     src={require("assets/img/icons/camera-upload.png")}
                     alt="button"

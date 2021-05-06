@@ -1,8 +1,8 @@
-import firebase from 'firebase/app';
-import 'firebase/firestore';
-import 'firebase/auth';
-import 'firebase/storage';
-import firebaseConfig from 'help/firebaseConfig';
+import firebase from "firebase/app";
+import "firebase/firestore";
+import "firebase/auth";
+import "firebase/storage";
+import firebaseConfig from "help/firebaseConfig";
 
 const app = firebase.initializeApp(firebaseConfig);
 
@@ -16,45 +16,97 @@ export const uploadImage = async (path, file, setProgress) => {
     task.on(
       "state_changed",
       // watch progress of upload file
-      snapshot => {
+      (snapshot) => {
         const progress = Math.round(
           (snapshot.bytesTransferred / snapshot.totalBytes) * 100
         );
         if (setProgress) setProgress(progress);
       },
-      error => {
+      (error) => {
         reject(error);
       },
       () => {
-        task.snapshot.ref.getDownloadURL().then(url => resolve(url));
+        task.snapshot.ref.getDownloadURL().then((url) => resolve(url));
       }
     );
   });
-}
+};
 
-export const getCoursesComments = courseId =>
+export const getCoursesComments = (courseId) =>
   new Promise((resolve, reject) => {
     try {
-      firestore.collection('courses').doc(courseId).collection('comments').orderBy('createdAt').get().then(snaps => {
-        const comments = snaps.docs.map(snap => ({ ...snap.data(), id: snap.id }));
-        resolve(comments);
-      });
+      firestore
+        .collection("courses")
+        .doc(courseId)
+        .collection("comments")
+        .orderBy("createdAt")
+        .get()
+        .then((snaps) => {
+          const comments = snaps.docs.map((snap) => ({
+            ...snap.data(),
+            id: snap.id,
+          }));
+          resolve(comments);
+        });
     } catch (err) {
       reject(err);
     }
   });
 
-export const addCoursesComment = params => {
+export const addCoursesComment = (params) => {
   const { courseId, body } = params;
   new Promise((resolve, reject) => {
     try {
-      firestore.collection('courses').doc(courseId).collection('comments').add(body).then(() => {
-        resolve();
-      });
+      firestore
+        .collection("courses")
+        .doc(courseId)
+        .collection("comments")
+        .add(body)
+        .then(() => {
+          resolve();
+        });
     } catch (err) {
       reject(err);
     }
   });
-}
+};
+
+export const loveClicks = (params) => {
+  const { commentId, data, courseId } = params;
+  new Promise((resolve, reject) => {
+    try {
+      firestore
+        .collection("courses")
+        .doc(courseId)
+        .collection("comments")
+        .doc(commentId)
+        .update({ loveList: data })
+        .then(() => {
+          resolve();
+        });
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+
+export const deleteAComment = (params) => {
+  const { commentId, courseId } = params;
+  new Promise((resolve, reject) => {
+    try {
+      firestore
+        .collection("courses")
+        .doc(courseId)
+        .collection("comments")
+        .doc(commentId)
+        .delete()
+        .then(() => {
+          resolve();
+        });
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
 
 export default app;

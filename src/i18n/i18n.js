@@ -50,6 +50,9 @@ i18n
           "hours": "Hours",
           "minutes": "Minutes",
           "days": "Days",
+          "months": "Months",
+          "years": "Years",
+          "ago": "Ago",
           "newCourses": "New courses",
           "comingSoon": "Coming soon",
           "notFound": "Not found",
@@ -59,6 +62,8 @@ i18n
           "uploadNewAvatar": "Upload new avatar",
           "save": "Save",
           "writeComment": "Write a comment...",
+          "love": "Love",
+          "deleteComment": "Are you sure want to delete this comment?",
         }
       },
       vn: {
@@ -105,6 +110,9 @@ i18n
           "hours": "Giờ",
           "minutes": "Phút",
           "days": "Ngày",
+          "months": "Tháng",
+          "years": "Năm",
+          "ago": "Trước",
           "newCourses": "Khóa học mới",
           "comingSoon": "Coming soon",
           "notFound": "Không tìm thấy trang",
@@ -114,6 +122,8 @@ i18n
           "uploadNewAvatar": "Tải lên ảnh đại diện mới",
           "save": "Lưu",
           "writeComment": "Để lại một bình luận...",
+          "love": "Yêu thích",
+          "deleteComment": "Bạn có muốn xóa bình luận này không?",
         }
       }
     },
