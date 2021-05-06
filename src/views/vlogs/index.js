@@ -10,7 +10,6 @@ import {
 
 // core components
 import CoverHeader from "components/Headers/CoverHeader";
-import { PAGES } from "help/constants";
 import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";
 import { vlogsActions } from "redux/modules/vlog";
@@ -88,7 +87,7 @@ function Vlogs(props) {
               {t('subscribeYoutube')}
           </div>
         }
-        page={PAGES.VLOGS}
+        coverPhoto={require('assets/img/vlogs-cover.jpeg')}
       />
       <div className="section section-about-us">
         <Container>

@@ -1,26 +1,21 @@
 import React, { useState } from "react";
 
 // reactstrap components
-import {
-  Container,
-  Progress,
-  Row,
-} from "reactstrap";
+import { Container, Progress, Row } from "reactstrap";
 
 // core components
 import CoverHeader from "components/Headers/CoverHeader";
-import { useTranslation } from "react-i18next";
-import { PAGES } from "help/constants";
-import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
+import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
 import { connect } from "react-redux";
 import { coursesActions } from "redux/modules/courses";
 import { useAuth } from "components/contexts/AuthContext";
+import { useTranslation } from "react-i18next";
 
 function Slug(props) {
   const { course, dispatch, comments } = props;
   const { currentUser } = useAuth();
   const { t } = useTranslation();
-  const [commentContent, setCommentContent] = useState('');
+  const [commentContent, setCommentContent] = useState("");
   const [url, setUrl] = useState(null);
   const [progress, setProgress] = useState(0);
   React.useEffect(() => {
@@ -31,6 +26,7 @@ function Slug(props) {
     document.body.scrollTop = 0;
     dispatch(coursesActions.getCoursesDetails(props.match.params.slug));
     dispatch(coursesActions.getComments(props.match.params.slug));
+
     return function cleanup() {
       document.body.classList.remove("landing-page");
       document.body.classList.remove("sidebar-collapse");
@@ -38,39 +34,44 @@ function Slug(props) {
   }, [dispatch, props.match.params.slug]);
 
   function handleUpload() {
-    const body = {
-      createdAt: new Date(),
-      userName: currentUser.displayName,
-      email: currentUser.email,
-      avatar: currentUser.photoURL,
-      content: commentContent,
-      media: url,
+    if (commentContent || url) {
+      const body = {
+        createdAt: new Date(),
+        userName: currentUser.displayName,
+        email: currentUser.email,
+        avatar: currentUser.photoURL,
+        content: commentContent,
+        media: url,
+      };
+      dispatch(
+        coursesActions.addComment({ courseId: props.match.params.slug, body })
+      );
+      setUrl("");
+      setCommentContent("");
     }
-    dispatch(coursesActions.addComment({ courseId: props.match.params.slug, body }));
   }
 
   function renderCommentBlock(comment) {
     return (
       <div key={comment.id} className="comment-blocks">
-        <img src={comment.avatar} alt={comment.avatar} className="comment-blocks--image" />
+        <img
+          src={comment.avatar}
+          alt={comment.avatar}
+          className="comment-blocks--image"
+        />
         <div className="comment-content">
-          <div className="comment-content__name">
-            {comment.email}
-          </div>
-          <div className="comment-content__text">
-            {comment.content}
-          </div>
-          {
-            comment.media &&
+          <div className="comment-content__name">{comment.email}</div>
+          <div className="comment-content__text">{comment.content}</div>
+          {comment.media && (
             <img
               src={comment.media}
               alt={comment.media}
               onClick={() => {
-                window.open(comment.media, '_blank');
+                window.open(comment.media, "_blank");
               }}
               className="comment-content__media"
             />
-          }
+          )}
         </div>
       </div>
     );
@@ -82,10 +83,10 @@ function Slug(props) {
         image: e.target.files[0],
         courseId: props.match.params.slug,
         setProgress: setProgress,
-        callback: url => {
+        callback: (url) => {
           setUrl(url);
-        }
-      }
+        },
+      };
       dispatch(coursesActions.uploadFile(body));
     }
   }
@@ -94,44 +95,78 @@ function Slug(props) {
     setCommentContent(e.target.value);
   }
 
+  function handleInputKeyup(event) {
+    if (event.keyCode === 13) {
+      event.preventDefault();
+      handleUpload();
+    }
+  }
+
   if (!course || !course.fields) return <div />;
   return (
     <div className="wrapper">
       <CoverHeader
-        title={t("courses")}
-        page={PAGES.COURSES}
+        title={course.fields.title}
+        coverPhoto={course.fields.coverImage.fields.file.url}
       />
-      <div className="section courses-details">
+      <div className="courses-details">
         <Container>
           <Row className="content-wrapper">
             {documentToReactComponents(course.fields.document, {
               renderNode: {
-                "embedded-asset-block": node => <img src={node.data.target.fields.file.url} alt={course.fields.title} style={{ width: '100%', height: 'auto' }} />
-              }
+                "embedded-asset-block": (node) => (
+                  <img
+                    src={node.data.target.fields.file.url}
+                    alt={course.fields.title}
+                    style={{ width: "100%", height: "auto" }}
+                  />
+                ),
+              },
             })}
           </Row>
-          <Row className="courses-comment-wrapper">
-            {
-              comments && comments.length > 0 &&
+          <Row className="content-wrapper courses-comment-wrapper">
+            {comments && comments.length > 0 && (
               <div className="courses-details-comment">
-                {comments.map(comment => renderCommentBlock(comment))}
+                {comments.map((comment) => renderCommentBlock(comment))}
               </div>
-            }
+            )}
+            <Row className="content-wrapper courses-comment-wrapper">
+              <div className="courses-details-comment comment-wrapper">
+                <input
+                  type="text"
+                  onKeyUp={handleInputKeyup}
+                  id="comment-input"
+                  value={commentContent}
+                  onChange={handleWriteComment}
+                  placeholder={t("writeComment")}
+                  className="comment-wrapper--text"
+                />
+                <input
+                  type="file"
+                  id="input-file"
+                  className="courses-details-comment--file"
+                  onChange={handleChangeFile}
+                />
+                <label htmlFor="input-file">
+                  <img
+                    src={require("assets/img/icons/camera-upload.png")}
+                    alt="button"
+                  />
+                </label>
+              </div>
+              <div className="comment-send">
+                <img src={require("assets/img/icons/send.png")} alt="send" />
+              </div>
+              {progress !== 0 && progress !== 100 && <Progress value={100} />}
+            </Row>
           </Row>
-          <input type="file" onChange={handleChangeFile} />
-          {
-            (progress !== 0 && progress !== 100) &&
-            <Progress value={progress} />
-          }
-          <input type="text" onChange={handleWriteComment} />
-          <button onClick={handleUpload}>Post</button>
         </Container>
       </div>
     </div>
   );
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   course: state.courses.coursesDetails,
   comments: state.courses.comments,
   isChecking: state.courses.isChecking,

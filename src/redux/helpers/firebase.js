@@ -35,7 +35,7 @@ export const uploadImage = async (path, file, setProgress) => {
 export const getCoursesComments = courseId =>
   new Promise((resolve, reject) => {
     try {
-      firestore.collection('courses').doc(courseId).collection('comments').get().then(snaps => {
+      firestore.collection('courses').doc(courseId).collection('comments').orderBy('createdAt').get().then(snaps => {
         const comments = snaps.docs.map(snap => ({ ...snap.data(), id: snap.id }));
         resolve(comments);
       });

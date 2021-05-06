@@ -58,6 +58,7 @@ i18n
           "chooseFile": "Choose a file",
           "uploadNewAvatar": "Upload new avatar",
           "save": "Save",
+          "writeComment": "Write a comment...",
         }
       },
       vn: {
@@ -112,6 +113,7 @@ i18n
           "chooseFile": "Chọn một ảnh",
           "uploadNewAvatar": "Tải lên ảnh đại diện mới",
           "save": "Lưu",
+          "writeComment": "Để lại một bình luận...",
         }
       }
     },
