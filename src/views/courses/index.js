@@ -7,7 +7,6 @@ import { Container, Row, Input } from "reactstrap";
 // core components
 import CoverHeader from "components/Headers/CoverHeader";
 import { useTranslation } from "react-i18next";
-import { PAGES } from "help/constants";
 import { connect } from "react-redux";
 import { coursesActions } from "redux/modules/courses";
 import { CONTENT_TYPE } from "help/constants";
@@ -214,7 +213,7 @@ function Courses(props) {
   if (!courses || !courses.length) return <div />;
   return (
     <div className="wrapper">
-      <CoverHeader title={t("courses")} page={PAGES.COURSES} />
+      <CoverHeader title={t("courses")} coverPhoto={require('assets/img/courses-cover.png')} />
       <div className="section section-about-us section-course">
         <Container>
           <Input

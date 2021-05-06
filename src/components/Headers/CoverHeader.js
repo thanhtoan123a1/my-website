@@ -1,14 +1,12 @@
 import React from "react";
-import { PAGES } from "help/constants";
 
 // reactstrap components
 import { Container } from "reactstrap";
 
 // core components
 
-function CoverHeader({ title, page }) {
+function CoverHeader({ title, coverPhoto }) {
   let pageHeader = React.createRef();
-  const newPage = PAGES;
 
   React.useEffect(() => {
     if (window.innerWidth > 991) {
@@ -31,13 +29,13 @@ function CoverHeader({ title, page }) {
         <div
           className="page-header-image"
           style={{
-            backgroundImage: "url(" + require(page === newPage.VLOGS ? "assets/img/vlogs-cover.jpeg" : "assets/img/courses-cover.png") + ")",
+            backgroundImage: `url(${coverPhoto})`,
           }}
           ref={pageHeader}
         ></div>
         <div className="content-center">
           <Container>
-            <h1 className="title">{title}</h1>
+            <h1 className="title cover-title">{title}</h1>
           </Container>
         </div>
       </div>
