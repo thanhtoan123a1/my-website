@@ -1,5 +1,5 @@
 import { createActions, handleActions } from 'redux-actions';
-import { call, put, takeEvery } from 'redux-saga/effects';
+import { call, delay, put, takeEvery } from 'redux-saga/effects';
 import { getEntries, getEntry } from 'redux/helpers/contentful';
 import { loveClicks, deleteAComment } from 'redux/helpers/firebase';
 import { uploadImage, getCoursesComments, addCoursesComment } from 'redux/helpers/firebase';
@@ -195,6 +195,8 @@ function* getComments(params) {
 function* addComment(params) {
   try {
     yield call(addCoursesComment, params.payload);
+    //delay to update database
+    yield delay(100);
     yield put(coursesActions.getComments(params.payload.courseId));
   } catch (err) {
     yield put(coursesActions.getCommentsFailed(err));
@@ -204,6 +206,8 @@ function* addComment(params) {
 function* loveComment(params) {
   try {
     yield call(loveClicks, params.payload);
+    //delay to update database
+    yield delay(100);
     yield put(coursesActions.getComments(params.payload.courseId));
   } catch (err) {
     yield put(coursesActions.getCommentsFailed(err));
@@ -213,6 +217,8 @@ function* loveComment(params) {
 function* deleteComment(params) {
   try {
     yield call(deleteAComment, params.payload);
+    //delay to update database
+    yield delay(100);
     yield put(coursesActions.getComments(params.payload.courseId));
   } catch (err) {
     yield put(coursesActions.getCommentsFailed(err));

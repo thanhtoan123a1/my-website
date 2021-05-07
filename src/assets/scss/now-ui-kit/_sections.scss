@@ -798,6 +798,21 @@
     }
   }
 }
+.reaction-modal-wrapper {
+  width: fit-content;
+  margin: 0 auto;
+}
+.reaction-modal {
+  width: 100%;
+  display: flex;
+  margin: 0 auto;
+  align-items: center;
+  img {
+    width: 15px;
+    height: 15px;
+    margin-right: 5px;
+  }
+}
 
 .date-wrapper {
   font-size: 130%;
