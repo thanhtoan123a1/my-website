@@ -1,0 +1,17 @@
+.home-wrapper {
+  height: 100vh;
+  background-color: rgb(34, 34, 33);
+  color: aliceblue;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.home {
+  text-align: center;
+  &__title {
+    width: 100%;
+  }
+}
+.text-danger {
+  color: rgb(221, 9, 9);
+}

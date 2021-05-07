@@ -276,7 +276,7 @@ function Courses(props) {
           />
           <div className="normal-card__right">
             <div className="section-card-title">{item.fields.title}</div>
-            <div className="section-card-description">
+            <div className="section-card-description text-ellipsis">
               {item.fields.description}
             </div>
             <div className="author-wrapper">

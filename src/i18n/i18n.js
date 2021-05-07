@@ -35,7 +35,7 @@ i18n
           "toanNickname": "Toàn bơm",
           "hoaNickname": "Hòa hư hỏng",
           "subscribeYoutube": "Subscribe with Youtube",
-          "homePage": "Home page",
+          "homePage": "Home",
           "updatedAt": "Updated at",
           "signUp": "Sign up",
           "confirmPassword": "Confirm password",
@@ -64,6 +64,7 @@ i18n
           "writeComment": "Write a comment...",
           "love": "Love",
           "deleteComment": "Are you sure want to delete this comment?",
+          "news": "News",
         }
       },
       vn: {
@@ -124,6 +125,7 @@ i18n
           "writeComment": "Để lại một bình luận...",
           "love": "Yêu thích",
           "deleteComment": "Bạn có muốn xóa bình luận này không?",
+          "news": "Tin tức",
         }
       }
     },
