@@ -33,14 +33,16 @@ export const uploadImage = async (path, file, setProgress) => {
 };
 
 export const getCoursesComments = (courseId) =>
-  new Promise((resolve, reject) => {
+  new Promise(async (resolve, reject) => {
     try {
-      firestore
+      await firestore
         .collection("courses")
         .doc(courseId)
         .collection("comments")
         .orderBy("createdAt")
-        .get()
+        .get({
+          source: "server",
+        })
         .then((snaps) => {
           const comments = snaps.docs.map((snap) => ({
             ...snap.data(),

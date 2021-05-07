@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 // reactstrap components
-import { Container, Progress, Row, Tooltip } from "reactstrap";
+import { Container, Modal, ModalBody, Progress, Row } from "reactstrap";
 
 // core components
 import CoverHeader from "components/Headers/CoverHeader";
@@ -21,8 +21,9 @@ function Slug(props) {
   const [commentContent, setCommentContent] = useState("");
   const [url, setUrl] = useState(null);
   const [progress, setProgress] = useState(0);
-  const [tooltipOpen, setTooltipOpen] = useState(false);
-  const toggle = () => setTooltipOpen(!tooltipOpen);
+  const [modal, setModal] = useState(false);
+  const [modalContent, setModalContent] = useState(null);
+  const toggle = () => setModal(!modal);
   React.useEffect(() => {
     document.body.classList.add("landing-page");
     document.body.classList.add("sidebar-collapse");
@@ -55,6 +56,23 @@ function Slug(props) {
       default:
         return t("seconds");
     }
+  }
+
+  function handleClicksReaction(loveList) {
+    const modalContent = (
+      <div className="reaction-modal-wrapper">
+        {loveList.map((item) => {
+          return (
+            <div key={item} className="reaction-modal">
+              <img src={require("assets/img/icons/love.png")} alt="like" />
+              {item}
+            </div>
+          );
+        })}
+      </div>
+    );
+    setModalContent(modalContent);
+    toggle();
   }
 
   function handleDeleteComment(comment) {
@@ -114,7 +132,6 @@ function Slug(props) {
       createdAt.offset
     ).toLocaleLowerCase()} ${t("ago").toLocaleLowerCase()}`;
     const loveList = comment.loveList || [];
-    const hoverLoveText = loveList.join("\n");
     return (
       <div key={comment.id} className="comment-blocks">
         <img
@@ -147,8 +164,7 @@ function Slug(props) {
             {loveList.length > 0 && (
               <div
                 className="like-number-wrapper"
-                id={comment.id}
-                title={hoverLoveText}
+                onClick={() => handleClicksReaction(loveList)}
               >
                 <img
                   src={require("assets/img/icons/love.png")}
@@ -156,13 +172,6 @@ function Slug(props) {
                   className="number-like"
                 />
                 {loveList.length}
-                <Tooltip
-                  isOpen={tooltipOpen}
-                  target={comment.id}
-                  toggle={toggle}
-                >
-                  {hoverLoveText}
-                </Tooltip>
               </div>
             )}
           </div>
@@ -280,6 +289,9 @@ function Slug(props) {
           </Row>
         </Container>
       </div>
+      <Modal isOpen={modal} toggle={toggle} centered size="sm">
+        <ModalBody>{modalContent}</ModalBody>
+      </Modal>
     </div>
   );
 }
