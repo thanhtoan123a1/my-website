@@ -514,6 +514,7 @@
 
 .landing-page-header {
   text-align: center;
+  color: #02b7f4;
 }
 .time-down-container {
   position: fixed;
@@ -634,6 +635,14 @@
   font-size: 90%;
 }
 
+.text-ellipsis {
+  @media only screen and (max-width: 600px) {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+}
+
 .normal-card {
   margin-top: 40px;
   height: 250px;
@@ -663,6 +672,11 @@
     height: 100%;
     padding-left: 20px;
     position: relative;
+    width: 65%;
+    border-radius: 5px;
+    @media only screen and (max-width: 600px) {
+      width: 60%;
+    }
   }
 }
 
@@ -704,7 +718,7 @@
       margin-bottom: 20px;
       @media only screen and (max-width: 600px) {
         width: 100%;
-        height: 350px;
+        height: 280px;
       }
     }
 
@@ -712,9 +726,6 @@
       width: 100%;
       border-radius: 5px;
       height: 60%;
-      @media only screen and (max-width: 600px) {
-        height: 40%;
-      }
     }
     &__avatar {
       width: 20px;
@@ -740,7 +751,7 @@
       cursor: pointer;
       @media only screen and (max-width: 600px) {
         width: 100%;
-        height: 350px;
+        height: 280px;
         background-image: none;
       }
     }
@@ -748,6 +759,9 @@
       width: 100%;
       border-radius: 5px;
       height: 40%;
+      @media only screen and (max-width: 600px) {
+        height: 60%;
+      }
     }
   }
 }

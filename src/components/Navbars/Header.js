@@ -22,7 +22,7 @@ import { YOUTUBE_HOME_PAGE } from "help/constants";
 import { useAuth } from "components/contexts/AuthContext";
 import Loading from "components/Loading";
 
-function IndexNavbar(props) {
+function Header(props) {
   const [navbarColor, setNavbarColor] = React.useState("navbar-transparent");
   const [collapseOpen, setCollapseOpen] = React.useState(false);
   const { t, i18n } = useTranslation();
@@ -37,7 +37,7 @@ function IndexNavbar(props) {
   function handleLogout() {
     if (window.confirm(t("logoutConfirm"))) {
       logout().then(() => {
-        history.push('/login-page');
+        history.push("/login-page");
       });
     }
   }
@@ -66,8 +66,8 @@ function IndexNavbar(props) {
       <Navbar className={"fixed-top " + navbarColor} expand="lg" color="info">
         <Container>
           <div className="navbar-translate">
-            <Link className="nav-link" to="/" id="navbar-brand">
-              <p className="title-up">{t("homePage")}</p>
+            <Link className="nav-link" to="/top" id="navbar-brand">
+              <p className="title-up">{t("news")}</p>
             </Link>
             <button
               className="navbar-toggler navbar-toggler"
@@ -89,6 +89,12 @@ function IndexNavbar(props) {
             navbar
           >
             <Nav navbar>
+              <NavItem>
+                <Link className="nav-link" to="/home">
+                  <i className="now-ui-icons business_bank"></i>
+                  <p>{t("home")}</p>
+                </Link>
+              </NavItem>
               <NavItem>
                 <Link className="nav-link" to="/profile-page">
                   <i className="now-ui-icons travel_info"></i>
@@ -207,4 +213,4 @@ const mapStateToProps = (state) => ({
   userData: state.auth.data,
 });
 
-export default connect(mapStateToProps)(IndexNavbar);
+export default connect(mapStateToProps)(Header);

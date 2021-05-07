@@ -10,8 +10,6 @@ import "assets/demo/demo.css?v=1.4.0";
 import "assets/demo/nucleo-icons-page-styles.css?v=1.4.0";
 // pages for this kit
 import Index from "views/Index.js";
-import NucleoIcons from "views/NucleoIcons.js";
-import LandingPage from "views/examples/LandingPage.js";
 import ProfilePage from "views/profile/ProfilePage.js";
 import LoginPage from "views/login/LoginPage.js";
 
@@ -22,28 +20,21 @@ import NotFound from "views/notFound/index.js";
 import Vlogs from "views/vlogs/index.js";
 import configureStore from "redux/store/index.js";
 import DarkFooter from "components/Footers/DarkFooter.js";
-import IndexNavbar from "components/Navbars/IndexNavbar.js";
+import Header from "components/Navbars/Header.js";
 import Slug from "views/courses/slug.js";
 import { AuthProvider } from "components/contexts/AuthContext.js";
 import PrivateRoute from "components/PrivateRoute.js";
+import Home from "views/home/index.js";
 
 ReactDOM.render(
   <I18nextProvider i18n={i18n}>
     <Provider store={configureStore()}>
       <AuthProvider>
         <BrowserRouter>
-          <IndexNavbar />
+          <Header />
           <Switch>
             <Switch>
               <Route path="/top" render={(props) => <Index {...props} />} />
-              <Route
-                path="/nucleo-icons"
-                render={(props) => <NucleoIcons {...props} />}
-              />
-              <Route
-                path="/landing-page"
-                render={(props) => <LandingPage {...props} />}
-              />
               <PrivateRoute
                 exact
                 path="/profile-page"
@@ -70,6 +61,11 @@ ReactDOM.render(
                 exact
                 path="/courses/:slug"
                 component={Slug}
+              />
+              <PrivateRoute
+                exact
+                path="/home"
+                component={Home}
               />
               <Redirect to="/top" />
               <Redirect from="/" to="/top" />
