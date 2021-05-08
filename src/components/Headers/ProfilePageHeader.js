@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 // reactstrap components
 import { Container, Input } from "reactstrap";
@@ -7,14 +8,22 @@ import { Container, Input } from "reactstrap";
 
 function ProfilePageHeader(props) {
   let pageHeader = React.createRef();
-  const { onEdit, currentUser, onEditName } = props;
+  const { onEdit, currentUser, onEditName, changeCoverPhoto, user } = props;
   const [editNameMode, setEditNameMode] = useState(false);
   const oldName = currentUser.displayName || "Unknown";
   const [name, setName] = useState(oldName);
 
+  const { t } = useTranslation();
+
   function onChangeDisplayName(e) {
     const value = e.target.value;
     setName(value);
+  }
+
+  function handleChangeCoverPhoto(e) {
+    if (e.target.files[0]) {
+      changeCoverPhoto(e.target.files[0]);
+    }
   }
 
   function handleSaveName() {
@@ -35,6 +44,7 @@ function ProfilePageHeader(props) {
       };
     }
   }, [pageHeader]);
+
   return (
     <>
       <div
@@ -44,7 +54,7 @@ function ProfilePageHeader(props) {
         <div
           className="page-header-image"
           style={{
-            backgroundImage: "url(" + require("assets/img/bg5.jpg") + ")",
+            backgroundImage: `url(${user && user.coverImageURL ? user.coverImageURL : require("assets/img/bg5.jpg")})`,
           }}
           ref={pageHeader}
         ></div>
@@ -111,6 +121,22 @@ function ProfilePageHeader(props) {
             />
           </h3>
           <p>{currentUser.email}</p>
+          <input
+            type="file"
+            id="cover-file"
+            className="courses-details-comment--file"
+            onChange={handleChangeCoverPhoto}
+          />
+          <label htmlFor="cover-file">
+            <div className="cover-change-icon-wrapper">
+              <img
+                src={require("assets/img/icons/cover-change.png")}
+                alt="cover-change"
+                className="cover-change-icon"
+              />
+              {t("changeCoverPhoto")}
+            </div>
+          </label>
         </Container>
       </div>
     </>

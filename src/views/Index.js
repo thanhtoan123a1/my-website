@@ -5,8 +5,6 @@ import TopHeader from "components/Headers/TopHeader.js";
 import { connect } from "react-redux";
 import { coursesActions } from "redux/modules/courses";
 import { CONTENT_TYPE, CONTENTFUL_TAGS } from "help/constants";
-import { useAuth } from "components/contexts/AuthContext";
-import { Redirect } from "react-router";
 
 function Top(props) {
 
@@ -28,8 +26,6 @@ function Top(props) {
       document.body.classList.remove("sidebar-collapse");
     };
   }, [dispatch]);
-  const { currentUser } = useAuth();
-  if (currentUser && (!currentUser.displayName || !currentUser.photoURL)) return <Redirect to="/profile-page" />;
   return (
     <div className="wrapper">
       <TopHeader landingPageAccess={landingPageAccess} />

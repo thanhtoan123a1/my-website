@@ -28,7 +28,7 @@ function Header(props) {
   const { t, i18n } = useTranslation();
   const { logout, currentUser } = useAuth();
   const history = useHistory();
-  const { isCoursesChecking } = props;
+  const { isCoursesChecking, isAuthChecking } = props;
 
   const changeLanguage = (language) => {
     i18n.changeLanguage(language);
@@ -123,7 +123,7 @@ function Header(props) {
                     style={{ color: "white" }}
                   >
                     <i className="now-ui-icons users_circle-08"></i>
-                    <p>{currentUser.email}</p>
+                    <p>{currentUser.displayName}</p>
                   </div>
                 ) : (
                   <Link className="nav-link" to="/login-page">
@@ -202,13 +202,14 @@ function Header(props) {
           </Collapse>
         </Container>
       </Navbar>
-      {isCoursesChecking && <Loading />}
+      {(isCoursesChecking || isAuthChecking) && <Loading />}
     </>
   );
 }
 
 const mapStateToProps = (state) => ({
   isCoursesChecking: state.courses.isChecking,
+  isAuthChecking: state.auth.isChecking,
   errorMessage: state.auth.error,
   userData: state.auth.data,
 });

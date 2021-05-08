@@ -842,7 +842,7 @@
   margin: 0;
   padding: 25px;
   background: white;
-  
+
   .progress {
     height: 0.2rem;
     width: 100%;
@@ -975,7 +975,6 @@
 }
 
 .normal-like {
-  
 }
 
 .like-wrapper {
@@ -1034,4 +1033,17 @@
 
 .cover-title {
   text-shadow: 5px 3px black;
+}
+.cover-change-icon-wrapper {
+  position: absolute;
+  bottom: 10px;
+  right: 25px;
+  justify-content: right;
+  align-items: center;
+  cursor: pointer;
+}
+.cover-change-icon {
+  width: 30px;
+  height: auto;
+  margin-right: 3px;
 }
