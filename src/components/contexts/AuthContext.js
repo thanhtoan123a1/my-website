@@ -45,27 +45,35 @@ export function AuthProvider({ children }) {
   function resetPassword(email) {
     return auth.sendPasswordResetEmail(email);
   }
+
+  function addNewUserViaSocialNetwork(newUser) {
+    firestore
+      .collection("users")
+      .doc(newUser.uid)
+      .set({
+        displayName: newUser.displayName,
+        phoneNumber: newUser.phoneNumber || "",
+        email: newUser.email,
+        uid: newUser.uid,
+        photoURL: newUser.photoURL,
+        coverImageURL: "",
+      });
+  }
   function loginFacebook() {
     const facebookAuth = new firebase.auth.FacebookAuthProvider();
-    return auth.signInWithPopup(facebookAuth);
+    return auth.signInWithPopup(facebookAuth).then(async (user) => {
+      if (user.additionalUserInfo.isNewUser) {
+        const newUser = user.user;
+        await addNewUserViaSocialNetwork(newUser);
+      }
+    });
   }
   function loginGoogle() {
     const googleAuth = new firebase.auth.GoogleAuthProvider();
     return auth.signInWithPopup(googleAuth).then(async (user) => {
       if (user.additionalUserInfo.isNewUser) {
         const newUser = user.user;
-        await firestore
-          .collection("users")
-          .doc(newUser.uid)
-          .set({
-            displayName: newUser.displayName,
-            phoneNumber: newUser.phoneNumber || "",
-            email: newUser.email,
-            uid: newUser.uid,
-            photoURL: newUser.photoURL,
-            coverImageURL: "",
-          });
-        return;
+        await addNewUserViaSocialNetwork(newUser);
       }
     });
   }
