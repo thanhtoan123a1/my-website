@@ -28,6 +28,7 @@ const RESET = "RESET";
 function LoginPage() {
   const [firstFocus, setFirstFocus] = useState(false);
   const [email, setEmail] = useState("");
+  const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -94,14 +95,18 @@ function LoginPage() {
 
   async function handleSignup() {
     if (password === confirmPassword) {
-      setLoading(true);
-      try {
-        setError("");
-        await signup(email, password);
-        setLoading(false);
-      } catch (err) {
-        setLoading(false);
-        setError(err.message);
+      if (!userName) {
+        setError(t("userNameNotEmpty"));
+      } else {
+        setLoading(true);
+        try {
+          setError("");
+          await signup(email, password, userName);
+          setLoading(false);
+        } catch (err) {
+          setLoading(false);
+          setError(err.message);
+        }
       }
     } else {
       setError(t("passwordDoNotMatch"));
@@ -152,6 +157,22 @@ function LoginPage() {
             <Card className="card-login card-plain">
               <Form action="" className="form" method="">
                 <CardBody>
+                  {page === SIGNUP && (
+                    <InputGroup className={"no-border input-lg"}>
+                      <InputGroupAddon addonType="prepend">
+                        <InputGroupText>
+                          <i className="now-ui-icons ui-1_lock-circle-open"></i>
+                        </InputGroupText>
+                      </InputGroupAddon>
+                      <Input
+                        placeholder={t("displayName")}
+                        type="text"
+                        onChange={(e) => {
+                          setUserName(e.target.value);
+                        }}
+                      ></Input>
+                    </InputGroup>
+                  )}
                   <InputGroup
                     className={
                       "no-border input-lg" +
@@ -212,7 +233,7 @@ function LoginPage() {
                     block
                     className="btn-round"
                     color="success"
-                    onClick={(e) => {
+                    onClick={() => {
                       handleClicks();
                     }}
                     size="lg"

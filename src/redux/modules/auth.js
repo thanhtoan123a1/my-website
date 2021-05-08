@@ -1,96 +1,40 @@
 import { createActions, handleActions } from 'redux-actions';
-import { call, put, takeEvery } from 'redux-saga/effects';
-import {
-  postApiRequest,
-  apiEndpoint,
-} from '../helpers/api';
+import { call, delay, put, takeEvery } from 'redux-saga/effects';
+import { getUser, updateUserDetail } from 'redux/helpers/firebase';
 
 // Actions
-const LOGIN_EMAIL = 'LOGIN_EMAIL';
-const LOGIN_FACEBOOK = 'LOGIN_FACEBOOK';
-const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
-const LOGIN_FAILED = 'LOGIN_FAILED';
-const LOGOUT = 'LOGOUT';
-const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';
-const INIT_SIGNUP = 'INIT_SIGNUP';
-const SIGNUP_EMAIL = 'SIGNUP_EMAIL';
-const SIGNUP_FACEBOOK = 'SIGNUP_FACEBOOK';
-const SIGNUP_SUCCESS = 'SIGNUP_SUCCESS';
-const SIGNUP_FAILED = 'SIGNUP_FAILED';
-const CHECK_REDIRECT = 'CHECK_REDIRECT';
-const CHECK_REDIRECT_END = 'CHECK_REDIRECT_END';
-const INIT_PASSWORD_RESET = 'INIT_PASSWORD_RESET';
-const PASSWORD_RESET = 'PASSWORD_RESET';
-const PASSWORD_RESET_SUCCESS = 'PASSWORD_RESET_SUCCESS';
-const PASSWORD_RESET_FAILED = 'PASSWORD_RESET_FAILED';
-const INIT_UNSUBSCRIBE = 'INIT_UNSUBSCRIBE';
-const UNSUBSCRIBE = 'UNSUBSCRIBE';
-const UNSUBSCRIBE_SUCCESS = 'UNSUBSCRIBE_SUCCESS';
-const UNSUBSCRIBE_FAILED = 'UNSUBSCRIBE_FAILED';
+const UPDATE_USER = 'UPDATE_USER';
+const GET_USER_DETAIL = 'GET_USER_DETAIL';
+const GET_USER_DETAIL_SUCCESS = 'GET_USER_DETAIL_SUCCESS';
+const GET_USER_DETAIL_FAILED = 'GET_USER_DETAIL_FAILED';
 
-const CHECK_LOGIN = 'CHECK_LOGIN';
-const CHECK_LOGIN_SUCCESS = 'CHECK_LOGIN_SUCCESS';
-const CHECK_LOGIN_FAILED = 'CHECK_LOGIN_FAILED';
-const CHECK_LOGIN_FINISHED = 'CHECK_LOGIN_FINISHED';
-
-const SET_USER = 'SET_USER';
-
-const FETCH_HAS_REQUESTED = 'FETCH_HAS_REQUESTED';
-const FETCH_HAS_REQUESTED_SUCCESS = 'FETCH_HAS_REQUESTED_SUCCESS';
 
 export const authActions = createActions(
-  LOGIN_EMAIL,
-  LOGIN_FACEBOOK,
-  LOGIN_SUCCESS,
-  LOGIN_FAILED,
-  LOGOUT,
-  LOGOUT_SUCCESS,
-  CHECK_LOGIN,
-  CHECK_LOGIN_SUCCESS,
-  CHECK_LOGIN_FAILED,
-  CHECK_LOGIN_FINISHED,
-  INIT_SIGNUP,
-  SIGNUP_EMAIL,
-  SIGNUP_FACEBOOK,
-  SIGNUP_SUCCESS,
-  SIGNUP_FAILED,
-  INIT_PASSWORD_RESET,
-  PASSWORD_RESET,
-  PASSWORD_RESET_SUCCESS,
-  PASSWORD_RESET_FAILED,
-  SET_USER,
-  INIT_UNSUBSCRIBE,
-  UNSUBSCRIBE,
-  UNSUBSCRIBE_SUCCESS,
-  UNSUBSCRIBE_FAILED,
-  CHECK_REDIRECT,
-  CHECK_REDIRECT_END,
-  FETCH_HAS_REQUESTED,
-  FETCH_HAS_REQUESTED_SUCCESS,
+  UPDATE_USER,
+  GET_USER_DETAIL,
+  GET_USER_DETAIL_FAILED,
+  GET_USER_DETAIL_SUCCESS,
 );
 
 // Reducer
 const initialState = {
-  isLogin: false,
+  user: {},
   isChecking: false,
-  data: null,
   error: '',
 };
 export const authReducer = handleActions(
   {
-    [LOGIN_EMAIL]: state => ({
+    [GET_USER_DETAIL]: state => ({
       ...state,
       isChecking: true,
     }),
-    [LOGIN_SUCCESS]: (state, action) => ({
+    [GET_USER_DETAIL_SUCCESS]: (state, action) => ({
       ...state,
-      isLogin: true,
       isChecking: false,
-      data: action.payload.data,
+      user: action.payload,
     }),
-    [LOGIN_FAILED]: (state, action) => ({
+    [GET_USER_DETAIL_FAILED]: (state, action) => ({
       ...state,
-      isLogin: false,
       error: action.payload,
       isChecking: false,
     }),
@@ -102,17 +46,29 @@ export const authReducer = handleActions(
 
 // Sagas
 
-function* loginEmail(props) {
+function* getUserDetail(params) {
   try {
-    const { payload } = props;
-    const response = yield call(postApiRequest, apiEndpoint.login(), payload);
-    yield put(authActions.loginSuccess(response));
+    const userId = params.payload;
+    const response = yield call(getUser, userId);
+    yield put(authActions.getUserDetailSuccess(response));
   } catch (err) {
-    yield put(authActions.loginFailed(err));
+    yield put(authActions.getUserDetailFailed(err));
+  }
+
+}
+function* updateUser(params) {
+  try {
+    const { payload } = params;
+    yield call(updateUserDetail, payload);
+    yield delay(100);
+    yield put(authActions.getUserDetail(payload.userId));
+  } catch (err) {
+    yield put(authActions.getUserDetailFailed(err));
   }
 }
 
 
 export const authSagas = [
-  takeEvery(LOGIN_EMAIL, loginEmail),
+  takeEvery(UPDATE_USER, updateUser),
+  takeEvery(GET_USER_DETAIL, getUserDetail),
 ];

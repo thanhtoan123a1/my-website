@@ -92,6 +92,42 @@ export const loveClicks = (params) => {
   });
 };
 
+export const updateUserDetail = (params) => {
+  const { userId, data } = params;
+  new Promise((resolve, reject) => {
+    try {
+      firestore
+        .collection("users")
+        .doc(userId)
+        .update(data)
+        .then(() => {
+          resolve();
+        });
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+
+export const getUser = (userId) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      await firestore
+        .collection("users")
+        .doc(userId)
+        .get({
+          source: "server",
+        })
+        .then((snap) => {
+          const response = snap.data();
+          resolve(response);
+        });
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+
 export const deleteAComment = (params) => {
   const { commentId, courseId } = params;
   new Promise((resolve, reject) => {
