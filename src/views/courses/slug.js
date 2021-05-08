@@ -89,11 +89,10 @@ function Slug(props) {
     if (commentContent || url) {
       const body = {
         createdAt: new Date(),
-        userName: currentUser.displayName,
         email: currentUser.email,
-        avatar: currentUser.photoURL,
         content: commentContent,
         media: url,
+        userId: currentUser.uid,
       };
       dispatch(
         coursesActions.addComment({ courseId: props.match.params.slug, body })
@@ -127,7 +126,7 @@ function Slug(props) {
   }
 
   function renderCommentBlock(comment) {
-    const createdAt = timeAgo(new Date(comment.createdAt.seconds * 1000));
+    const createdAt = comment.createdAt ? timeAgo(new Date(comment.createdAt.seconds * 1000)) : '';
     const timeAgoText = `${createdAt.number} ${convertOffset(
       createdAt.offset
     ).toLocaleLowerCase()} ${t("ago").toLocaleLowerCase()}`;
@@ -141,7 +140,7 @@ function Slug(props) {
         />
         <div className="comment-content-wrapper">
           <div className="comment-content">
-            <div className="comment-content__name">{comment.email}</div>
+            <div className="comment-content__name">{comment.userName || comment.email}</div>
             <div className="comment-content__text">{comment.content}</div>
             {comment.media && (
               <img

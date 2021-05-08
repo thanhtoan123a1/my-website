@@ -30,7 +30,6 @@ const useMultiAudio = urls => {
     } else {
       newPlayers[targetIndex].playing = true
     }
-    console.log("newPlayers", newPlayers);
     setPlayers(newPlayers)
   }
 

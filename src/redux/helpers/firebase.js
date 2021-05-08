@@ -33,9 +33,9 @@ export const uploadImage = async (path, file, setProgress) => {
 };
 
 export const getCoursesComments = (courseId) =>
-  new Promise(async (resolve, reject) => {
+  new Promise((resolve, reject) => {
     try {
-      await firestore
+      firestore
         .collection("courses")
         .doc(courseId)
         .collection("comments")
@@ -44,11 +44,24 @@ export const getCoursesComments = (courseId) =>
           source: "server",
         })
         .then((snaps) => {
-          const comments = snaps.docs.map((snap) => ({
-            ...snap.data(),
-            id: snap.id,
-          }));
-          resolve(comments);
+          const commentList = [];
+          const promiseData = [];
+          snaps.docs.forEach(async (snap) => {
+            const data = snap.data();
+            commentList.push({
+              ...data,
+              id: snap.id,
+            });
+            promiseData.push(data.user.get());
+          });
+          Promise.all(promiseData).then((snapshots) => {
+            for (let i = 0; i < snapshots.length; i++) {
+              const itemData = snapshots[i].data();
+              commentList[i].avatar = itemData.photoURL;
+              commentList[i].userName = itemData.displayName;
+            }
+            resolve(commentList);
+          });
         });
     } catch (err) {
       reject(err);
@@ -57,6 +70,7 @@ export const getCoursesComments = (courseId) =>
 
 export const addCoursesComment = (params) => {
   const { courseId, body } = params;
+  body.user = firestore.collection("users").doc(body.userId);
   new Promise((resolve, reject) => {
     try {
       firestore
