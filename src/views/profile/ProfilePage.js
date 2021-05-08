@@ -52,11 +52,16 @@ function ProfilePage(props) {
   function setAvatar(imageURL) {
     const body = {
       photoURL: imageURL,
-      coverURL: imageURL,
     };
     updateProfile(body)
       .then(() => {
-        window.location.reload();
+        dispatch(
+          authActions.updateUser({
+            userId: currentUser.uid,
+            data: { photoURL: imageURL },
+          })
+        );
+        setEditMode(false);
       })
       .catch((error) => {
         console.log(error);
@@ -85,6 +90,12 @@ function ProfilePage(props) {
       displayName: name,
     };
     updateProfile(body);
+    dispatch(
+      authActions.updateUser({
+        userId: currentUser.uid,
+        data: { displayName: name },
+      })
+    );
   }
 
   return (

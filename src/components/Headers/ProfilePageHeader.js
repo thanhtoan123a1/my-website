@@ -31,20 +31,6 @@ function ProfilePageHeader(props) {
     setTimeout(() => setEditNameMode(false), 1000);
   }
 
-  React.useEffect(() => {
-    if (window.innerWidth > 991) {
-      const updateScroll = () => {
-        let windowScrollTop = window.pageYOffset / 3;
-        pageHeader.current.style.transform =
-          "translate3d(0," + windowScrollTop + "px,0)";
-      };
-      window.addEventListener("scroll", updateScroll);
-      return function cleanup() {
-        window.removeEventListener("scroll", updateScroll);
-      };
-    }
-  }, [pageHeader]);
-
   return (
     <>
       <div
@@ -54,7 +40,11 @@ function ProfilePageHeader(props) {
         <div
           className="page-header-image"
           style={{
-            backgroundImage: `url(${user && user.coverImageURL ? user.coverImageURL : require("assets/img/bg5.jpg")})`,
+            backgroundImage: `url(${
+              user && user.coverImageURL
+                ? user.coverImageURL
+                : require("assets/img/bg5.jpg")
+            })`,
           }}
           ref={pageHeader}
         ></div>
