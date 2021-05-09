@@ -59,5 +59,8 @@
   "displayName": "Họ tên",
   "userNameNotEmpty": "Tên không được trống",
   "changeCoverPhoto": "Thay đổi ảnh bìa",
-  "logout": "Đăng xuất"
+  "logout": "Đăng xuất",
+  "search": "Tìm kiếm",
+  "searchResults": "Kết quả tìm kiếm",
+  "recent": "Gần đây"
 }

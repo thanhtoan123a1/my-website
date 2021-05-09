@@ -878,11 +878,10 @@
 }
 
 .courses-details-comment {
-  margin-top: 20px;
   width: 70%;
   padding: 15px;
   height: auto;
-  margin: 25px auto;
+  margin: 5px auto;
   border: none;
   border-radius: 5px;
   @media only screen and (max-width: 600px) {
@@ -917,13 +916,47 @@
   }
 }
 
+.emoji-icon-item {
+  cursor: pointer;
+  width: 22px;
+  height: 22px;
+}
+
 .image-active {
   border: 2px solid #3bef3b;
   box-shadow: 0 0 5px 3px #adf3ad;
 }
 
+.preview-wrapper {
+  width: 100%;
+  display: flex;
+  margin-bottom: 20px;
+}
+.img-preview {
+  width: 40%;
+  height: auto;
+  align-self: center;
+}
+.img-close-preview {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  margin-left: auto;
+  margin-bottom: auto;
+  cursor: pointer;
+}
+.img-close-preview:hover {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.disable-send {
+  cursor: not-allowed !important;
+  filter: invert(50%);
+}
+
 .comment-wrapper {
   display: flex;
+  align-items: center;
   border-radius: 70px;
   padding: 5px 15px;
   flex-grow: 1;

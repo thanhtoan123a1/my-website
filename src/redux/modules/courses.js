@@ -134,6 +134,20 @@ export const coursesReducer = handleActions(
       isChecking: false,
       error: action.payload,
     }),
+    [UPLOAD_FILE]: state => ({
+      ...state,
+      isChecking: true,
+    }),
+    [UPLOAD_FILE_SUCCESS]: (state) => ({
+      ...state,
+      isChecking: false,
+      error: '',
+    }),
+    [UPLOAD_FILE_FAILED]: (state, action) => ({
+      ...state,
+      isChecking: false,
+      error: action.payload,
+    }),
   },
   initialState,
 );
@@ -177,6 +191,7 @@ function* uploadFile(params) {
   try {
     const imgUrl = yield call(() => uploadImage(`courses/${courseId}/${image.name}`, image, setProgress));
     if (callback) callback(imgUrl);
+    yield put(coursesActions.uploadFileSuccess());
   } catch (err) {
     yield put(coursesActions.uploadFileFailed(err));
   }

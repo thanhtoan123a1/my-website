@@ -13,6 +13,7 @@ import { useTranslation } from "react-i18next";
 import { timeAgo } from "help/functions";
 import { TIME } from "help/constants";
 import { DATE_FORMAT } from "help/constants";
+import Emoji from "components/Emoji";
 
 function Slug(props) {
   const { course, dispatch, comments } = props;
@@ -22,8 +23,10 @@ function Slug(props) {
   const [url, setUrl] = useState(null);
   const [progress, setProgress] = useState(0);
   const [modal, setModal] = useState(false);
+  const [openEmojiModal, setEmojiModal] = useState(false);
   const [modalContent, setModalContent] = useState(null);
   const toggle = () => setModal(!modal);
+  const toggleEmoji = () => setEmojiModal(!openEmojiModal);
   React.useEffect(() => {
     document.body.classList.add("landing-page");
     document.body.classList.add("sidebar-collapse");
@@ -126,7 +129,9 @@ function Slug(props) {
   }
 
   function renderCommentBlock(comment) {
-    const createdAt = comment.createdAt ? timeAgo(new Date(comment.createdAt.seconds * 1000)) : '';
+    const createdAt = comment.createdAt
+      ? timeAgo(new Date(comment.createdAt.seconds * 1000))
+      : "";
     const timeAgoText = `${createdAt.number} ${convertOffset(
       createdAt.offset
     ).toLocaleLowerCase()} ${t("ago").toLocaleLowerCase()}`;
@@ -140,8 +145,13 @@ function Slug(props) {
         />
         <div className="comment-content-wrapper">
           <div className="comment-content">
-            <div className="comment-content__name">{comment.userName || comment.email}</div>
-            <div className="comment-content__text">{comment.content}</div>
+            <div className="comment-content__name">
+              {comment.userName || comment.email}
+            </div>
+            <div
+              className="comment-content__text"
+              dangerouslySetInnerHTML={{ __html: comment.content }}
+            ></div>
             {comment.media && (
               <img
                 src={comment.media}
@@ -217,6 +227,12 @@ function Slug(props) {
     }
   }
 
+  function clickEmoji(emoji) {
+    setEmojiModal(false);
+    const newContent = commentContent + emoji.native;
+    setCommentContent(newContent);
+  }
+
   if (!course || !course.fields) return <div />;
   return (
     <div className="wrapper">
@@ -270,8 +286,13 @@ function Slug(props) {
                   className="courses-details-comment--file"
                   onChange={handleChangeFile}
                 />
+                <img
+                  src={require("assets/img/icons/emoji.png")}
+                  alt="emoji-icon"
+                  className="emoji-icon-item"
+                  onClick={toggleEmoji}
+                />
                 <label
-                  className={url ? "image-active" : ""}
                   htmlFor="input-file"
                 >
                   <img
@@ -280,10 +301,17 @@ function Slug(props) {
                   />
                 </label>
               </div>
-              <div className="comment-send" onClick={handleUpload}>
+              <div className={`comment-send ${!url && !commentContent ? 'disable-send' : ''}`} onClick={handleUpload}>
                 <img src={require("assets/img/icons/send.png")} alt="send" />
               </div>
               {progress !== 0 && progress !== 100 && <Progress value={100} />}
+              {
+                url &&
+                <div className="preview-wrapper">
+                  <img src={url} className="img-preview" alt="preview" />
+                  <img src={require('assets/img/icons/x.png')} onClick={() => setUrl("")} className="img-close-preview" alt="close-preview" />
+                </div>
+              }
             </Row>
           </Row>
         </Container>
@@ -291,6 +319,13 @@ function Slug(props) {
       <Modal isOpen={modal} toggle={toggle} centered size="sm">
         <ModalBody>{modalContent}</ModalBody>
       </Modal>
+      <div className="emoji-modal-wrapper">
+        <Modal isOpen={openEmojiModal} toggle={toggleEmoji} centered size="sm">
+          <ModalBody>
+            <Emoji clickEmoji={clickEmoji} />
+          </ModalBody>
+        </Modal>
+      </div>
     </div>
   );
 }
