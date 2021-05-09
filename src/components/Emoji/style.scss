@@ -1,0 +1,40 @@
+.modal-content {
+  width: auto;
+  margin: 0 auto;
+  .modal-body {
+    display: flex;
+    padding: 0;
+    background: none;
+  }
+}
+
+.emoji-wrapper {
+  margin: 0 auto;
+  display: flex;
+  background: none;
+  li {
+    button {
+      cursor: auto !important;
+      outline: none;
+      background: none;
+    }
+    button::before {
+      display: none;
+    }
+  }
+}
+.emoji-mart {
+  border-radius: 0;
+}
+.emoji-mart-scroll::-webkit-scrollbar {
+  width: 5px;
+}
+.emoji-mart-scroll::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey;
+  border-radius: 5px;
+}
+
+.emoji-mart-scroll::-webkit-scrollbar-thumb {
+  border-radius: 5px;
+  background: rgb(16, 167, 36);
+}
