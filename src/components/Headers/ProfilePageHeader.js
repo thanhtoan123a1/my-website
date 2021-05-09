@@ -43,7 +43,7 @@ function ProfilePageHeader(props) {
             backgroundImage: `url(${
               user && user.coverImageURL
                 ? user.coverImageURL
-                : require("assets/img/bg5.jpg")
+                : require("assets/img/bg8.jpg")
             })`,
           }}
           ref={pageHeader}

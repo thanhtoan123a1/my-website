@@ -453,6 +453,16 @@
   text-align: right;
 }
 
+.dropdown-item-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.logout-item {
+  background-color: #88888831;
+  box-shadow: 5px 5px 5px #88888831;
+}
+
 //vlogs
 .youtube-player-list {
   width: 100%;

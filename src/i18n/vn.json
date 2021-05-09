@@ -2,7 +2,7 @@
   "language": "Ngôn ngữ",
   "websiteDescription": "Đây là website demo của Toàn",
   "forFuture": "Vì tương lai",
-  "profile": "Hồ sơ",
+  "profile": "Trang cá nhân",
   "posts": "Bài viết",
   "shares": "Chia sẻ",
   "courses": "Khóa học",
@@ -58,5 +58,6 @@
   "news": "Tin tức",
   "displayName": "Họ tên",
   "userNameNotEmpty": "Tên không được trống",
-  "changeCoverPhoto": "Thay đổi ảnh bìa"
+  "changeCoverPhoto": "Thay đổi ảnh bìa",
+  "logout": "Đăng xuất"
 }
