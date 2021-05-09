@@ -58,5 +58,6 @@
   "news": "News",
   "displayName": "Display name",
   "userNameNotEmpty": "Display name can not be empty",
-  "changeCoverPhoto": "Change cover photo"
+  "changeCoverPhoto": "Change cover photo",
+  "logout": "Log out"
 }

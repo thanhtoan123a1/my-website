@@ -96,12 +96,6 @@ function Header(props) {
                 </Link>
               </NavItem>
               <NavItem>
-                <Link className="nav-link" to="/profile-page">
-                  <i className="now-ui-icons travel_info"></i>
-                  <p>{t("profile")}</p>
-                </Link>
-              </NavItem>
-              <NavItem>
                 <Link className="nav-link" to="/courses">
                   <i className="now-ui-icons education_agenda-bookmark"></i>
                   <p>{t("courses")}</p>
@@ -113,31 +107,57 @@ function Header(props) {
                   <p>{t("vlogs")}</p>
                 </Link>
               </NavItem>
-              <NavItem>
-                {currentUser ? (
-                  <div
-                    className="nav-link"
-                    onClick={() => {
-                      handleLogout();
+              {currentUser ? (
+                <UncontrolledDropdown nav>
+                  <DropdownToggle
+                    caret
+                    color="default"
+                    nav
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
                     }}
-                    style={{ color: "white" }}
                   >
                     <i className="now-ui-icons users_circle-08"></i>
                     <p>{currentUser.displayName}</p>
-                  </div>
-                ) : (
+                  </DropdownToggle>
+                  <DropdownMenu>
+                    <DropdownItem
+                      onClick={() => {
+                        history.push("/profile-page");
+                      }}
+                    >
+                      <div className="dropdown-item-wrapper">
+                        <i className="now-ui-icons travel_info"></i>
+                        &nbsp; {t("profile")}
+                      </div>
+                    </DropdownItem>
+                    <DropdownItem divider />
+                    <DropdownItem className="logout-item" onClick={() => handleLogout()}>
+                      <div className="dropdown-item-wrapper">
+                        <i className="now-ui-icons media-1_button-power"></i>
+                        &nbsp; {t("logout")}
+                      </div>
+                    </DropdownItem>
+                  </DropdownMenu>
+                </UncontrolledDropdown>
+              ) : (
+                <NavItem>
                   <Link className="nav-link" to="/login-page">
-                    <i className="now-ui-icons users_circle-08"></i>
+                    <i className="now-ui-icons arrows-1_minimal-right"></i>
                     <p>{t("login")}</p>
                   </Link>
-                )}
-              </NavItem>
+                </NavItem>
+              )}
               <UncontrolledDropdown nav>
                 <DropdownToggle
                   caret
                   color="default"
                   nav
-                  onClick={(e) => e.preventDefault()}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                  }}
                 >
                   <i className="now-ui-icons business_globe mr-1"></i>
                   <p>{t("language")}</p>
