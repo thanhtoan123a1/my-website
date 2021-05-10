@@ -102,9 +102,9 @@ function Header(props) {
                 </Link>
               </NavItem>
               <NavItem>
-                <Link className="nav-link" to="/vlogs">
+                <Link className="nav-link" to="/entertainment">
                   <i className="now-ui-icons media-1_camera-compact"></i>
-                  <p>{t("vlogs")}</p>
+                  <p>{t("entertainment")}</p>
                 </Link>
               </NavItem>
               {currentUser ? (

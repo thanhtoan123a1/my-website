@@ -58,7 +58,7 @@
 
   .content-center {
     position: absolute;
-    top: 50%;
+    top: 45%;
     left: 50%;
     z-index: 2;
     -ms-transform: translate(-50%, -50%);
@@ -68,7 +68,9 @@
     color: #ffffff;
     padding: 0 15px;
     width: 100%;
-    max-width: 880px;
+    @media only screen and (max-width: 600px) {
+      top: 30%;
+    }
   }
 
   footer {
@@ -1089,4 +1091,162 @@
   width: 30px;
   height: auto;
   margin-right: 3px;
+}
+
+@keyframes autoTransition {
+  from {
+    top: 0;
+  }
+
+  to {
+    top: 30px;
+  }
+}
+.vlog-right-block {
+  &--title {
+    font-size: 250%;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-bottom: 15px;
+  }
+}
+.youtube-cover-icon {
+  width: 170px;
+  height: auto;
+  margin-top: 50px;
+  margin-bottom: 50px;
+  cursor: pointer;
+  transition: all 0.5s ease-in-out;
+  @media only screen and (max-width: 600px) {
+    width: 100px;
+    margin-top: 50px;
+  }
+}
+.youtube-cover-icon:hover {
+  transform: scale(1.2);
+}
+.vlog-left-block {
+  display: flex;
+  position: relative;
+  right: 0;
+  &--image {
+    position: absolute;
+    width: 630px;
+    height: auto;
+    animation-duration: 1s;
+    animation-name: autoTransition;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+    animation-timing-function: ease-out;
+    -webkit-animation-timing-function: ease-out;
+    @media only screen and (max-width: 600px) {
+      width: 90vw;
+      margin: 0 auto;
+    }
+  }
+}
+.item-wrapper {
+  padding-top: 50px;
+  background-color: #242424;
+  color: white;
+  overflow: hidden;
+}
+.card-wrapper {
+  display: flex;
+  margin-bottom: 70px;
+  &--title {
+    font-size: 150%;
+    text-transform: uppercase;
+    font-weight: bold;
+    margin: 10px 0;
+  }
+  &--description {
+    margin-bottom: 20px;
+    opacity: 0.6;
+    max-width: 80%;
+    margin: 0 auto;
+  }
+  &__information {
+    width: fit-content;
+    text-align: center;
+    transition: all 0.8s ease-in-out;
+    &--left {
+      margin: auto 25px auto auto;
+      @media only screen and (max-width: 600px) {
+        margin: auto;
+      }
+    }
+    &--right {
+      margin: auto auto auto 25px;
+      @media only screen and (max-width: 600px) {
+        margin: auto;
+      }
+    }
+    max-width: 500px;
+  }
+  &__information:hover {
+    transform: scale(1.2);
+  }
+
+  img {
+    width: 80%;
+    height: auto;
+    align-self: center;
+  }
+  &--image-left {
+    margin-left: auto;
+  }
+  &--image-right {
+    margin-right: auto;
+  }
+}
+.live-preview {
+  border: 1px solid #da0e2b;
+  color: #da0e2b;
+  font-size: 19px;
+  padding: 10px 25px;
+  cursor: pointer;
+  text-transform: uppercase;
+  width: fit-content;
+  margin: 10px auto;
+  transition: all 0.4s ease-in-out;
+  border-radius: 2px;
+}
+
+.live-preview:hover {
+  background-color: #da0e2b;
+  color: rgb(255, 255, 255);
+  box-shadow: 0 0 5px 5px #f0040452;
+}
+.dark-background {
+  background-color: #242424;
+}
+.card-list-wrapper {
+  color: white;
+}
+.card-list-item {
+  position: relative;
+  &--image {
+    width: 100%;
+    height: 450px;
+  }
+  &--cover {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    transform: scale(0.8);
+    opacity: 0;
+    cursor: pointer;
+    transition: all 0.8s ease-in-out;
+  }
+  &--cover:hover {
+    transform: scale(1);
+    background-color: rgba(31, 31, 31, 0.075);
+    opacity: 1;
+  }
 }

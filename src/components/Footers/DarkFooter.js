@@ -8,49 +8,29 @@ import { Link } from "react-router-dom";
 import { Container } from "reactstrap";
 
 function DarkFooter() {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
   return (
     <footer className="footer" data-background-color="black">
       <Container>
         <nav>
           <ul>
             <li>
-              <a
-                href={FACEBOOK_HOME_PAGE}
-                target="_blank"
-              >
+              <a href={FACEBOOK_HOME_PAGE} target="_blank">
                 About Us
               </a>
             </li>
             <li>
-              <Link
-                to="/vlogs"
-              >
-                {t('vlogs')}
-              </Link>
+              <Link to="/entertainment">{t("entertainment")}</Link>
             </li>
             <li>
-              <Link
-                to="/courses"
-              >
-                {t('courses')}
-              </Link>
+              <Link to="/courses">{t("courses")}</Link>
             </li>
           </ul>
         </nav>
         <div className="copyright" id="copyright">
-          © {new Date().getFullYear()}, Designed by{" "}
-          <a
-            href="https://www.invisionapp.com?ref=nukr-default-footer"
-            target="_blank"
-          >
-            Invision
-          </a>
+          © {new Date().getFullYear()}
           . Coded by{" "}
-          <a
-            href={FACEBOOK_HOME_PAGE}
-            target="_blank"
-          >
+          <a href={FACEBOOK_HOME_PAGE} target="_blank">
             ToanTVT
           </a>
           .

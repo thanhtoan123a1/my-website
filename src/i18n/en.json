@@ -62,5 +62,8 @@
   "logout": "Log out",
   "search": "Search",
   "searchResults": "Search results",
-  "recent": "Recent"
+  "recent": "Recent",
+  "watchNow": "Watch now",
+  "channelUpdate": "Channel update",
+  "entertainment": "Entertainment"
 }
