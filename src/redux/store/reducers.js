@@ -1,12 +1,12 @@
 import { combineReducers } from 'redux';
 import { authReducer } from 'redux/modules/auth';
 import { coursesReducer } from 'redux/modules/courses';
-import { vlogsReducer } from 'redux/modules/vlog';
+import { entertainmentReducer } from 'redux/modules/entertainment';
 
 const createReducers = () =>
   combineReducers({
     auth: authReducer,
-    vlogs: vlogsReducer,
+    entertainment: entertainmentReducer,
     courses: coursesReducer,
   });
 

@@ -22,7 +22,7 @@ export const TWITTER_HOME_PAGE = "https://twitter.com/ToanTra78269600";
 
 export const CONTENT_TYPE = {
   ARTICLE: "article",
-  VLOGS: "vlogs",
+  ENTERTAINMENT: "entertainment",
   LANDING_PAGE: "landingPage",
 };
 

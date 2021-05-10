@@ -1,12 +1,10 @@
 import React from "react";
-
-// reactstrap components
-import { Container } from "reactstrap";
-
-// core components
+import { useTranslation } from "react-i18next";
+import { YOUTUBE_HOME_PAGE } from 'help/constants'
 
 function CoverHeader({ title, coverPhoto }) {
   let pageHeader = React.createRef();
+  const { t } = useTranslation();
 
   React.useEffect(() => {
     if (window.innerWidth > 991) {
@@ -25,7 +23,7 @@ function CoverHeader({ title, coverPhoto }) {
   });
   return (
     <>
-      <div className="page-header page-header-small">
+      <div className="page-header vlog-header-cover">
         <div
           className="page-header-image"
           style={{
@@ -34,9 +32,29 @@ function CoverHeader({ title, coverPhoto }) {
           ref={pageHeader}
         ></div>
         <div className="content-center">
-          <Container>
-            <h1 className="title cover-title">{title}</h1>
-          </Container>
+          <div className="row">
+            <div className="col-sm-6 vlog-right-block">
+              <div className="vlog-right-block--title">
+                {t("vlogsQuestionTitle")}
+              </div>
+              {t("vlogsDescription")}
+              <div>
+                <img
+                  src={require("assets/img/icons/youtube.png")}
+                  alt="youtube"
+                  className="youtube-cover-icon"
+                  onClick={() => window.open(YOUTUBE_HOME_PAGE, "_blank")}
+                />
+              </div>
+            </div>
+            <div className="col-sm-6 vlog-left-block">
+              <img
+                src={require("assets/img/vlog-laptop.png")}
+                alt="vlog-cover"
+                className="vlog-left-block--image"
+              />
+            </div>
+          </div>
         </div>
       </div>
     </>
