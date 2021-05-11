@@ -833,13 +833,18 @@
   display: flex;
   margin: 0 auto;
   align-items: center;
+  margin: 10px 20px;
   img {
     width: 15px;
     height: 15px;
     margin-right: 5px;
   }
 }
-
+.share-wrapper {
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+}
 .date-wrapper {
   font-size: 130%;
   text-align: right;
@@ -850,6 +855,75 @@
   background-image: linear-gradient(#eaebee, #fbfbfc96);
 }
 
+.course-details-wrapper {
+  @media only screen and (min-width: 800px) {
+    max-width: 800px;
+  }
+}
+.active {
+  color: #0084ff;
+}
+.course-details-footer {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  border-top: 1px solid gray;
+  border-bottom: 1px solid gray;
+  padding: 7px;
+  &__item {
+    width: 30%;
+    cursor: pointer;
+    text-align: center;
+    border-radius: 5px;
+    padding: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    @media only screen and (max-width: 600px) {
+      font-size: 80%;
+      padding: 0;
+    }
+    img {
+      width: 20px;
+      margin-right: 5px;
+      height: auto;
+      @media only screen and (max-width: 600px) {
+        width: 15px;
+      }
+    }
+  }
+  &__item:hover {
+    background-color: #3f3f3f0e;
+  }
+}
+.course-details-info-footer {
+  width: 100%;
+  display: flex;
+  margin: 10px 0;
+  @media only screen and (max-width: 600px) {
+    padding: 0;
+    font-size: 80%;
+  }
+  img {
+    width: 20px;
+    margin-right: 5px;
+  }
+  &__item-left {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
+  &__item-right {
+    cursor: pointer;
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+  }
+  &__item-right:hover {
+    text-decoration: underline;
+  }
+}
 .content-wrapper {
   margin: 0;
   padding: 25px;
@@ -867,16 +941,21 @@
 }
 
 .courses-comment-wrapper {
-  width: 82%;
   margin: 0 auto;
+  font-size: 85%;
   border: none;
   padding: 20px 40px;
-  border-radius: 10px;
   align-items: center;
   @media only screen and (max-width: 600px) {
-    width: 98%;
     padding: 0;
+    font-size: 80%;
   }
+}
+
+.share-social-network {
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
 .courses-details-comment {
@@ -1003,6 +1082,13 @@
       width: 40px;
       height: 40px;
     }
+  }
+}
+
+.comment-input {
+  width: 100%;
+  @media only screen and (max-width: 600px) {
+    width: 87%;
   }
 }
 

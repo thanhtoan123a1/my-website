@@ -4,7 +4,7 @@
   "forFuture": "For future",
   "profile": "Profile",
   "posts": "Post",
-  "shares": "Shares",
+  "share": "Share",
   "courses": "Courses",
   "follow": "Follow",
   "followInstagram": "Follow me on Instagram",
@@ -65,5 +65,7 @@
   "recent": "Recent",
   "watchNow": "Watch now",
   "channelUpdate": "Channel update",
-  "entertainment": "Entertainment"
+  "entertainment": "Entertainment",
+  "comments": "Comments",
+  "like": "Like"
 }

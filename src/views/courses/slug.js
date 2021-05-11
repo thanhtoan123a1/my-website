@@ -14,15 +14,22 @@ import { timeAgo } from "help/functions";
 import { TIME } from "help/constants";
 import { DATE_FORMAT } from "help/constants";
 import Emoji from "components/Emoji";
+import {
+  FacebookIcon,
+  FacebookShareButton,
+  TwitterIcon,
+  TwitterShareButton,
+} from "react-share";
 
 function Slug(props) {
-  const { course, dispatch, comments } = props;
+  const { course, dispatch, comments, likes } = props;
   const { currentUser } = useAuth();
   const { t } = useTranslation();
   const [commentContent, setCommentContent] = useState("");
   const [url, setUrl] = useState(null);
   const [progress, setProgress] = useState(0);
   const [modal, setModal] = useState(false);
+  const [openComment, setOpenComment] = useState(false);
   const [openEmojiModal, setEmojiModal] = useState(false);
   const [modalContent, setModalContent] = useState(null);
   const toggle = () => setModal(!modal);
@@ -35,6 +42,7 @@ function Slug(props) {
     document.body.scrollTop = 0;
     dispatch(coursesActions.getCoursesDetails(props.match.params.slug));
     dispatch(coursesActions.getComments(props.match.params.slug));
+    dispatch(coursesActions.getLikeList(props.match.params.slug));
 
     return function cleanup() {
       document.body.classList.remove("landing-page");
@@ -72,6 +80,54 @@ function Slug(props) {
             </div>
           );
         })}
+      </div>
+    );
+    setModalContent(modalContent);
+    toggle();
+  }
+
+  function handleClicksLikeTotal() {
+    const modalContent = (
+      <div className="reaction-modal-wrapper">
+        {likes.map((item) => {
+          return (
+            <div key={item} className="reaction-modal">
+              <img
+                src={require("assets/img/icons/like-circle.png")}
+                alt="like"
+              />
+              {item}
+            </div>
+          );
+        })}
+      </div>
+    );
+    setModalContent(modalContent);
+    toggle();
+  }
+
+  function toggleShare() {
+    const modalContent = (
+      <div className="share-wrapper">
+        <FacebookShareButton
+          url={window.location.href}
+          quote="This is demo"
+          hashtag=""
+        >
+          <FacebookIcon round={true} />
+          <br />
+          Facebook
+        </FacebookShareButton>
+        &nbsp;&nbsp;&nbsp;
+        <TwitterShareButton
+          url={window.location.href}
+          quote="This is demo"
+          hashtag=""
+        >
+          <TwitterIcon round={true} />
+          <br />
+          Twitter
+        </TwitterShareButton>
       </div>
     );
     setModalContent(modalContent);
@@ -124,6 +180,27 @@ function Slug(props) {
         courseId: props.match.params.slug,
         data,
         commentId: comment.id,
+      })
+    );
+  }
+
+  function handleClicksLike() {
+    let data = [];
+    if (likes && likes.length) {
+      if (likes.includes(currentUser.email)) {
+        data = likes.filter((item) => {
+          return item !== currentUser.email;
+        });
+      } else {
+        data = [...likes, currentUser.email];
+      }
+    } else {
+      data.push(currentUser.email);
+    }
+    dispatch(
+      coursesActions.likeCourse({
+        courseId: props.match.params.slug,
+        data,
       })
     );
   }
@@ -241,7 +318,7 @@ function Slug(props) {
         coverPhoto={course.fields.coverImage.fields.file.url}
       />
       <div className="courses-details">
-        <Container>
+        <Container className="course-details-wrapper">
           <Row className="content-wrapper">
             {documentToReactComponents(course.fields.document, {
               renderNode: {
@@ -262,65 +339,143 @@ function Slug(props) {
                 )}
               </i>
             </div>
-          </Row>
-          <Row className="content-wrapper courses-comment-wrapper">
-            {comments && comments.length > 0 && (
-              <div className="courses-details-comment">
-                {comments.map((comment) => renderCommentBlock(comment))}
-              </div>
-            )}
-            <Row className="content-wrapper courses-comment-wrapper">
-              <div className="courses-details-comment comment-wrapper">
-                <input
-                  type="text"
-                  onKeyUp={handleInputKeyup}
-                  id="comment-input"
-                  value={commentContent}
-                  onChange={handleWriteComment}
-                  placeholder={t("writeComment")}
-                  className="comment-wrapper--text"
-                />
-                <input
-                  type="file"
-                  id="input-file"
-                  className="courses-details-comment--file"
-                  onChange={handleChangeFile}
-                />
-                <img
-                  src={require("assets/img/icons/emoji.png")}
-                  alt="emoji-icon"
-                  className="emoji-icon-item"
-                  onClick={toggleEmoji}
-                />
-                <label
-                  htmlFor="input-file"
+            <div className="course-details-info-footer">
+              {likes.length > 0 && (
+                <div
+                  className="course-details-info-footer__item-left"
+                  onClick={handleClicksLikeTotal}
                 >
                   <img
-                    src={require("assets/img/icons/camera-upload.png")}
-                    alt="button"
+                    src={require("assets/img/icons/like-circle.png")}
+                    alt="like"
                   />
-                </label>
-              </div>
-              <div className={`comment-send ${!url && !commentContent ? 'disable-send' : ''}`} onClick={handleUpload}>
-                <img src={require("assets/img/icons/send.png")} alt="send" />
-              </div>
-              {progress !== 0 && progress !== 100 && <Progress value={100} />}
-              {
-                url &&
-                <div className="preview-wrapper">
-                  <img src={url} className="img-preview" alt="preview" />
-                  <img src={require('assets/img/icons/x.png')} onClick={() => setUrl("")} className="img-close-preview" alt="close-preview" />
+                  {likes.length}
                 </div>
-              }
-            </Row>
+              )}
+              {comments.length > 0 && (
+                <div
+                  className="course-details-info-footer__item-right"
+                  onClick={() => setOpenComment(true)}
+                >
+                  {comments.length} {t("comments")}
+                </div>
+              )}
+            </div>
+            <div className="course-details-footer">
+              <div
+                className={`${
+                  likes.includes(currentUser.email) ? "active" : ""
+                } course-details-footer__item`}
+                onClick={handleClicksLike}
+              >
+                {likes.includes(currentUser.email) ? (
+                  <img
+                    src={require("assets/img/icons/like-active.png")}
+                    alt="like"
+                  />
+                ) : (
+                  <img src={require("assets/img/icons/like.png")} alt="like" />
+                )}
+                {t("like")}
+              </div>
+              <div
+                className="course-details-footer__item"
+                onClick={() => setOpenComment(true)}
+              >
+                <img src={require("assets/img/icons/comment.png")} alt="like" />
+                {t("comments")}
+              </div>
+              <div
+                className="course-details-footer__item"
+                onClick={toggleShare}
+              >
+                <img
+                  src={require("assets/img/icons/share-transparent.png")}
+                  alt="like"
+                />
+                {t("share")}
+              </div>
+            </div>
           </Row>
+          {openComment && (
+            <Row className="content-wrapper courses-comment-wrapper">
+              {comments && comments.length > 0 && (
+                <div className="courses-details-comment">
+                  {comments.map((comment) => renderCommentBlock(comment))}
+                </div>
+              )}
+              <Row className="content-wrapper courses-comment-wrapper comment-input">
+                <div className="courses-details-comment comment-wrapper">
+                  <input
+                    type="text"
+                    onKeyUp={handleInputKeyup}
+                    id="comment-input"
+                    value={commentContent}
+                    onChange={handleWriteComment}
+                    placeholder={t("writeComment")}
+                    className="comment-wrapper--text"
+                  />
+                  <input
+                    type="file"
+                    id="input-file"
+                    className="courses-details-comment--file"
+                    onChange={handleChangeFile}
+                  />
+                  <img
+                    src={require("assets/img/icons/emoji.png")}
+                    alt="emoji-icon"
+                    className="emoji-icon-item"
+                    onClick={toggleEmoji}
+                  />
+                  <label htmlFor="input-file">
+                    <img
+                      src={require("assets/img/icons/camera-upload.png")}
+                      alt="button"
+                    />
+                  </label>
+                </div>
+                <div
+                  className={`comment-send ${
+                    !url && !commentContent ? "disable-send" : ""
+                  }`}
+                  onClick={handleUpload}
+                >
+                  <img src={require("assets/img/icons/send.png")} alt="send" />
+                </div>
+                {progress !== 0 && progress !== 100 && <Progress value={100} />}
+                {url && (
+                  <div className="preview-wrapper">
+                    <img src={url} className="img-preview" alt="preview" />
+                    <img
+                      src={require("assets/img/icons/x.png")}
+                      onClick={() => setUrl("")}
+                      className="img-close-preview"
+                      alt="close-preview"
+                    />
+                  </div>
+                )}
+              </Row>
+            </Row>
+          )}
         </Container>
       </div>
-      <Modal isOpen={modal} toggle={toggle} centered size="sm">
+      <Modal
+        modalTransition={{ timeout: 100 }}
+        isOpen={modal}
+        toggle={toggle}
+        centered
+        size="sm"
+      >
         <ModalBody>{modalContent}</ModalBody>
       </Modal>
       <div className="emoji-modal-wrapper">
-        <Modal isOpen={openEmojiModal} toggle={toggleEmoji} centered size="sm">
+        <Modal
+          modalTransition={{ timeout: 50 }}
+          isOpen={openEmojiModal}
+          toggle={toggleEmoji}
+          centered
+          size="sm"
+        >
           <ModalBody>
             <Emoji clickEmoji={clickEmoji} />
           </ModalBody>
@@ -335,6 +490,7 @@ const mapStateToProps = (state) => ({
   comments: state.courses.comments,
   isChecking: state.courses.isChecking,
   error: state.courses.error,
+  likes: state.courses.likes,
 });
 
 export default connect(mapStateToProps)(Slug);

@@ -4,7 +4,7 @@
   "forFuture": "Vì tương lai",
   "profile": "Trang cá nhân",
   "posts": "Bài viết",
-  "shares": "Chia sẻ",
+  "share": "Chia sẻ",
   "courses": "Khóa học",
   "follow": "Theo dõi",
   "followInstagram": "Theo dõi tôi trên Instagram",
@@ -65,5 +65,7 @@
   "recent": "Gần đây",
   "watchNow": "Xem ngay",
   "channelUpdate": "Cập nhật nội dung",
-  "entertainment": "Giải trí"
+  "entertainment": "Giải trí",
+  "comments": "Bình luận",
+  "like": "Thích"
 }
