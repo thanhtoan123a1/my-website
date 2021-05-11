@@ -68,6 +68,25 @@ export const getCoursesComments = (courseId) =>
     }
   });
 
+export const getCoursesLikes = (courseId) =>
+  new Promise((resolve, reject) => {
+    try {
+      firestore
+        .collection("courses")
+        .doc(courseId)
+        .get()
+        .then((snaps) => {
+          const list =
+            snaps.data && snaps.data() && snaps.data().likeList
+              ? snaps.data().likeList
+              : [];
+          resolve(list);
+        });
+    } catch (err) {
+      reject(err);
+    }
+  });
+
 export const addCoursesComment = (params) => {
   const { courseId, body } = params;
   body.user = firestore.collection("users").doc(body.userId);
@@ -97,6 +116,23 @@ export const loveClicks = (params) => {
         .collection("comments")
         .doc(commentId)
         .update({ loveList: data })
+        .then(() => {
+          resolve();
+        });
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+
+export const handleLike = (params) => {
+  const { courseId, data } = params;
+  new Promise((resolve, reject) => {
+    try {
+      firestore
+        .collection("courses")
+        .doc(courseId)
+        .set({ likeList: data })
         .then(() => {
           resolve();
         });

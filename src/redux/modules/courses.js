@@ -1,30 +1,40 @@
-import { createActions, handleActions } from 'redux-actions';
-import { call, delay, put, takeEvery } from 'redux-saga/effects';
-import { getEntries, getEntry } from 'redux/helpers/contentful';
-import { loveClicks, deleteAComment } from 'redux/helpers/firebase';
-import { uploadImage, getCoursesComments, addCoursesComment } from 'redux/helpers/firebase';
+import { createActions, handleActions } from "redux-actions";
+import { call, delay, put, takeEvery } from "redux-saga/effects";
+import { getEntries, getEntry } from "redux/helpers/contentful";
+import { loveClicks, deleteAComment } from "redux/helpers/firebase";
+import {
+  uploadImage,
+  getCoursesComments,
+  addCoursesComment,
+  getCoursesLikes,
+  handleLike,
+} from "redux/helpers/firebase";
 
 // Actions
-const GET_COURSES = 'GET_COURSES';
-const GET_COURSES_DETAILS = 'GET_COURSES_DETAILS';
-const GET_COURSES_DETAILS_SUCCESS = 'GET_COURSES_DETAILS_SUCCESS';
-const GET_COURSES_DETAILS_FAILED = 'GET_COURSES_DETAILS_FAILED';
-const GET_COURSES_SUCCESS = 'GET_COURSES_SUCCESS';
-const GET_COURSES_FAILED = 'GET_COURSES_FAILED';
-const GET_LANDING_PAGE_ASSET = 'GET_LANDING_PAGE_ASSET';
-const GET_LANDING_PAGE_ASSET_SUCCESS = 'GET_LANDING_PAGE_ASSET_SUCCESS';
-const GET_LANDING_PAGE_ASSET_FAILED = 'GET_LANDING_PAGE_ASSET_FAILED';
-const UPLOAD_FILE = 'UPLOAD_FILE';
-const UPLOAD_FILE_SUCCESS = 'UPLOAD_FILE_SUCCESS';
-const UPLOAD_FILE_FAILED = 'UPLOAD_FILE_FAILED';
-const GET_COMMENTS = 'GET_COMMENTS';
-const GET_COMMENTS_SUCCESS = 'GET_COMMENTS_SUCCESS';
-const GET_COMMENTS_FAILED = 'GET_COMMENTS_FAILED';
-const ADD_COMMENT = 'ADD_COMMENT';
-const ADD_COMMENT_SUCCESS = 'ADD_COMMENT_SUCCESS';
-const ADD_COMMENT_FAILED = 'ADD_COMMENT_FAILED';
-const LOVE_COMMENT = 'LOVE_COMMENT';
-const DELETE_COMMENT = 'DELETE_COMMENT';
+const GET_COURSES = "GET_COURSES";
+const GET_COURSES_DETAILS = "GET_COURSES_DETAILS";
+const GET_COURSES_DETAILS_SUCCESS = "GET_COURSES_DETAILS_SUCCESS";
+const GET_COURSES_DETAILS_FAILED = "GET_COURSES_DETAILS_FAILED";
+const GET_COURSES_SUCCESS = "GET_COURSES_SUCCESS";
+const GET_COURSES_FAILED = "GET_COURSES_FAILED";
+const GET_LANDING_PAGE_ASSET = "GET_LANDING_PAGE_ASSET";
+const GET_LANDING_PAGE_ASSET_SUCCESS = "GET_LANDING_PAGE_ASSET_SUCCESS";
+const GET_LANDING_PAGE_ASSET_FAILED = "GET_LANDING_PAGE_ASSET_FAILED";
+const UPLOAD_FILE = "UPLOAD_FILE";
+const UPLOAD_FILE_SUCCESS = "UPLOAD_FILE_SUCCESS";
+const UPLOAD_FILE_FAILED = "UPLOAD_FILE_FAILED";
+const GET_COMMENTS = "GET_COMMENTS";
+const GET_COMMENTS_SUCCESS = "GET_COMMENTS_SUCCESS";
+const GET_COMMENTS_FAILED = "GET_COMMENTS_FAILED";
+const ADD_COMMENT = "ADD_COMMENT";
+const ADD_COMMENT_SUCCESS = "ADD_COMMENT_SUCCESS";
+const ADD_COMMENT_FAILED = "ADD_COMMENT_FAILED";
+const LOVE_COMMENT = "LOVE_COMMENT";
+const DELETE_COMMENT = "DELETE_COMMENT";
+const GET_LIKE_LIST = "GET_LIKE_LIST";
+const GET_LIKE_LIST_SUCCESS = "GET_LIKE_LIST_SUCCESS";
+const GET_LIKE_LIST_FAILED = "GET_LIKE_LIST_FAILED";
+const LIKE_COURSE = "LIKE_COURSE";
 
 export const coursesActions = createActions(
   GET_COURSES,
@@ -47,6 +57,10 @@ export const coursesActions = createActions(
   ADD_COMMENT_FAILED,
   LOVE_COMMENT,
   DELETE_COMMENT,
+  GET_LIKE_LIST,
+  GET_LIKE_LIST_SUCCESS,
+  GET_LIKE_LIST_FAILED,
+  LIKE_COURSE
 );
 
 // Reducer
@@ -54,13 +68,29 @@ const initialState = {
   courses: [],
   coursesDetails: {},
   isChecking: false,
-  error: '',
+  error: "",
   landingPageAccess: [],
   comments: [],
+  likes: [],
 };
 export const coursesReducer = handleActions(
   {
-    [GET_COURSES]: state => ({
+    [GET_LIKE_LIST]: (state) => ({
+      ...state,
+      isChecking: true,
+    }),
+    [GET_LIKE_LIST_SUCCESS]: (state, action) => ({
+      ...state,
+      isChecking: false,
+      likes: action.payload,
+      error: "",
+    }),
+    [GET_LIKE_LIST_FAILED]: (state, action) => ({
+      ...state,
+      isChecking: false,
+      error: action.payload,
+    }),
+    [GET_COURSES]: (state) => ({
       ...state,
       isChecking: true,
     }),
@@ -68,14 +98,14 @@ export const coursesReducer = handleActions(
       ...state,
       isChecking: false,
       courses: action.payload.items,
-      error: '',
+      error: "",
     }),
     [GET_COURSES_FAILED]: (state, action) => ({
       ...state,
       isChecking: false,
       error: action.payload,
     }),
-    [GET_COURSES_DETAILS]: state => ({
+    [GET_COURSES_DETAILS]: (state) => ({
       ...state,
       isChecking: true,
     }),
@@ -83,23 +113,23 @@ export const coursesReducer = handleActions(
       ...state,
       isChecking: false,
       coursesDetails: action.payload,
-      error: '',
+      error: "",
     }),
-    [ADD_COMMENT]: state => ({
+    [ADD_COMMENT]: (state) => ({
       ...state,
       isChecking: true,
     }),
-    [ADD_COMMENT_SUCCESS]: (state, action) => ({
+    [ADD_COMMENT_SUCCESS]: (state) => ({
       ...state,
       isChecking: false,
-      error: '',
+      error: "",
     }),
     [ADD_COMMENT_FAILED]: (state, action) => ({
       ...state,
       isChecking: false,
       error: action.payload,
     }),
-    [GET_COMMENTS]: state => ({
+    [GET_COMMENTS]: (state) => ({
       ...state,
       isChecking: true,
     }),
@@ -107,7 +137,7 @@ export const coursesReducer = handleActions(
       ...state,
       isChecking: false,
       comments: action.payload,
-      error: '',
+      error: "",
     }),
     [GET_COMMENTS_FAILED]: (state, action) => ({
       ...state,
@@ -119,7 +149,7 @@ export const coursesReducer = handleActions(
       isChecking: false,
       error: action.payload,
     }),
-    [GET_LANDING_PAGE_ASSET]: state => ({
+    [GET_LANDING_PAGE_ASSET]: (state) => ({
       ...state,
       isChecking: true,
     }),
@@ -127,21 +157,21 @@ export const coursesReducer = handleActions(
       ...state,
       isChecking: false,
       landingPageAccess: action.payload.items,
-      error: '',
+      error: "",
     }),
     [GET_LANDING_PAGE_ASSET_FAILED]: (state, action) => ({
       ...state,
       isChecking: false,
       error: action.payload,
     }),
-    [UPLOAD_FILE]: state => ({
+    [UPLOAD_FILE]: (state) => ({
       ...state,
       isChecking: true,
     }),
     [UPLOAD_FILE_SUCCESS]: (state) => ({
       ...state,
       isChecking: false,
-      error: '',
+      error: "",
     }),
     [UPLOAD_FILE_FAILED]: (state, action) => ({
       ...state,
@@ -149,10 +179,8 @@ export const coursesReducer = handleActions(
       error: action.payload,
     }),
   },
-  initialState,
+  initialState
 );
-
-
 
 // Sagas
 
@@ -189,11 +217,23 @@ function* uploadFile(params) {
   const callback = params.payload.callback;
   const setProgress = params.payload.setProgress;
   try {
-    const imgUrl = yield call(() => uploadImage(`courses/${courseId}/${image.name}`, image, setProgress));
+    const imgUrl = yield call(() =>
+      uploadImage(`courses/${courseId}/${image.name}`, image, setProgress)
+    );
     if (callback) callback(imgUrl);
     yield put(coursesActions.uploadFileSuccess());
   } catch (err) {
     yield put(coursesActions.uploadFileFailed(err));
+  }
+}
+
+function* getLikeList(params) {
+  const courseId = params.payload;
+  try {
+    const likes = yield call(getCoursesLikes, courseId);
+    yield put(coursesActions.getLikeListSuccess(likes));
+  } catch (err) {
+    yield put(coursesActions.getLikeListFailed(err));
   }
 }
 
@@ -229,6 +269,17 @@ function* loveComment(params) {
   }
 }
 
+function* likeCourse(params) {
+  try {
+    yield call(handleLike, params.payload);
+    //delay to update database
+    yield delay(100);
+    yield put(coursesActions.getLikeList(params.payload.courseId));
+  } catch (err) {
+    yield put(coursesActions.getLikeListFailed(err));
+  }
+}
+
 function* deleteComment(params) {
   try {
     yield call(deleteAComment, params.payload);
@@ -240,7 +291,6 @@ function* deleteComment(params) {
   }
 }
 
-
 export const coursesSagas = [
   takeEvery(GET_COURSES, getCourses),
   takeEvery(GET_LANDING_PAGE_ASSET, getLandingPageAsset),
@@ -250,4 +300,6 @@ export const coursesSagas = [
   takeEvery(ADD_COMMENT, addComment),
   takeEvery(LOVE_COMMENT, loveComment),
   takeEvery(DELETE_COMMENT, deleteComment),
+  takeEvery(GET_LIKE_LIST, getLikeList),
+  takeEvery(LIKE_COURSE, likeCourse),
 ];
