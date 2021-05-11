@@ -6,7 +6,7 @@ import "aos/dist/aos.css";
 import { Button, Container, Row, Col } from "reactstrap";
 
 // core components
-import CoverHeader from "components/Headers/CoverHeader";
+import EntertainmentHeader from "components/Headers/EntertainmentHeader";
 import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";
 import { entertainmentActions } from "redux/modules/entertainment";
@@ -130,7 +130,7 @@ function Entertainment(props) {
   );
   return (
     <div className="wrapper">
-      <CoverHeader coverPhoto={require("assets/img/landing_01.jpg")} />
+      <EntertainmentHeader coverPhoto={require("assets/img/landing_01.jpg")} />
       <div className="item-wrapper">
         <div>
           {renderFirstBlock(landingItems[0])}
