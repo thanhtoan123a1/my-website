@@ -25,19 +25,12 @@ import Slug from "views/courses/slug.js";
 import { AuthProvider } from "components/contexts/AuthContext.js";
 import PrivateRoute from "components/PrivateRoute.js";
 import Home from "views/home/index.js";
-import Head from "components/HeadTag/index.js";
 
 ReactDOM.render(
   <I18nextProvider i18n={i18n}>
     <Provider store={configureStore()}>
       <AuthProvider>
         <BrowserRouter>
-          <Head
-            title="Thanh Toan"
-            description="Thanh Toan"
-            ogUrl={window.location.href}
-            ogImageUrl={require("assets/img/favicon-page.png")}
-          />
           <Header />
           <Switch>
             <Switch>
