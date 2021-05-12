@@ -13,8 +13,8 @@ import Index from "views/Index.js";
 import ProfilePage from "views/profile/ProfilePage.js";
 import LoginPage from "views/login/LoginPage.js";
 
-import { I18nextProvider } from 'react-i18next';
-import i18n from './i18n/i18n.js';
+import { I18nextProvider } from "react-i18next";
+import i18n from "./i18n/i18n.js";
 import Courses from "views/courses/index.js";
 import NotFound from "views/notFound/index.js";
 import Entertainment from "views/entertainment/index.js";
@@ -25,12 +25,19 @@ import Slug from "views/courses/slug.js";
 import { AuthProvider } from "components/contexts/AuthContext.js";
 import PrivateRoute from "components/PrivateRoute.js";
 import Home from "views/home/index.js";
+import Head from "components/HeadTag/index.js";
 
 ReactDOM.render(
   <I18nextProvider i18n={i18n}>
     <Provider store={configureStore()}>
       <AuthProvider>
         <BrowserRouter>
+          <Head
+            title="Thanh Toan"
+            description="Thanh Toan"
+            ogUrl={window.location.href}
+            ogImageUrl={require("assets/img/favicon-page.png")}
+          />
           <Header />
           <Switch>
             <Switch>
@@ -44,11 +51,6 @@ ReactDOM.render(
                 path="/login-page"
                 render={(props) => <LoginPage {...props} />}
               />
-              <PrivateRoute
-                exact
-                path="/courses"
-                component={Courses}
-              />
               <Route
                 path="/entertainment"
                 render={(props) => <Entertainment {...props} />}
@@ -57,16 +59,17 @@ ReactDOM.render(
                 path="/not-found"
                 render={(props) => <NotFound {...props} />}
               />
-              <PrivateRoute
+              <Route
                 exact
                 path="/courses/:slug"
-                component={Slug}
+                render={(props) => <Slug {...props} />}
               />
-              <PrivateRoute
+              <Route
                 exact
-                path="/home"
-                component={Home}
+                path="/courses"
+                render={(props) => <Courses {...props} />}
               />
+              <PrivateRoute exact path="/home" component={Home} />
               <Redirect to="/top" />
               <Redirect from="/" to="/top" />
             </Switch>

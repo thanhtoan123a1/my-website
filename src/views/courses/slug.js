@@ -20,6 +20,7 @@ import {
   TwitterIcon,
   TwitterShareButton,
 } from "react-share";
+import Head from "components/HeadTag";
 
 function Slug(props) {
   const { course, dispatch, comments, likes } = props;
@@ -239,7 +240,7 @@ function Slug(props) {
                 className="comment-content__media"
               />
             )}
-            {comment.email === currentUser.email && (
+            {currentUser && comment.email === currentUser.email && (
               <div
                 className="delete-comment"
                 onClick={() => handleDeleteComment(comment)}
@@ -262,16 +263,18 @@ function Slug(props) {
             )}
           </div>
           <div className="like-wrapper">
-            <div
-              className={`like-text ${
-                loveList.includes(currentUser.email)
-                  ? "active-like"
-                  : "normal-like"
-              }`}
-              onClick={() => handleLoveAction(comment)}
-            >
-              {t("love")}
-            </div>
+            {currentUser && (
+              <div
+                className={`like-text ${
+                  loveList.includes(currentUser.email)
+                    ? "active-like"
+                    : "normal-like"
+                }`}
+                onClick={() => handleLoveAction(comment)}
+              >
+                {t("love")}
+              </div>
+            )}
             <span>{timeAgoText}</span>
           </div>
         </div>
@@ -313,6 +316,14 @@ function Slug(props) {
   if (!course || !course.fields) return <div />;
   return (
     <div className="wrapper">
+      <Head
+        title={course.fields.title}
+        description={course.fields.description}
+        ogUrl={window.location.href}
+        ogImageUrl={`https:${course.fields.coverImage.fields.file.url}`}
+        siteName={t("toanCourse")}
+        keyword="Course"
+      />
       <CoverHeader
         title={course.fields.title}
         coverPhoto={course.fields.coverImage.fields.file.url}
@@ -362,22 +373,27 @@ function Slug(props) {
               )}
             </div>
             <div className="course-details-footer">
-              <div
-                className={`${
-                  likes.includes(currentUser.email) ? "active" : ""
-                } course-details-footer__item`}
-                onClick={handleClicksLike}
-              >
-                {likes.includes(currentUser.email) ? (
-                  <img
-                    src={require("assets/img/icons/like-active.png")}
-                    alt="like"
-                  />
-                ) : (
-                  <img src={require("assets/img/icons/like.png")} alt="like" />
-                )}
-                {t("like")}
-              </div>
+              {currentUser && (
+                <div
+                  className={`${
+                    likes.includes(currentUser.email) ? "active" : ""
+                  } course-details-footer__item`}
+                  onClick={handleClicksLike}
+                >
+                  {likes.includes(currentUser.email) ? (
+                    <img
+                      src={require("assets/img/icons/like-active.png")}
+                      alt="like"
+                    />
+                  ) : (
+                    <img
+                      src={require("assets/img/icons/like.png")}
+                      alt="like"
+                    />
+                  )}
+                  {t("like")}
+                </div>
+              )}
               <div
                 className="course-details-footer__item"
                 onClick={() => setOpenComment(true)}
@@ -404,57 +420,64 @@ function Slug(props) {
                   {comments.map((comment) => renderCommentBlock(comment))}
                 </div>
               )}
-              <Row className="content-wrapper courses-comment-wrapper comment-input">
-                <div className="courses-details-comment comment-wrapper">
-                  <input
-                    type="text"
-                    onKeyUp={handleInputKeyup}
-                    id="comment-input"
-                    value={commentContent}
-                    onChange={handleWriteComment}
-                    placeholder={t("writeComment")}
-                    className="comment-wrapper--text"
-                  />
-                  <input
-                    type="file"
-                    id="input-file"
-                    className="courses-details-comment--file"
-                    onChange={handleChangeFile}
-                  />
-                  <img
-                    src={require("assets/img/icons/emoji.png")}
-                    alt="emoji-icon"
-                    className="emoji-icon-item"
-                    onClick={toggleEmoji}
-                  />
-                  <label htmlFor="input-file">
-                    <img
-                      src={require("assets/img/icons/camera-upload.png")}
-                      alt="button"
+              {currentUser && (
+                <Row className="content-wrapper courses-comment-wrapper comment-input">
+                  <div className="courses-details-comment comment-wrapper">
+                    <input
+                      type="text"
+                      onKeyUp={handleInputKeyup}
+                      id="comment-input"
+                      value={commentContent}
+                      onChange={handleWriteComment}
+                      placeholder={t("writeComment")}
+                      className="comment-wrapper--text"
                     />
-                  </label>
-                </div>
-                <div
-                  className={`comment-send ${
-                    !url && !commentContent ? "disable-send" : ""
-                  }`}
-                  onClick={handleUpload}
-                >
-                  <img src={require("assets/img/icons/send.png")} alt="send" />
-                </div>
-                {progress !== 0 && progress !== 100 && <Progress value={100} />}
-                {url && (
-                  <div className="preview-wrapper">
-                    <img src={url} className="img-preview" alt="preview" />
+                    <input
+                      type="file"
+                      id="input-file"
+                      className="courses-details-comment--file"
+                      onChange={handleChangeFile}
+                    />
                     <img
-                      src={require("assets/img/icons/x.png")}
-                      onClick={() => setUrl("")}
-                      className="img-close-preview"
-                      alt="close-preview"
+                      src={require("assets/img/icons/emoji.png")}
+                      alt="emoji-icon"
+                      className="emoji-icon-item"
+                      onClick={toggleEmoji}
+                    />
+                    <label htmlFor="input-file">
+                      <img
+                        src={require("assets/img/icons/camera-upload.png")}
+                        alt="button"
+                      />
+                    </label>
+                  </div>
+                  <div
+                    className={`comment-send ${
+                      !url && !commentContent ? "disable-send" : ""
+                    }`}
+                    onClick={handleUpload}
+                  >
+                    <img
+                      src={require("assets/img/icons/send.png")}
+                      alt="send"
                     />
                   </div>
-                )}
-              </Row>
+                  {progress !== 0 && progress !== 100 && (
+                    <Progress value={100} />
+                  )}
+                  {url && (
+                    <div className="preview-wrapper">
+                      <img src={url} className="img-preview" alt="preview" />
+                      <img
+                        src={require("assets/img/icons/x.png")}
+                        onClick={() => setUrl("")}
+                        className="img-close-preview"
+                        alt="close-preview"
+                      />
+                    </div>
+                  )}
+                </Row>
+              )}
             </Row>
           )}
         </Container>
