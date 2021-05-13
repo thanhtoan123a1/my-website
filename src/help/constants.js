@@ -43,6 +43,14 @@ export const TIME = {
   YEARS: "years",
 };
 
+export const REACTION_TYPES = {
+  LOVE: "love",
+  LIKE: "like",
+  SMILE: "smile",
+  SAD: "sad",
+  ANGRY: "angry",
+};
+
 export const DATE_FORMAT = {
   NORMAL: {
     weekday: "short", // long, short, narrow

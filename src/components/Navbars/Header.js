@@ -44,16 +44,22 @@ function Header(props) {
 
   React.useEffect(() => {
     const updateNavbarColor = () => {
-      if (
-        document.documentElement.scrollTop > 399 ||
-        document.body.scrollTop > 399
-      ) {
-        setNavbarColor("");
-      } else if (
-        document.documentElement.scrollTop < 400 ||
-        document.body.scrollTop < 400
-      ) {
-        setNavbarColor("navbar-transparent");
+      if (window.location.pathname === "/home") {
+        if (navbarColor) {
+          setNavbarColor("");
+        }
+      } else {
+        if (
+          document.documentElement.scrollTop > 399 ||
+          document.body.scrollTop > 399
+        ) {
+          setNavbarColor("");
+        } else if (
+          document.documentElement.scrollTop < 400 ||
+          document.body.scrollTop < 400
+        ) {
+          setNavbarColor("navbar-transparent");
+        }
       }
     };
     window.addEventListener("scroll", updateNavbarColor);
@@ -90,7 +96,11 @@ function Header(props) {
           >
             <Nav navbar>
               <NavItem>
-                <Link className="nav-link" to="/home">
+                <Link
+                  className="nav-link"
+                  to="/home"
+                  onClick={() => setNavbarColor("")}
+                >
                   <i className="now-ui-icons business_bank"></i>
                   <p>{t("home")}</p>
                 </Link>
@@ -133,7 +143,10 @@ function Header(props) {
                       </div>
                     </DropdownItem>
                     <DropdownItem divider />
-                    <DropdownItem className="logout-item" onClick={() => handleLogout()}>
+                    <DropdownItem
+                      className="logout-item"
+                      onClick={() => handleLogout()}
+                    >
                       <div className="dropdown-item-wrapper">
                         <i className="now-ui-icons media-1_button-power"></i>
                         &nbsp; {t("logout")}
