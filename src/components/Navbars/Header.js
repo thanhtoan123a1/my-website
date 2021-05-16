@@ -28,7 +28,8 @@ function Header(props) {
   const { t, i18n } = useTranslation();
   const { logout, currentUser } = useAuth();
   const history = useHistory();
-  const { isCoursesChecking, isAuthChecking } = props;
+  const { isCoursesChecking, isAuthChecking, isUsersChecking } =
+    props;
 
   const changeLanguage = (language) => {
     i18n.changeLanguage(language);
@@ -235,7 +236,7 @@ function Header(props) {
           </Collapse>
         </Container>
       </Navbar>
-      {(isCoursesChecking || isAuthChecking) && <Loading />}
+      {(isCoursesChecking || isAuthChecking || isUsersChecking) && <Loading />}
     </>
   );
 }
@@ -243,6 +244,7 @@ function Header(props) {
 const mapStateToProps = (state) => ({
   isCoursesChecking: state.courses.isChecking,
   isAuthChecking: state.auth.isChecking,
+  isUsersChecking: state.users.isChecking,
   errorMessage: state.auth.error,
   userData: state.auth.data,
 });

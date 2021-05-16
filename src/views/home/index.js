@@ -7,11 +7,13 @@ import "./styles.scss";
 import Emoji from "components/Emoji";
 import { ModalBody, Modal } from "reactstrap";
 import { useTranslation } from "react-i18next";
+import ChatRoom from "components/Chat/ChatRoom";
 
 function Home(props) {
   const { currentUser } = useAuth();
   const [commentContent, setCommentContent] = useState("");
   const [openEmojiModal, setEmojiModal] = useState(false);
+  const { users, dispatch } = props;
   const { t } = useTranslation();
   React.useEffect(() => {
     document.body.classList.add("index-page");
@@ -242,7 +244,9 @@ function Home(props) {
   return (
     <div className="home-wrapper">
       <div className="home">
-        <div className="home-left"></div>
+        <div className="home-left">
+          <ChatRoom user={currentUser} userList={users} dispatch={dispatch} />
+        </div>
         <div className="home-right">
           <div className="post-section">
             <div className="post-section__header">
@@ -310,6 +314,7 @@ const mapStateToProps = (state) => ({
   landingPageAccess: state.courses.landingPageAccess,
   isChecking: state.courses.isChecking,
   error: state.courses.error,
+  users: state.users.users,
 });
 
 export default connect(mapStateToProps)(Home);

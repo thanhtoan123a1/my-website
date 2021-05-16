@@ -29,24 +29,34 @@ $color-shadow: rgba(149, 157, 165, 0.13);
     font-size: 14px;
   }
   .home {
-    max-width: 1060px;
+    max-width: 1070px;
     margin: 63px auto;
-    padding-top: 75px;
+    padding: 75px 10px 0 10px;
     justify-content: space-between;
     display: flex;
     @media only screen and (max-width: 600px) {
       display: block;
       width: 95vw;
       margin-top: 57px;
-      padding-top: 20px;
+      padding: 20px 0 0 0;
     }
     .home-left {
-      background-color: $block-bgr-color;
-      height: 30vh;
+      @include card-wrapper;
+      position: sticky;
+      top: 138px;
       width: 32%;
+      height: 82vh;
+      padding: 15px;
+      z-index: 3;
+      overflow-y: scroll;
       @media only screen and (max-width: 600px) {
         width: 100%;
+        position: initial;
+        margin-bottom: 20px;
       }
+    }
+    .home-left::-webkit-scrollbar {
+      width: 5px;
     }
     .home-right {
       width: 65%;

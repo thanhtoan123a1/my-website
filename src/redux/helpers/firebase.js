@@ -106,6 +106,80 @@ export const addCoursesComment = (params) => {
   });
 };
 
+export const addNewMessage = (params) => {
+  const { content, createAt, roomId, userId, type, imgURL } = params;
+  const body = {
+    type,
+    content,
+    userId,
+    createAt,
+    imgURL,
+  };
+  new Promise((resolve, reject) => {
+    try {
+      firestore
+        .collection("messages")
+        .doc(roomId)
+        .collection("messages")
+        .add(body)
+        .then(() => {
+          resolve();
+        });
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+
+export const addRoom = (params) => {
+  const { lastMessage, createAt, userId, partnerId, callback } = params;
+  const body = {
+    lastMessageTime: createAt,
+    lastMessage,
+    user: [userId, partnerId],
+  };
+  body[`user${userId}`] = true;
+  body[`user${partnerId}`] = true;
+  new Promise((resolve, reject) => {
+    try {
+      firestore
+        .collection("messages")
+        .add(body)
+        .then((e) => {
+          if (callback) {
+            setTimeout(() => {
+              callback();
+            }, 1000);
+          }
+          resolve();
+        });
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+
+export const updateNewMessage = (params) => {
+  const { content, createAt, roomId } = params;
+  const body = {
+    lastMessageTime: createAt,
+    lastMessage: content,
+  };
+  new Promise((resolve, reject) => {
+    try {
+      firestore
+        .collection("messages")
+        .doc(roomId)
+        .update(body)
+        .then(() => {
+          resolve();
+        });
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+
 export const loveClicks = (params) => {
   const { commentId, data, courseId } = params;
   new Promise((resolve, reject) => {
@@ -171,6 +245,27 @@ export const getUser = (userId) => {
         .then((snap) => {
           const response = snap.data();
           resolve(response);
+        });
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+
+export const getRealTimeUsers = (callback) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      firestore
+        .collection("users")
+        .orderBy("displayName")
+        .onSnapshot((querySnapshot) => {
+          const users = querySnapshot.docs.map((user) => {
+            return {
+              ...user.data(),
+              id: user.id,
+            };
+          });
+          callback(users);
         });
     } catch (err) {
       reject(err);
