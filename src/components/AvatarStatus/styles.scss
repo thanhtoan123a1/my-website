@@ -1,0 +1,24 @@
+.avatar-status-wrapper {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  &--img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+  }
+  &--status {
+    position: absolute;
+    width: 20%;
+    height: 20%;
+    border-radius: 50%;
+    bottom: 10%;
+    right: 0;
+  }
+  .status-online {
+    background: #31a24c;
+  }
+  .status-offline {
+    background: gray;
+  }
+}

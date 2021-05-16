@@ -84,6 +84,17 @@ export function AuthProvider({ children }) {
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        localStorage.setItem("lastUserLogin", user.uid);
+      }
+      if (user || localStorage.getItem("lastUserLogin")) {
+        firestore
+          .collection("users")
+          .doc(user ? user.uid : localStorage.getItem("lastUserLogin"))
+          .update({
+            isOnline: user ? true : false,
+          });
+      }
       setCurrentUser(user);
       setLoading(false);
     });
