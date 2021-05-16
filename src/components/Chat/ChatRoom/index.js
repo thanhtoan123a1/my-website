@@ -53,7 +53,7 @@ const ChatRoom = (props) => {
 
   function handleJoinRoom(partnerId) {
     const liveChats = [...chats];
-    if (liveChats.find((live) => live === partnerId)) return;
+    if (liveChats.find((live) => live.partnerId === partnerId)) return;
     const { roomList } = convertChatRoom();
     const chat = roomList.find((room) => room.partnerId === partnerId);
     if (chat) {
