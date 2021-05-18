@@ -1,32 +1,33 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 
 // reactstrap components
-import { Container, Modal, ModalBody, Progress, Row } from "reactstrap";
+import { Container, Modal, ModalBody, Progress, Row } from 'reactstrap';
 
 // core components
-import CoverHeader from "components/Headers/CoverHeader";
-import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
-import { connect } from "react-redux";
-import { coursesActions } from "redux/modules/courses";
-import { useAuth } from "components/contexts/AuthContext";
-import { useTranslation } from "react-i18next";
-import { timeAgo } from "help/functions";
-import { TIME } from "help/constants";
-import { DATE_FORMAT } from "help/constants";
-import Emoji from "components/Emoji";
+import CoverHeader from 'components/Headers/CoverHeader';
+import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
+import { connect } from 'react-redux';
+import { coursesActions } from 'redux/modules/courses';
+import { useAuth } from 'components/contexts/AuthContext';
+import { useTranslation } from 'react-i18next';
+import { timeAgo } from 'help/functions';
+import { TIME } from 'help/constants';
+import { DATE_FORMAT } from 'help/constants';
+import Emoji from 'components/Emoji';
 import {
   FacebookIcon,
   FacebookShareButton,
   TwitterIcon,
   TwitterShareButton,
-} from "react-share";
-import Head from "components/HeadTag";
+} from 'react-share';
+import Head from 'components/HeadTag';
+import AvatarStatus from 'components/AvatarStatus';
 
 function Slug(props) {
-  const { course, dispatch, comments, likes } = props;
+  const { course, dispatch, comments, likes, users } = props;
   const { currentUser } = useAuth();
   const { t } = useTranslation();
-  const [commentContent, setCommentContent] = useState("");
+  const [commentContent, setCommentContent] = useState('');
   const [url, setUrl] = useState(null);
   const [progress, setProgress] = useState(0);
   const [modal, setModal] = useState(false);
@@ -36,9 +37,9 @@ function Slug(props) {
   const toggle = () => setModal(!modal);
   const toggleEmoji = () => setEmojiModal(!openEmojiModal);
   React.useEffect(() => {
-    document.body.classList.add("landing-page");
-    document.body.classList.add("sidebar-collapse");
-    document.documentElement.classList.remove("nav-open");
+    document.body.classList.add('landing-page');
+    document.body.classList.add('sidebar-collapse');
+    document.documentElement.classList.remove('nav-open');
     window.scrollTo(0, 0);
     document.body.scrollTop = 0;
     dispatch(coursesActions.getCoursesDetails(props.match.params.slug));
@@ -46,27 +47,27 @@ function Slug(props) {
     dispatch(coursesActions.getLikeList(props.match.params.slug));
 
     return function cleanup() {
-      document.body.classList.remove("landing-page");
-      document.body.classList.remove("sidebar-collapse");
+      document.body.classList.remove('landing-page');
+      document.body.classList.remove('sidebar-collapse');
     };
   }, [dispatch, props.match.params.slug]);
 
   function convertOffset(offset) {
     switch (offset) {
       case TIME.SECONDS:
-        return t("seconds");
+        return t('seconds');
       case TIME.MINUTES:
-        return t("minutes");
+        return t('minutes');
       case TIME.HOURS:
-        return t("hours");
+        return t('hours');
       case TIME.DAYS:
-        return t("days");
+        return t('days');
       case TIME.MONTHS:
-        return t("months");
+        return t('months');
       case TIME.YEARS:
-        return t("years");
+        return t('years');
       default:
-        return t("seconds");
+        return t('seconds');
     }
   }
 
@@ -76,7 +77,7 @@ function Slug(props) {
         {loveList.map((item) => {
           return (
             <div key={item} className="reaction-modal">
-              <img src={require("assets/img/icons/love.png")} alt="like" />
+              <img src={require('assets/img/icons/love.png')} alt="like" />
               {item}
             </div>
           );
@@ -94,7 +95,7 @@ function Slug(props) {
           return (
             <div key={item} className="reaction-modal">
               <img
-                src={require("assets/img/icons/like-circle.png")}
+                src={require('assets/img/icons/like-circle.png')}
                 alt="like"
               />
               {item}
@@ -136,7 +137,7 @@ function Slug(props) {
   }
 
   function handleDeleteComment(comment) {
-    if (window.confirm(t("deleteComment"))) {
+    if (window.confirm(t('deleteComment'))) {
       dispatch(
         coursesActions.deleteComment({
           courseId: props.match.params.slug,
@@ -157,8 +158,8 @@ function Slug(props) {
       dispatch(
         coursesActions.addComment({ courseId: props.match.params.slug, body })
       );
-      setUrl("");
-      setCommentContent("");
+      setUrl('');
+      setCommentContent('');
     }
   }
 
@@ -209,22 +210,21 @@ function Slug(props) {
   function renderCommentBlock(comment) {
     const createdAt = comment.createdAt
       ? timeAgo(new Date(comment.createdAt.seconds * 1000))
-      : "";
+      : '';
     const timeAgoText = `${createdAt.number} ${convertOffset(
       createdAt.offset
-    ).toLocaleLowerCase()} ${t("ago").toLocaleLowerCase()}`;
+    ).toLocaleLowerCase()} ${t('ago').toLocaleLowerCase()}`;
     const loveList = comment.loveList || [];
+    const userComment = users.find((user) => user.uid === comment.userId);
     return (
       <div key={comment.id} className="comment-blocks">
-        <img
-          src={comment.avatar}
-          alt={comment.avatar}
-          className="comment-blocks--image"
-        />
+        <div className="comment-blocks--image">
+          <AvatarStatus src={userComment.photoURL} isOnline={true} />
+        </div>
         <div className="comment-content-wrapper">
           <div className="comment-content">
             <div className="comment-content__name">
-              {comment.userName || comment.email}
+              {userComment.displayName || comment.email}
             </div>
             <div
               className="comment-content__text"
@@ -235,7 +235,7 @@ function Slug(props) {
                 src={comment.media}
                 alt={comment.media}
                 onClick={() => {
-                  window.open(comment.media, "_blank");
+                  window.open(comment.media, '_blank');
                 }}
                 className="comment-content__media"
               />
@@ -245,7 +245,7 @@ function Slug(props) {
                 className="delete-comment"
                 onClick={() => handleDeleteComment(comment)}
               >
-                <img src={require("assets/img/icons/x.png")} alt="delete" />
+                <img src={require('assets/img/icons/x.png')} alt="delete" />
               </div>
             )}
             {loveList.length > 0 && (
@@ -254,7 +254,7 @@ function Slug(props) {
                 onClick={() => handleClicksReaction(loveList)}
               >
                 <img
-                  src={require("assets/img/icons/love.png")}
+                  src={require('assets/img/icons/love.png')}
                   alt="like"
                   className="number-like"
                 />
@@ -267,12 +267,12 @@ function Slug(props) {
               <div
                 className={`like-text ${
                   loveList.includes(currentUser.email)
-                    ? "active-like"
-                    : "normal-like"
+                    ? 'active-like'
+                    : 'normal-like'
                 }`}
                 onClick={() => handleLoveAction(comment)}
               >
-                {t("love")}
+                {t('love')}
               </div>
             )}
             <span>{timeAgoText}</span>
@@ -321,7 +321,7 @@ function Slug(props) {
         description={course.fields.description}
         ogUrl={window.location.href}
         ogImageUrl={`https:${course.fields.coverImage.fields.file.url}`}
-        siteName={t("toanCourse")}
+        siteName={t('toanCourse')}
         keyword="Course"
       />
       <CoverHeader
@@ -333,11 +333,11 @@ function Slug(props) {
           <Row className="content-wrapper">
             {documentToReactComponents(course.fields.document, {
               renderNode: {
-                "embedded-asset-block": (node) => (
+                'embedded-asset-block': (node) => (
                   <img
                     src={node.data.target.fields.file.url}
                     alt={course.fields.title}
-                    style={{ width: "100%", alignSelf: "center" }}
+                    style={{ width: '100%', alignSelf: 'center' }}
                   />
                 ),
               },
@@ -345,7 +345,7 @@ function Slug(props) {
             <div className="date-wrapper">
               <i>
                 {new Date(course.sys.createdAt).toLocaleString(
-                  "en-US",
+                  'en-US',
                   DATE_FORMAT.NORMAL
                 )}
               </i>
@@ -357,7 +357,7 @@ function Slug(props) {
                   onClick={handleClicksLikeTotal}
                 >
                   <img
-                    src={require("assets/img/icons/like-circle.png")}
+                    src={require('assets/img/icons/like-circle.png')}
                     alt="like"
                   />
                   {likes.length}
@@ -368,7 +368,7 @@ function Slug(props) {
                   className="course-details-info-footer__item-right"
                   onClick={() => setOpenComment(true)}
                 >
-                  {comments.length} {t("comments")}
+                  {comments.length} {t('comments')}
                 </div>
               )}
             </div>
@@ -376,40 +376,40 @@ function Slug(props) {
               {currentUser && (
                 <div
                   className={`${
-                    likes.includes(currentUser.email) ? "active" : ""
+                    likes.includes(currentUser.email) ? 'active' : ''
                   } course-details-footer__item`}
                   onClick={handleClicksLike}
                 >
                   {likes.includes(currentUser.email) ? (
                     <img
-                      src={require("assets/img/icons/like-active.png")}
+                      src={require('assets/img/icons/like-active.png')}
                       alt="like"
                     />
                   ) : (
                     <img
-                      src={require("assets/img/icons/like.png")}
+                      src={require('assets/img/icons/like.png')}
                       alt="like"
                     />
                   )}
-                  {t("like")}
+                  {t('like')}
                 </div>
               )}
               <div
                 className="course-details-footer__item"
                 onClick={() => setOpenComment(true)}
               >
-                <img src={require("assets/img/icons/comment.png")} alt="like" />
-                {t("comments")}
+                <img src={require('assets/img/icons/comment.png')} alt="like" />
+                {t('comments')}
               </div>
               <div
                 className="course-details-footer__item"
                 onClick={toggleShare}
               >
                 <img
-                  src={require("assets/img/icons/share-transparent.png")}
+                  src={require('assets/img/icons/share-transparent.png')}
                   alt="like"
                 />
-                {t("share")}
+                {t('share')}
               </div>
             </div>
           </Row>
@@ -429,7 +429,7 @@ function Slug(props) {
                       id="comment-input"
                       value={commentContent}
                       onChange={handleWriteComment}
-                      placeholder={t("writeComment")}
+                      placeholder={t('writeComment')}
                       className="comment-wrapper--text"
                     />
                     <input
@@ -439,26 +439,26 @@ function Slug(props) {
                       onChange={handleChangeFile}
                     />
                     <img
-                      src={require("assets/img/icons/emoji.png")}
+                      src={require('assets/img/icons/emoji.png')}
                       alt="emoji-icon"
                       className="emoji-icon-item"
                       onClick={toggleEmoji}
                     />
                     <label htmlFor="input-file">
                       <img
-                        src={require("assets/img/icons/camera-upload.png")}
+                        src={require('assets/img/icons/camera-upload.png')}
                         alt="button"
                       />
                     </label>
                   </div>
                   <div
                     className={`comment-send ${
-                      !url && !commentContent ? "disable-send" : ""
+                      !url && !commentContent ? 'disable-send' : ''
                     }`}
                     onClick={handleUpload}
                   >
                     <img
-                      src={require("assets/img/icons/send.png")}
+                      src={require('assets/img/icons/send.png')}
                       alt="send"
                     />
                   </div>
@@ -469,8 +469,8 @@ function Slug(props) {
                     <div className="preview-wrapper">
                       <img src={url} className="img-preview" alt="preview" />
                       <img
-                        src={require("assets/img/icons/x.png")}
-                        onClick={() => setUrl("")}
+                        src={require('assets/img/icons/x.png')}
+                        onClick={() => setUrl('')}
                         className="img-close-preview"
                         alt="close-preview"
                       />
@@ -513,6 +513,7 @@ const mapStateToProps = (state) => ({
   comments: state.courses.comments,
   isChecking: state.courses.isChecking,
   error: state.courses.error,
+  users: state.users.users,
   likes: state.courses.likes,
 });
 

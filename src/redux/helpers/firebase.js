@@ -1,8 +1,8 @@
-import firebase from "firebase/app";
-import "firebase/firestore";
-import "firebase/auth";
-import "firebase/storage";
-import firebaseConfig from "help/firebaseConfig";
+import firebase from 'firebase/app';
+import 'firebase/firestore';
+import 'firebase/auth';
+import 'firebase/storage';
+import firebaseConfig from 'help/firebaseConfig';
 
 const app = firebase.initializeApp(firebaseConfig);
 
@@ -14,7 +14,7 @@ export const uploadImage = async (path, file, setProgress) => {
   return new Promise((resolve, reject) => {
     const task = storage.ref(path).put(file);
     task.on(
-      "state_changed",
+      'state_changed',
       // watch progress of upload file
       (snapshot) => {
         const progress = Math.round(
@@ -36,32 +36,24 @@ export const getCoursesComments = (courseId) =>
   new Promise((resolve, reject) => {
     try {
       firestore
-        .collection("courses")
+        .collection('courses')
         .doc(courseId)
-        .collection("comments")
-        .orderBy("createdAt")
+        .collection('comments')
+        .orderBy('createdAt')
         .get({
-          source: "server",
+          source: 'server',
         })
         .then((snaps) => {
-          const commentList = [];
-          const promiseData = [];
-          snaps.docs.forEach(async (snap) => {
-            const data = snap.data();
-            commentList.push({
-              ...data,
-              id: snap.id,
-            });
-            promiseData.push(data.user.get());
-          });
-          Promise.all(promiseData).then((snapshots) => {
-            for (let i = 0; i < snapshots.length; i++) {
-              const itemData = snapshots[i].data();
-              commentList[i].avatar = itemData.photoURL;
-              commentList[i].userName = itemData.displayName;
-            }
-            resolve(commentList);
-          });
+          const commentList = snaps.docs.length
+            ? snaps.docs.map((snap) => {
+                const data = snap.data();
+                return {
+                  ...data,
+                  id: snap.id,
+                };
+              })
+            : [];
+          resolve(commentList);
         });
     } catch (err) {
       reject(err);
@@ -72,7 +64,7 @@ export const getCoursesLikes = (courseId) =>
   new Promise((resolve, reject) => {
     try {
       firestore
-        .collection("courses")
+        .collection('courses')
         .doc(courseId)
         .get()
         .then((snaps) => {
@@ -89,13 +81,13 @@ export const getCoursesLikes = (courseId) =>
 
 export const addCoursesComment = (params) => {
   const { courseId, body } = params;
-  body.user = firestore.collection("users").doc(body.userId);
+  body.user = firestore.collection('users').doc(body.userId);
   new Promise((resolve, reject) => {
     try {
       firestore
-        .collection("courses")
+        .collection('courses')
         .doc(courseId)
-        .collection("comments")
+        .collection('comments')
         .add(body)
         .then(() => {
           resolve();
@@ -118,9 +110,9 @@ export const addNewMessage = (params) => {
   new Promise((resolve, reject) => {
     try {
       firestore
-        .collection("messages")
+        .collection('messages')
         .doc(roomId)
-        .collection("messages")
+        .collection('messages')
         .add(body)
         .then(() => {
           resolve();
@@ -143,7 +135,7 @@ export const addRoom = (params) => {
   new Promise((resolve, reject) => {
     try {
       firestore
-        .collection("messages")
+        .collection('messages')
         .add(body)
         .then((e) => {
           if (callback) {
@@ -168,7 +160,7 @@ export const updateNewMessage = (params) => {
   new Promise((resolve, reject) => {
     try {
       firestore
-        .collection("messages")
+        .collection('messages')
         .doc(roomId)
         .update(body)
         .then(() => {
@@ -185,9 +177,9 @@ export const loveClicks = (params) => {
   new Promise((resolve, reject) => {
     try {
       firestore
-        .collection("courses")
+        .collection('courses')
         .doc(courseId)
-        .collection("comments")
+        .collection('comments')
         .doc(commentId)
         .update({ loveList: data })
         .then(() => {
@@ -204,7 +196,7 @@ export const handleLike = (params) => {
   new Promise((resolve, reject) => {
     try {
       firestore
-        .collection("courses")
+        .collection('courses')
         .doc(courseId)
         .set({ likeList: data })
         .then(() => {
@@ -221,7 +213,7 @@ export const updateUserDetail = (params) => {
   new Promise((resolve, reject) => {
     try {
       firestore
-        .collection("users")
+        .collection('users')
         .doc(userId)
         .update(data)
         .then(() => {
@@ -237,10 +229,10 @@ export const getUser = (userId) => {
   return new Promise(async (resolve, reject) => {
     try {
       await firestore
-        .collection("users")
+        .collection('users')
         .doc(userId)
         .get({
-          source: "server",
+          source: 'server',
         })
         .then((snap) => {
           const response = snap.data();
@@ -256,8 +248,8 @@ export const getRealTimeUsers = (callback) => {
   return new Promise(async (resolve, reject) => {
     try {
       firestore
-        .collection("users")
-        .orderBy("displayName")
+        .collection('users')
+        .orderBy('displayName')
         .onSnapshot((querySnapshot) => {
           const users = querySnapshot.docs.map((user) => {
             return {
@@ -278,9 +270,9 @@ export const deleteAComment = (params) => {
   new Promise((resolve, reject) => {
     try {
       firestore
-        .collection("courses")
+        .collection('courses')
         .doc(courseId)
-        .collection("comments")
+        .collection('comments')
         .doc(commentId)
         .delete()
         .then(() => {

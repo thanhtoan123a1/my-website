@@ -99,7 +99,7 @@
     display: block;
     left: 0;
     top: 0;
-    content: "";
+    content: '';
   }
 }
 
@@ -109,7 +109,7 @@
     display: none;
   }
 
-  &[filter-color="orange"] {
+  &[filter-color='orange'] {
     @include linear-gradient(rgba($black-color, 0.2), rgba(224, 23, 3, 0.6));
   }
 }
@@ -297,14 +297,14 @@
   }
 }
 
-[data-background-color="orange"] {
+[data-background-color='orange'] {
   background-color: $orange-bg;
 }
-[data-background-color="black"] {
+[data-background-color='black'] {
   background-color: $black-color;
 }
 
-[data-background-color]:not([data-background-color="gray"]) {
+[data-background-color]:not([data-background-color='gray']) {
   color: $white-color;
 
   .title,
@@ -363,13 +363,13 @@
     color: $white-color;
   }
 
-  .checkbox input[type="checkbox"]:disabled + label,
-  .radio input[type="radio"]:disabled + label {
+  .checkbox input[type='checkbox']:disabled + label,
+  .radio input[type='radio']:disabled + label {
     color: $white-color;
   }
 
-  .radio input[type="radio"]:not(:disabled):hover + label::after,
-  .radio input[type="radio"]:checked + label::after {
+  .radio input[type='radio']:not(:disabled):hover + label::after,
+  .radio input[type='radio']:checked + label::after {
     background-color: $white-color;
     border-color: $white-color;
   }
@@ -385,7 +385,7 @@
   );
 
   //buttons
-  .btn[class*="btn-outline-"] {
+  .btn[class*='btn-outline-'] {
     background-color: $transparent-bg;
     border-color: $opacity-5;
     color: $white-color;
@@ -437,7 +437,7 @@
   padding: 0 200px;
 }
 .quotes {
-  quotes: "„" "“";
+  quotes: '„' '“';
 }
 .block-qoute {
   position: relative;
@@ -567,7 +567,7 @@
     }
   }
   .time-number {
-    font-family: "pt sans", sans-serif;
+    font-family: 'pt sans', sans-serif;
     font-weight: 300;
     font-size: 60px;
     line-height: 50px;
@@ -575,7 +575,7 @@
     margin-bottom: 10px;
   }
   .time-text {
-    font-family: "pt sans", sans-serif;
+    font-family: 'pt sans', sans-serif;
     font-weight: 300;
     font-size: 24px;
     line-height: 38px;
@@ -1075,7 +1075,6 @@
   width: 100%;
   margin-bottom: 10px;
   &--image {
-    border-radius: 50%;
     width: 50px;
     height: 50px;
     @media only screen and (max-width: 600px) {
