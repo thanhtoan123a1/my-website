@@ -22,13 +22,14 @@ import {
 } from 'react-share';
 import Head from 'components/HeadTag';
 import AvatarStatus from 'components/AvatarStatus';
+import { dataBase64URLtoFile } from 'help/functions';
 
 function Slug(props) {
   const { course, dispatch, comments, likes, users } = props;
   const { currentUser } = useAuth();
   const { t } = useTranslation();
   const [commentContent, setCommentContent] = useState('');
-  const [url, setUrl] = useState(null);
+  const [imgData, setImgData] = useState(null);
   const [progress, setProgress] = useState(0);
   const [modal, setModal] = useState(false);
   const [openComment, setOpenComment] = useState(false);
@@ -146,20 +147,44 @@ function Slug(props) {
       );
     }
   }
+
+  function addComments(url = '') {
+    const body = {
+      createdAt: new Date(),
+      email: currentUser.email,
+      content: commentContent,
+      media: url,
+      userId: currentUser.uid,
+    };
+    dispatch(
+      coursesActions.addComment({
+        courseId: props.match.params.slug,
+        body,
+      })
+    );
+    setImgData(null);
+    setCommentContent('');
+  }
+
   function handleUpload() {
-    if (commentContent || url) {
-      const body = {
-        createdAt: new Date(),
-        email: currentUser.email,
-        content: commentContent,
-        media: url,
-        userId: currentUser.uid,
-      };
-      dispatch(
-        coursesActions.addComment({ courseId: props.match.params.slug, body })
-      );
-      setUrl('');
-      setCommentContent('');
+    if (commentContent || imgData) {
+      if (imgData) {
+        const image = dataBase64URLtoFile(
+          imgData,
+          `comments-${currentUser.uid}-${new Date().getTime()}`
+        );
+        const body = {
+          image,
+          courseId: props.match.params.slug,
+          setProgress: setProgress,
+          callback: (url) => {
+            addComments(url);
+          },
+        };
+        dispatch(coursesActions.uploadFile(body));
+      } else {
+        addComments();
+      }
     }
   }
 
@@ -284,15 +309,12 @@ function Slug(props) {
 
   function handleChangeFile(e) {
     if (e.target.files[0]) {
-      const body = {
-        image: e.target.files[0],
-        courseId: props.match.params.slug,
-        setProgress: setProgress,
-        callback: (url) => {
-          setUrl(url);
-        },
+      var reader = new FileReader();
+
+      reader.onload = function (e) {
+        setImgData(e.target.result);
       };
-      dispatch(coursesActions.uploadFile(body));
+      reader.readAsDataURL(e.target.files[0]);
     }
   }
 
@@ -453,7 +475,7 @@ function Slug(props) {
                   </div>
                   <div
                     className={`comment-send ${
-                      !url && !commentContent ? 'disable-send' : ''
+                      !imgData && !commentContent ? 'disable-send' : ''
                     }`}
                     onClick={handleUpload}
                   >
@@ -465,12 +487,16 @@ function Slug(props) {
                   {progress !== 0 && progress !== 100 && (
                     <Progress value={100} />
                   )}
-                  {url && (
+                  {imgData && (
                     <div className="preview-wrapper">
-                      <img src={url} className="img-preview" alt="preview" />
+                      <img
+                        src={imgData}
+                        className="img-preview"
+                        alt="preview"
+                      />
                       <img
                         src={require('assets/img/icons/x.png')}
-                        onClick={() => setUrl('')}
+                        onClick={() => setImgData(null)}
                         className="img-close-preview"
                         alt="close-preview"
                       />
