@@ -1,5 +1,6 @@
 import { createActions, handleActions } from 'redux-actions';
 import { call, delay, put, takeEvery } from 'redux-saga/effects';
+import { updatePost } from 'redux/helpers/firebase';
 import { uploadImage } from 'redux/helpers/firebase';
 import { uploadMultipleImage } from 'redux/helpers/firebase';
 import { getAllPosts, addNewPost } from 'redux/helpers/firebase';
@@ -10,7 +11,8 @@ const GET_NEWS_FEED_SUCCESS = 'GET_NEWS_FEED_SUCCESS';
 const GET_NEWS_FEED_FAILED = 'GET_NEWS_FEED_FAILED';
 const ADD_POST = 'ADD_POST';
 const UPLOAD_MULTIPLE_IMAGES = 'UPLOAD_MULTIPLE_IMAGES';
-const UPLOAD_VIDEO = 'UPLOAD_VIDEO';
+const UPLOAD_SINGLE_FILE = 'UPLOAD_SINGLE_FILE';
+const UPDATE_NEW_POST = 'UPDATE_NEW_POST';
 
 export const newsFeedActions = createActions(
   GET_NEWS_FEED,
@@ -18,7 +20,8 @@ export const newsFeedActions = createActions(
   GET_NEWS_FEED_SUCCESS,
   ADD_POST,
   UPLOAD_MULTIPLE_IMAGES,
-  UPLOAD_VIDEO
+  UPLOAD_SINGLE_FILE,
+  UPDATE_NEW_POST
 );
 
 // Reducer
@@ -32,7 +35,11 @@ export const newsFeedReducer = handleActions(
       ...state,
       isChecking: true,
     }),
-    [UPLOAD_VIDEO]: (state) => ({
+    [UPDATE_NEW_POST]: (state) => ({
+      ...state,
+      isChecking: true,
+    }),
+    [UPLOAD_SINGLE_FILE]: (state) => ({
       ...state,
       isChecking: true,
     }),
@@ -71,7 +78,21 @@ function* addPost(params) {
   const { callback } = params.payload;
   try {
     yield call(addNewPost, params.payload);
-    delay(200);
+    yield delay(300);
+    if (callback) {
+      callback();
+    }
+    yield put(newsFeedActions.getNewsFeedSuccess());
+  } catch (err) {
+    yield put(newsFeedActions.getNewsFeedFailed(err));
+  }
+}
+
+function* updateNewPost(body) {
+  const { callback } = body.payload;
+  try {
+    yield call(updatePost, body.payload);
+    yield delay(300);
     if (callback) {
       callback();
     }
@@ -92,7 +113,7 @@ function* uploadMultipleImages(params) {
   }
 }
 
-function* uploadVideo(params) {
+function* uploadSingleFile(params) {
   const { callback, path, file } = params.payload;
   try {
     const url = yield call(uploadImage, path, file, () => {});
@@ -107,5 +128,6 @@ export const newsFeedSagas = [
   takeEvery(GET_NEWS_FEED, getNewsFeed),
   takeEvery(ADD_POST, addPost),
   takeEvery(UPLOAD_MULTIPLE_IMAGES, uploadMultipleImages),
-  takeEvery(UPLOAD_VIDEO, uploadVideo),
+  takeEvery(UPLOAD_SINGLE_FILE, uploadSingleFile),
+  takeEvery(UPDATE_NEW_POST, updateNewPost),
 ];

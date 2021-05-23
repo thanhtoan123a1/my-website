@@ -9,16 +9,14 @@ import { ModalBody, Modal } from 'reactstrap';
 import { useTranslation } from 'react-i18next';
 import ChatRoom from 'components/Chat/ChatRoom';
 import { detectLinkInText } from 'help/functions';
-import AvatarStatus from 'components/AvatarStatus';
-import { ReactTinyLink } from 'react-tiny-link';
 import { newsFeedActions } from 'redux/modules/newsFeed';
-import { POST_TYPES, TIME } from 'help/constants';
+import { POST_TYPES } from 'help/constants';
 import { toast } from 'react-toastify';
-import { timeAgo } from 'help/functions';
+import PostHeader from './PostHeader';
+import Post from './Post';
 
 function Home(props) {
   const { currentUser } = useAuth();
-  const [commentContent, setCommentContent] = useState('');
   const [content, setContent] = useState('');
   const [shareURL, setShareURL] = useState('');
   const [posts, setPosts] = useState([]);
@@ -42,35 +40,6 @@ function Home(props) {
     // eslint-disable-next-line
   }, []);
   const toggleEmoji = () => setEmojiModal(!openEmojiModal);
-
-  function handleInputKeyup(event) {
-    if (event.keyCode === 13) {
-      event.preventDefault();
-      handleComment();
-    }
-  }
-  function handleComment() {
-    console.log('comment', commentContent);
-  }
-
-  function convertOffset(offset) {
-    switch (offset) {
-      case TIME.SECONDS:
-        return t('seconds');
-      case TIME.MINUTES:
-        return t('minutes');
-      case TIME.HOURS:
-        return t('hours');
-      case TIME.DAYS:
-        return t('days');
-      case TIME.MONTHS:
-        return t('months');
-      case TIME.YEARS:
-        return t('years');
-      default:
-        return t('seconds');
-    }
-  }
 
   function getAllPosts() {
     dispatch(
@@ -100,11 +69,6 @@ function Home(props) {
     }
   }
 
-  function handleChangeFile(e) {
-    if (e.target.files[0]) {
-    }
-  }
-
   function handleChangeVideo(e) {
     if (e.target.files[0]) {
       const video = e.target.files[0];
@@ -124,18 +88,47 @@ function Home(props) {
     }
   }
 
-  function handleWriteComment(e) {
-    setCommentContent(e.target.value);
-  }
   function clickEmoji(emoji) {
     setEmojiModal(false);
-    const newContent = commentContent + emoji.native;
-    const destination = 'status';
-    if (destination === 'status') {
-      setContent(newContent);
+    const newContent = content + emoji.native;
+    setContent(newContent);
+  }
+
+  function handleLike(params) {
+    const { reactions, postId } = params;
+    const body = {
+      reactions,
+    };
+    updatePost(body, postId);
+  }
+
+  function handleAddComment(body, postId, imgRawData) {
+    const newBody = { ...body };
+    if (imgRawData) {
+      dispatch(
+        newsFeedActions.uploadSingleFile({
+          callback: (imgURL) => {
+            newBody.comments[newBody.comments.length - 1].imageURL = imgURL;
+            updatePost(newBody, postId);
+          },
+          path: `news-feed/${new Date().getTime()}/${imgRawData.name}`,
+          file: imgRawData,
+        })
+      );
     } else {
-      setCommentContent(newContent);
+      updatePost(newBody, postId);
     }
+  }
+
+  function updatePost(body, postId) {
+    const params = {
+      callback: () => {
+        getAllPosts();
+      },
+      postId,
+      body,
+    };
+    dispatch(newsFeedActions.updateNewPost(params));
   }
 
   function handleWriteStatus(e) {
@@ -187,7 +180,7 @@ function Home(props) {
       );
     } else if (type === POST_TYPES.VIDEO) {
       dispatch(
-        newsFeedActions.uploadVideo({
+        newsFeedActions.uploadSingleFile({
           callback: (videoURL) => {
             handleAddPost(type, [], videoURL);
           },
@@ -225,293 +218,40 @@ function Home(props) {
     setVideoData(null);
   }
 
-  function renderPostHeader() {
-    const isDisableVideo = (imgList && imgList.length) || !!shareURL;
-    const isDisableImages = !!videoData || !!shareURL;
-    const isDisableShare =
-      (!imgList || imgList.length === 0) && !videoData && !shareURL && !content;
-    return (
-      <>
-        <div className="post-section">
-          <div className="post-section__header">
-            <div className="post-section__header--item">Status</div>
-            <input
-              type="file"
-              id="input-file"
-              accept="image/*"
-              className="courses-details-comment--file"
-              onChange={handleChangeImages}
-              disabled={isDisableImages}
-              multiple
-            />
-            <label
-              htmlFor="input-file"
-              className={`post-section__header--item-text ${
-                isDisableImages ? 'disable-text' : ''
-              }`}
-            >
-              {t('photos')}
-            </label>
-            <input
-              type="file"
-              id="input-file-video"
-              accept="video/*"
-              className="courses-details-comment--file"
-              onChange={handleChangeVideo}
-              disabled={isDisableVideo}
-            />
-            <label
-              htmlFor="input-file-video"
-              className={`post-section__header--item-text ${
-                isDisableVideo ? 'disable-text' : ''
-              }`}
-            >
-              Videos
-            </label>
-          </div>
-          <div className="post-section__body">
-            <div className="post-section__body--avt">
-              <AvatarStatus src={currentUser.photoURL} isOnline />
-            </div>
-            <input
-              type="text"
-              value={content}
-              id="comment-input"
-              onChange={handleWriteStatus}
-              placeholder="What's on your mind, Toan?"
-              className="comment-wrapper--text"
-            />
-          </div>
-          <div className="post-section__footer">
-            <div className="post-section__footer--item">
-              <img src={require('assets/img/icons/home/user.png')} alt="type" />
-              People
-            </div>
-            <div className="post-section__footer--item">
-              <img
-                src={require('assets/img/icons/home/location.png')}
-                alt="type"
-              />
-              Location
-            </div>
-            <div className="post-section__footer--item" onClick={toggleEmoji}>
-              <img src={require('assets/img/icons/home/mood.png')} alt="type" />
-              Mood
-            </div>
-            <div
-              className={`post-section__footer--button ${
-                isDisableShare ? 'disable-share' : ''
-              }`}
-              onClick={handleShare}
-            >
-              {t('share')}
-            </div>
-          </div>
-        </div>
-        {shareURL && (
-          <div className="post-section__link-preview">
-            <ReactTinyLink
-              cardSize="large"
-              showGraphic={true}
-              maxLine={2}
-              minLine={1}
-              url={shareURL}
-            />
-            <img
-              src={require('assets/img/icons/x.png')}
-              onClick={() => setShareURL('')}
-              className="post-section__link-preview--close"
-              alt="close-preview"
-            />
-          </div>
-        )}
-        {imageDataList && imageDataList.length > 0 && (
-          <div className="preview-img-wrapper">
-            {imageDataList.map((item, index) => {
-              return (
-                <div key={index} className="preview-img-wrapper--item">
-                  <img
-                    src={item}
-                    className="preview-img-wrapper--cell"
-                    alt="close-preview"
-                  />
-                  <img
-                    src={require('assets/img/icons/x.png')}
-                    onClick={() => removePreviewImage(index)}
-                    className="preview-img-wrapper--close"
-                    alt="close-preview"
-                  />
-                </div>
-              );
-            })}
-          </div>
-        )}
-        {videoData && (
-          <div className="preview-img-wrapper">
-            <div className="preview-img-wrapper--item">
-              <img
-                src={require('assets/img/default-video.gif')}
-                className="preview-img-wrapper--cell"
-                alt="close-preview"
-              />
-              <img
-                src={require('assets/img/icons/x.png')}
-                onClick={() => setVideoData(null)}
-                className="preview-img-wrapper--close"
-                alt="close-preview"
-              />
-            </div>
-          </div>
-        )}
-      </>
-    );
-  }
-
-  function renderPostBlock(block, key) {
-    if (!block || !userObj || Object.keys(userObj).length < 1) return null;
-    const createdAt = block.createdAt
-      ? timeAgo(new Date(block.createdAt.seconds * 1000))
-      : '';
-    const timeAgoText = `${createdAt.number} ${convertOffset(
-      createdAt.offset
-    ).toLocaleLowerCase()} ${t('ago').toLocaleLowerCase()}`;
-    const postUser = userObj[block.userId];
-    return (
-      <div key={key} className="post-block">
-        <div className="post-block__header">
-          <div className="post-block__header--avatar">
-            <AvatarStatus
-              src={postUser.photoURL}
-              isOnline={postUser.isOnline}
-            />
-          </div>
-          <div>
-            <span className="post-block__header--title">
-              {postUser.displayName}
-            </span>
-            &nbsp;shared an album
-            <div className="post-block__header--time">{timeAgoText}</div>
-          </div>
-          <img
-            src={require('assets/img/icons/home/more.png')}
-            alt="edit"
-            className="post-block__header--edit"
-          />
-        </div>
-        <div
-          className="post-block__header--content"
-          dangerouslySetInnerHTML={{ __html: block.content }}
-        />
-        {block.type === POST_TYPES.IMAGE && (
-          <div>
-            {block.images.length > 1 ? (
-              block.images.map((image, index) => {
-                return (
-                  <img
-                    key={index}
-                    src={image}
-                    alt="user"
-                    className="post-block__header--photo"
-                  />
-                );
-              })
-            ) : (
-              <div className="post-block__header--background">
-                <div
-                  className="post-block__header--base-background"
-                  style={{
-                    backgroundImage: `url(${block.images[0]})`,
-                  }}
-                />
-                <img
-                  src={block.images[0]}
-                  alt="user"
-                  className="post-block__header--photo"
-                />
-              </div>
-            )}
-          </div>
-        )}
-        {block.type === POST_TYPES.VIDEO && (
-          <video className="post-block__video" controls>
-            <source src={block.video} type="video/mp4" />
-            <source src={block.video} type="video/avi" />
-            Your browser does not support the video tag.
-          </video>
-        )}
-        {block.type === POST_TYPES.SHARE && (
-          <div>
-            <ReactTinyLink
-              cardSize="large"
-              showGraphic={true}
-              maxLine={2}
-              minLine={1}
-              url={block.shareURL}
-            />
-          </div>
-        )}
-        <div className="post-block__comment">
-          <div className="post-block__comment--item">
-            <img
-              src={require('assets/img/icons/home/heart.png')}
-              alt="user"
-              className="post-block__comment--photo"
-            />
-            {block.reactions ? block.reactions.length : 0}
-          </div>
-          <div className="post-block__comment--item">
-            <img
-              src={require('assets/img/icons/home/comment.png')}
-              alt="user"
-              className="post-block__comment--photo"
-            />
-            {block.comments ? block.comments.length : 0}
-          </div>
-        </div>
-        <div className="post-block__comment--post">
-          <img
-            src={currentUser.photoURL}
-            alt="user"
-            className="post-block__comment--img"
-          />
-          <div className="post-block__comment-wrapper">
-            <input
-              type="text"
-              onKeyUp={handleInputKeyup}
-              value={commentContent}
-              onChange={handleWriteComment}
-              placeholder={t('writeComment')}
-              className="post-block__comment-wrapper--text"
-            />
-            <input
-              type="file"
-              id={`input-file-${block.id}`}
-              className="courses-details-comment--file"
-              onChange={handleChangeFile}
-            />
-            <label htmlFor={`input-file-${block.id}`}>
-              <img
-                src={require('assets/img/icons/home/camera.png')}
-                alt="button"
-              />
-            </label>
-            <img
-              src={require('assets/img/icons/home/smile.png')}
-              alt="emoji-icon"
-              className="post-block__comment-wrapper--emoji"
-              onClick={toggleEmoji}
-            />
-          </div>
-        </div>
-      </div>
-    );
-  }
   return (
     <div className="home-wrapper">
       <div className="home">
         <div className="home-right">
-          {renderPostHeader()}
-          <div>{posts?.map((post, key) => renderPostBlock(post, key))}</div>
+          <PostHeader
+            handleChangeImages={handleChangeImages}
+            handleChangeVideo={handleChangeVideo}
+            handleWriteStatus={handleWriteStatus}
+            handleShare={handleShare}
+            t={t}
+            toggleEmoji={toggleEmoji}
+            setVideoData={setVideoData}
+            currentUser={currentUser}
+            removePreviewImage={removePreviewImage}
+            imgList={imgList}
+            shareURL={shareURL}
+            content={content}
+            videoData={videoData}
+            imageDataList={imageDataList}
+            setShareURL={setShareURL}
+          />
+          <div>
+            {posts?.map((post, key) => (
+              <Post
+                t={t}
+                currentUser={currentUser}
+                block={post}
+                key={key}
+                userObj={userObj}
+                handleAddComment={handleAddComment}
+                handleLike={handleLike}
+              />
+            ))}
+          </div>
         </div>
         <div className="home-left">
           <ChatRoom user={currentUser} userList={users} dispatch={dispatch} />
