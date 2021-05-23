@@ -21,7 +21,7 @@ function EditImage(props) {
   }
 
   return (
-    <>
+    <div className="edit-wrapper">
       <div className="edit-title">{t('uploadNewAvatar')}</div>
       <div className="avatar-wrapper">
         <Avatar
@@ -33,13 +33,22 @@ function EditImage(props) {
           exportAsSquare
           exportSize={200}
         />
-        {preview && <img src={preview} alt="Preview" className="avatar-wrapper__img" />}
+        {preview && (
+          <img src={preview} alt="Preview" className="avatar-wrapper__img" />
+        )}
       </div>
       <div className="avatar-save-button-wrapper">
-        <button className="avatar-save-button btn-round" color="success" onClick={handleSave}>{t('save')}</button>
+        <button
+          className="avatar-save-button btn-round"
+          color="success"
+          onClick={handleSave}
+          disabled={!preview}
+        >
+          {t('save')}
+        </button>
       </div>
-    </>
-  )
+    </div>
+  );
 }
 
 export default EditImage;

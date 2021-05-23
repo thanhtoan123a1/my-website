@@ -356,4 +356,21 @@ export const addNewPost = (params) => {
   });
 };
 
+export const updatePost = (params) => {
+  const { postId, body } = params;
+  new Promise((resolve, reject) => {
+    try {
+      firestore
+        .collection('news-feed')
+        .doc(postId)
+        .update(body)
+        .then(() => {
+          resolve();
+        });
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+
 export default app;
