@@ -72,5 +72,10 @@
   "typeAMessage": "Viết một tin nhắn...",
   "aImage": "Một hình ảnh",
   "photos": "Ảnh",
-  "videoSizeTooLarge": "Dung lượng của video quá lớn"
+  "videoSizeTooLarge": "Dung lượng của video quá lớn",
+  "addedANewPhoto": "Đã thêm một ảnh mới",
+  "sharedAnAlbum": "Đã chia sẻ một album",
+  "sharedALink": "Đã chia sẻ một liên kết",
+  "addedANewVideo": "Đã thêm một video mới",
+  "updatedStatus": "Đã cập nhật trạng thái"
 }

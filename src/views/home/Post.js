@@ -181,6 +181,22 @@ const Post = (props) => {
       </div>
     );
   }
+
+  function getShareText(type) {
+    switch (type) {
+      case POST_TYPES.IMAGE:
+        if (block.images.length > 1) {
+          return t('sharedAnAlbum').toLocaleLowerCase();
+        }
+        return t('addedANewPhoto').toLocaleLowerCase();
+      case POST_TYPES.SHARE:
+        return t('sharedALink').toLocaleLowerCase();
+      case POST_TYPES.VIDEO:
+        return t('addedANewVideo').toLocaleLowerCase();
+      default:
+        return t('updatedStatus').toLocaleLowerCase();
+    }
+  }
   if (!postUser) return null;
 
   return (
@@ -193,7 +209,7 @@ const Post = (props) => {
           <span className="post-block__header--title">
             {postUser.displayName}
           </span>
-          &nbsp;shared an album
+          &nbsp;{getShareText(block.type)}
           <div className="post-block__header--time">{timeAgoText}</div>
         </div>
         <img
