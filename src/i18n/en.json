@@ -72,5 +72,10 @@
   "typeAMessage": "Type a message...",
   "aImage": "A image",
   "photos": "Photos",
-  "videoSizeTooLarge": "Video size is too big"
+  "videoSizeTooLarge": "Video size is too big",
+  "addedANewPhoto": "Added a new photo",
+  "sharedAnAlbum": "Shared an album",
+  "sharedALink": "Shared a link",
+  "addedANewVideo": "Added a new video",
+  "updatedStatus": "Updated status"
 }
