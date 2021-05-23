@@ -70,5 +70,7 @@
   "like": "Like",
   "toanCourse": "Thanh Toan's Course",
   "typeAMessage": "Type a message...",
-  "aImage": "A image"
+  "aImage": "A image",
+  "photos": "Photos",
+  "videoSizeTooLarge": "Video size is too big"
 }
