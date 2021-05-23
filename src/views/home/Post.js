@@ -181,6 +181,7 @@ const Post = (props) => {
       </div>
     );
   }
+  if (!postUser) return null;
 
   return (
     <div className="post-block">
