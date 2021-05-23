@@ -32,6 +32,19 @@ export const uploadImage = async (path, file, setProgress) => {
   });
 };
 
+export const uploadMultipleImage = async (params) => {
+  const { path, files } = params;
+  return new Promise((resolve, reject) => {
+    const promiseList = [];
+    for (let file of files) {
+      promiseList.push(uploadImage(`${path}/${file.name}`, file, () => {}));
+    }
+    Promise.all(promiseList).then((urls) => {
+      resolve(urls);
+    });
+  });
+};
+
 export const getCoursesComments = (courseId) =>
   new Promise((resolve, reject) => {
     try {
@@ -275,6 +288,65 @@ export const deleteAComment = (params) => {
         .collection('comments')
         .doc(commentId)
         .delete()
+        .then(() => {
+          resolve();
+        });
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+
+//News-feed
+
+export const getAllPosts = () =>
+  new Promise((resolve, reject) => {
+    try {
+      firestore
+        .collection('news-feed')
+        .orderBy('createdAt', 'desc')
+        .get()
+        .then((snaps) => {
+          const posts = snaps.docs.length
+            ? snaps.docs.map((snap) => {
+                const data = snap.data();
+                return {
+                  ...data,
+                  id: snap.id,
+                };
+              })
+            : [];
+          resolve(posts);
+        });
+    } catch (err) {
+      reject(err);
+    }
+  });
+
+export const addNewPost = (params) => {
+  const {
+    content = '',
+    createdAt,
+    userId,
+    images = [],
+    shareURL = '',
+    type,
+    video = '',
+  } = params;
+  const body = {
+    type,
+    createdAt,
+    content,
+    userId,
+    images,
+    video,
+    shareURL,
+  };
+  new Promise((resolve, reject) => {
+    try {
+      firestore
+        .collection('news-feed')
+        .add(body)
         .then(() => {
           resolve();
         });

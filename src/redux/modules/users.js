@@ -6,11 +6,10 @@ const GET_USERS = 'GET_USERS';
 const GET_USERS_SUCCESS = 'GET_USERS_SUCCESS';
 const GET_USERS_FAILED = 'GET_USERS_FAILED';
 
-
 export const usersAction = createActions(
   GET_USERS,
   GET_USERS_FAILED,
-  GET_USERS_SUCCESS,
+  GET_USERS_SUCCESS
 );
 
 // Reducer
@@ -18,28 +17,34 @@ const initialState = {
   users: [],
   isChecking: false,
   error: '',
+  userObj: {},
 };
 export const usersReducer = handleActions(
   {
-    [GET_USERS]: state => ({
+    [GET_USERS]: (state) => ({
       ...state,
       isChecking: true,
     }),
-    [GET_USERS_SUCCESS]: (state, action) => ({
-      ...state,
-      isChecking: false,
-      users: action.payload,
-    }),
+    [GET_USERS_SUCCESS]: (state, action) => {
+      const userObj = {};
+      action.payload.forEach((user) => {
+        userObj[user.uid] = user;
+      });
+      return {
+        ...state,
+        isChecking: false,
+        users: action.payload,
+        userObj,
+      };
+    },
     [GET_USERS_FAILED]: (state, action) => ({
       ...state,
       error: action.payload,
       isChecking: false,
     }),
   },
-  initialState,
+  initialState
 );
-
-
 
 // Sagas
 function* getUsers(payload) {
@@ -51,7 +56,4 @@ function* getUsers(payload) {
   }
 }
 
-
-export const usersSagas = [
-  takeEvery(GET_USERS, getUsers),
-];
+export const usersSagas = [takeEvery(GET_USERS, getUsers)];

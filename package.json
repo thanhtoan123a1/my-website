@@ -32,6 +32,8 @@
     "react-router-dom": "5.2.0",
     "react-scripts": "3.4.1",
     "react-share": "^4.4.0",
+    "react-tiny-link": "^3.6.1",
+    "react-toastify": "^7.0.4",
     "reactstrap": "8.4.1",
     "redux-actions": "^2.6.5",
     "redux-logger": "^3.0.6",

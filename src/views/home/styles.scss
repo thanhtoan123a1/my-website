@@ -14,8 +14,8 @@ $color-shadow: rgba(149, 157, 165, 0.13);
 }
 
 @mixin avatar-image {
-  width: 43px;
-  height: 43px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   margin-right: 15px;
 }
@@ -34,6 +34,7 @@ $color-shadow: rgba(149, 157, 165, 0.13);
     padding: 75px 10px 0 10px;
     justify-content: space-between;
     display: flex;
+    flex-direction: row-reverse;
     @media only screen and (max-width: 600px) {
       display: block;
       width: 95vw;
@@ -67,6 +68,7 @@ $color-shadow: rgba(149, 157, 165, 0.13);
         height: 186px;
         @include card-wrapper;
         padding: 0 15px 0 24px;
+        margin-bottom: 28px;
         &__header {
           display: flex;
           height: 33%;
@@ -81,14 +83,17 @@ $color-shadow: rgba(149, 157, 165, 0.13);
           &--item-text {
             margin-left: 20px;
             cursor: pointer;
+            margin-bottom: 0;
           }
         }
         &__body {
           display: flex;
           height: 34%;
           align-items: center;
-          img {
-            @include avatar-image;
+          &--avt {
+            width: 44px;
+            height: 44px;
+            margin-right: 15px;
           }
           input {
             border: none;
@@ -110,6 +115,11 @@ $color-shadow: rgba(149, 157, 165, 0.13);
               width: 17px;
               height: 17px;
               margin-right: 10px;
+              @media only screen and (max-width: 600px) {
+                width: 10px;
+                height: 10px;
+                margin-right: 5px;
+              }
             }
           }
           &--button {
@@ -120,13 +130,32 @@ $color-shadow: rgba(149, 157, 165, 0.13);
             padding: 7px 30px;
             border-radius: 5px;
             @include box-shadow-custom(rgba(133, 139, 145, 0.4));
+
+            @media only screen and (max-width: 600px) {
+              padding: 7px 10px;
+            }
+          }
+        }
+        &__link-preview {
+          display: flex;
+          justify-content: center;
+          margin-top: 15px;
+          position: relative;
+          &--close {
+            position: absolute;
+            cursor: pointer;
+            top: -10px;
+            right: 10px;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
           }
         }
       }
     }
     .post-block {
       @include card-wrapper;
-      margin-top: 28px;
+      margin-bottom: 28px;
       padding: 24px;
       &__header {
         display: flex;
@@ -240,6 +269,41 @@ $color-shadow: rgba(149, 157, 165, 0.13);
           opacity: 0.4;
         }
       }
+      &__video {
+        width: 100%;
+      }
     }
   }
+}
+
+.preview-img-wrapper {
+  display: flex;
+  margin-bottom: 28px;
+  &--item {
+    position: relative;
+    width: 150px;
+    max-height: 250px;
+  }
+  &--cell {
+    width: 100%;
+    height: auto;
+  }
+  &--close {
+    position: absolute;
+    cursor: pointer;
+    top: -6%;
+    right: -6%;
+    width: 20px;
+    height: 20px;
+    z-index: 3;
+  }
+}
+.disable-text {
+  opacity: 70%;
+  cursor: not-allowed !important;
+}
+
+.disable-share {
+  cursor: not-allowed !important;
+  background-color: #7f858a !important;
 }

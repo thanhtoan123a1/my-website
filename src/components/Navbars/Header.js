@@ -1,9 +1,9 @@
-import React from "react";
-import { useTranslation } from "react-i18next";
-import { connect } from "react-redux";
-import { Link, useHistory } from "react-router-dom";
-import { FACEBOOK_HOME_PAGE } from "help/constants";
-import { INSTAGRAM_HOME_PAGE } from "help/constants";
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+import { connect } from 'react-redux';
+import { Link, useHistory } from 'react-router-dom';
+import { FACEBOOK_HOME_PAGE } from 'help/constants';
+import { INSTAGRAM_HOME_PAGE } from 'help/constants';
 // reactstrap components
 import {
   Collapse,
@@ -17,18 +17,20 @@ import {
   Nav,
   Container,
   UncontrolledTooltip,
-} from "reactstrap";
-import { YOUTUBE_HOME_PAGE } from "help/constants";
-import { useAuth } from "components/contexts/AuthContext";
-import Loading from "components/Loading";
+} from 'reactstrap';
+import { YOUTUBE_HOME_PAGE } from 'help/constants';
+import { useAuth } from 'components/contexts/AuthContext';
+import Loading from 'components/Loading';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function Header(props) {
-  const [navbarColor, setNavbarColor] = React.useState("navbar-transparent");
+  const [navbarColor, setNavbarColor] = React.useState('navbar-transparent');
   const [collapseOpen, setCollapseOpen] = React.useState(false);
   const { t, i18n } = useTranslation();
   const { logout, currentUser } = useAuth();
   const history = useHistory();
-  const { isCoursesChecking, isAuthChecking, isUsersChecking } =
+  const { isCoursesChecking, isAuthChecking, isUsersChecking, isNewsChecking } =
     props;
 
   const changeLanguage = (language) => {
@@ -36,50 +38,50 @@ function Header(props) {
   };
 
   function handleLogout() {
-    if (window.confirm(t("logoutConfirm"))) {
+    if (window.confirm(t('logoutConfirm'))) {
       logout().then(() => {
-        history.push("/login-page");
+        history.push('/login-page');
       });
     }
   }
 
   React.useEffect(() => {
     const updateNavbarColor = () => {
-      if (window.location.pathname === "/home") {
+      if (window.location.pathname === '/home') {
         if (navbarColor) {
-          setNavbarColor("");
+          setNavbarColor('');
         }
       } else {
         if (
           document.documentElement.scrollTop > 399 ||
           document.body.scrollTop > 399
         ) {
-          setNavbarColor("");
+          setNavbarColor('');
         } else if (
           document.documentElement.scrollTop < 400 ||
           document.body.scrollTop < 400
         ) {
-          setNavbarColor("navbar-transparent");
+          setNavbarColor('navbar-transparent');
         }
       }
     };
-    window.addEventListener("scroll", updateNavbarColor);
+    window.addEventListener('scroll', updateNavbarColor);
     return function cleanup() {
-      window.removeEventListener("scroll", updateNavbarColor);
+      window.removeEventListener('scroll', updateNavbarColor);
     };
   });
   return (
     <>
-      <Navbar className={"fixed-top " + navbarColor} expand="lg" color="info">
+      <Navbar className={'fixed-top ' + navbarColor} expand="lg" color="info">
         <Container>
           <div className="navbar-translate">
             <Link className="nav-link" to="/top" id="navbar-brand">
-              <p className="title-up">{t("news")}</p>
+              <p className="title-up">{t('news')}</p>
             </Link>
             <button
               className="navbar-toggler navbar-toggler"
               onClick={() => {
-                document.documentElement.classList.toggle("nav-open");
+                document.documentElement.classList.toggle('nav-open');
                 setCollapseOpen(!collapseOpen);
               }}
               aria-expanded={collapseOpen}
@@ -100,22 +102,22 @@ function Header(props) {
                 <Link
                   className="nav-link"
                   to="/home"
-                  onClick={() => setNavbarColor("")}
+                  onClick={() => setNavbarColor('')}
                 >
                   <i className="now-ui-icons business_bank"></i>
-                  <p>{t("home")}</p>
+                  <p>{t('home')}</p>
                 </Link>
               </NavItem>
               <NavItem>
                 <Link className="nav-link" to="/courses">
                   <i className="now-ui-icons education_agenda-bookmark"></i>
-                  <p>{t("courses")}</p>
+                  <p>{t('courses')}</p>
                 </Link>
               </NavItem>
               <NavItem>
                 <Link className="nav-link" to="/entertainment">
                   <i className="now-ui-icons media-1_camera-compact"></i>
-                  <p>{t("entertainment")}</p>
+                  <p>{t('entertainment')}</p>
                 </Link>
               </NavItem>
               {currentUser ? (
@@ -135,12 +137,12 @@ function Header(props) {
                   <DropdownMenu>
                     <DropdownItem
                       onClick={() => {
-                        history.push("/profile-page");
+                        history.push('/profile-page');
                       }}
                     >
                       <div className="dropdown-item-wrapper">
                         <i className="now-ui-icons travel_info"></i>
-                        &nbsp; {t("profile")}
+                        &nbsp; {t('profile')}
                       </div>
                     </DropdownItem>
                     <DropdownItem divider />
@@ -150,7 +152,7 @@ function Header(props) {
                     >
                       <div className="dropdown-item-wrapper">
                         <i className="now-ui-icons media-1_button-power"></i>
-                        &nbsp; {t("logout")}
+                        &nbsp; {t('logout')}
                       </div>
                     </DropdownItem>
                   </DropdownMenu>
@@ -159,7 +161,7 @@ function Header(props) {
                 <NavItem>
                   <Link className="nav-link" to="/login-page">
                     <i className="now-ui-icons arrows-1_minimal-right"></i>
-                    <p>{t("login")}</p>
+                    <p>{t('login')}</p>
                   </Link>
                 </NavItem>
               )}
@@ -174,19 +176,19 @@ function Header(props) {
                   }}
                 >
                   <i className="now-ui-icons business_globe mr-1"></i>
-                  <p>{t("language")}</p>
+                  <p>{t('language')}</p>
                 </DropdownToggle>
                 <DropdownMenu>
-                  <DropdownItem onClick={() => changeLanguage("vn")}>
+                  <DropdownItem onClick={() => changeLanguage('vn')}>
                     <img
-                      src={require("assets/img/flags/VN.png")}
+                      src={require('assets/img/flags/VN.png')}
                       alt="vn-flag"
                     />
                     &nbsp; Vietnamese
                   </DropdownItem>
-                  <DropdownItem onClick={() => changeLanguage("en")}>
+                  <DropdownItem onClick={() => changeLanguage('en')}>
                     <img
-                      src={require("assets/img/flags/GB.png")}
+                      src={require('assets/img/flags/GB.png')}
                       alt="gb-flag"
                     />
                     &nbsp; English
@@ -203,7 +205,7 @@ function Header(props) {
                   <p className="d-lg-none d-xl-none">Twitter</p>
                 </NavLink>
                 <UncontrolledTooltip target="#youtube-tooltip">
-                  {t("subscribeYoutube")}
+                  {t('subscribeYoutube')}
                 </UncontrolledTooltip>
               </NavItem>
               <NavItem>
@@ -216,7 +218,7 @@ function Header(props) {
                   <p className="d-lg-none d-xl-none">Facebook</p>
                 </NavLink>
                 <UncontrolledTooltip target="#facebook-tooltip">
-                  {t("addFriendFacebook")}
+                  {t('addFriendFacebook')}
                 </UncontrolledTooltip>
               </NavItem>
               <NavItem>
@@ -229,14 +231,28 @@ function Header(props) {
                   <p className="d-lg-none d-xl-none">Instagram</p>
                 </NavLink>
                 <UncontrolledTooltip target="#instagram-tooltip">
-                  {t("followInstagram")}
+                  {t('followInstagram')}
                 </UncontrolledTooltip>
               </NavItem>
             </Nav>
           </Collapse>
         </Container>
       </Navbar>
-      {(isCoursesChecking || isAuthChecking || isUsersChecking) && <Loading />}
+      {(isCoursesChecking ||
+        isAuthChecking ||
+        isUsersChecking ||
+        isNewsChecking) && <Loading />}
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </>
   );
 }
@@ -245,6 +261,7 @@ const mapStateToProps = (state) => ({
   isCoursesChecking: state.courses.isChecking,
   isAuthChecking: state.auth.isChecking,
   isUsersChecking: state.users.isChecking,
+  isNewsChecking: state.newsFeed.isChecking,
   errorMessage: state.auth.error,
   userData: state.auth.data,
 });
