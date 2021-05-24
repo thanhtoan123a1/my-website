@@ -36,7 +36,7 @@ ReactDOM.render(
             title="Toan Tran Van Thanh"
             description="Nơi học tập và chia sẻ"
             ogUrl={window.location.href}
-            ogImageUrl={require('assets/img/favicon-page.png')}
+            ogImageUrl={require('assets/img/favicon.png')}
           />
           <Header />
           <Switch>
