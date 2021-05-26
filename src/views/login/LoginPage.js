@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import { connect } from "react-redux";
-import { useTranslation } from "react-i18next";
-import { useAuth } from "components/contexts/AuthContext";
+import React, { useState } from 'react';
+import { connect } from 'react-redux';
+import { useTranslation } from 'react-i18next';
+import { useAuth } from 'components/contexts/AuthContext';
 
 // reactstrap components
 import {
@@ -16,22 +16,22 @@ import {
   InputGroup,
   Container,
   Col,
-} from "reactstrap";
+} from 'reactstrap';
 
 // core components
-import { Redirect } from "react-router";
+import { Redirect } from 'react-router';
 
-const LOGIN = "LOGIN";
-const SIGNUP = "SIGNUP";
-const RESET = "RESET";
+const LOGIN = 'LOGIN';
+const SIGNUP = 'SIGNUP';
+const RESET = 'RESET';
 
 function LoginPage() {
   const [firstFocus, setFirstFocus] = useState(false);
-  const [email, setEmail] = useState("");
-  const [userName, setUserName] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [userName, setUserName] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const {
     signup,
@@ -50,14 +50,14 @@ function LoginPage() {
   }
 
   React.useEffect(() => {
-    document.body.classList.add("login-page");
-    document.body.classList.add("sidebar-collapse");
-    document.documentElement.classList.remove("nav-open");
+    document.body.classList.add('login-page');
+    document.body.classList.add('sidebar-collapse');
+    document.documentElement.classList.remove('nav-open');
     window.scrollTo(0, 0);
     document.body.scrollTop = 0;
     return function cleanup() {
-      document.body.classList.remove("login-page");
-      document.body.classList.remove("sidebar-collapse");
+      document.body.classList.remove('login-page');
+      document.body.classList.remove('sidebar-collapse');
     };
   }, []);
 
@@ -73,7 +73,7 @@ function LoginPage() {
 
   async function handleLoginFacebook() {
     try {
-      setError("");
+      setError('');
       await loginFacebook();
       setLoading(false);
     } catch (err) {
@@ -84,7 +84,7 @@ function LoginPage() {
 
   async function handleLoginGoogle() {
     try {
-      setError("");
+      setError('');
       await loginGoogle();
       setLoading(false);
     } catch (err) {
@@ -96,11 +96,11 @@ function LoginPage() {
   async function handleSignup() {
     if (password === confirmPassword) {
       if (!userName) {
-        setError(t("userNameNotEmpty"));
+        setError(t('userNameNotEmpty'));
       } else {
         setLoading(true);
         try {
-          setError("");
+          setError('');
           await signup(email, password, userName);
           setLoading(false);
         } catch (err) {
@@ -109,14 +109,14 @@ function LoginPage() {
         }
       }
     } else {
-      setError(t("passwordDoNotMatch"));
+      setError(t('passwordDoNotMatch'));
     }
   }
 
   async function handleLogin() {
     setLoading(true);
     try {
-      setError("");
+      setError('');
       await login(email, password);
       setLoading(false);
     } catch (err) {
@@ -128,17 +128,17 @@ function LoginPage() {
   async function handleResetPassword() {
     setLoading(true);
     try {
-      setError("");
+      setError('');
       await resetPassword(email);
       setLoading(false);
-      setError(t("resetPasswordInstructions"));
+      setError(t('resetPasswordInstructions'));
     } catch (err) {
       setLoading(false);
       setError(err.message);
     }
   }
 
-  if (currentUser && currentUser.email) {
+  if (currentUser && currentUser.email && currentUser.displayName) {
     return <Redirect to="/top" />;
   }
 
@@ -147,25 +147,25 @@ function LoginPage() {
       <div
         className="page-header-image"
         style={{
-          backgroundImage: "url(https://picsum.photos/2000/1171",
+          backgroundImage: 'url(https://picsum.photos/2000/1171',
         }}
       ></div>
       <div className="content">
         <Container>
-          <div className="login-page-title">{t("loginPageTitle")}</div>
+          <div className="login-page-title">{t('loginPageTitle')}</div>
           <Col className="ml-auto mr-auto" md="4">
             <Card className="card-login card-plain">
               <Form action="" className="form" method="">
                 <CardBody>
                   {page === SIGNUP && (
-                    <InputGroup className={"no-border input-lg"}>
+                    <InputGroup className={'no-border input-lg'}>
                       <InputGroupAddon addonType="prepend">
                         <InputGroupText>
                           <i className="now-ui-icons ui-1_lock-circle-open"></i>
                         </InputGroupText>
                       </InputGroupAddon>
                       <Input
-                        placeholder={t("displayName")}
+                        placeholder={t('displayName')}
                         type="text"
                         onChange={(e) => {
                           setUserName(e.target.value);
@@ -175,8 +175,8 @@ function LoginPage() {
                   )}
                   <InputGroup
                     className={
-                      "no-border input-lg" +
-                      (firstFocus ? " input-group-focus" : "")
+                      'no-border input-lg' +
+                      (firstFocus ? ' input-group-focus' : '')
                     }
                   >
                     <InputGroupAddon addonType="prepend">
@@ -185,7 +185,7 @@ function LoginPage() {
                       </InputGroupText>
                     </InputGroupAddon>
                     <Input
-                      placeholder={t("email")}
+                      placeholder={t('email')}
                       type="text"
                       onFocus={() => setFirstFocus(true)}
                       onBlur={() => setFirstFocus(false)}
@@ -195,14 +195,14 @@ function LoginPage() {
                     ></Input>
                   </InputGroup>
                   {page !== RESET && (
-                    <InputGroup className={"no-border input-lg"}>
+                    <InputGroup className={'no-border input-lg'}>
                       <InputGroupAddon addonType="prepend">
                         <InputGroupText>
                           <i className="now-ui-icons ui-1_lock-circle-open"></i>
                         </InputGroupText>
                       </InputGroupAddon>
                       <Input
-                        placeholder={t("password")}
+                        placeholder={t('password')}
                         type="password"
                         onChange={(e) => {
                           setPassword(e.target.value);
@@ -211,14 +211,14 @@ function LoginPage() {
                     </InputGroup>
                   )}
                   {page === SIGNUP && (
-                    <InputGroup className={"no-border input-lg"}>
+                    <InputGroup className={'no-border input-lg'}>
                       <InputGroupAddon addonType="prepend">
                         <InputGroupText>
                           <i className="now-ui-icons ui-1_lock-circle-open"></i>
                         </InputGroupText>
                       </InputGroupAddon>
                       <Input
-                        placeholder={t("confirmPassword")}
+                        placeholder={t('confirmPassword')}
                         type="password"
                         onChange={(e) => {
                           setConfirmPassword(e.target.value);
@@ -226,7 +226,7 @@ function LoginPage() {
                       ></Input>
                     </InputGroup>
                   )}
-                  <div style={{ color: "red" }}>{error}</div>
+                  <div style={{ color: 'red' }}>{error}</div>
                 </CardBody>
                 <CardFooter className="text-center">
                   <Button
@@ -239,13 +239,13 @@ function LoginPage() {
                     size="lg"
                   >
                     {loading
-                      ? "Loading..."
+                      ? 'Loading...'
                       : t(
                           page === LOGIN
-                            ? "login"
+                            ? 'login'
                             : page === SIGNUP
-                            ? "signUp"
-                            : "resetPassword"
+                            ? 'signUp'
+                            : 'resetPassword'
                         )}
                   </Button>
                   {page !== RESET && (
@@ -259,7 +259,7 @@ function LoginPage() {
                         }}
                         size="lg"
                       >
-                        {t("loginWithFacebook")}
+                        {t('loginWithFacebook')}
                       </Button>
                       <Button
                         block
@@ -270,7 +270,7 @@ function LoginPage() {
                         }}
                         size="lg"
                       >
-                        {t("loginWithGoogle")}
+                        {t('loginWithGoogle')}
                       </Button>
                     </>
                   )}
@@ -284,7 +284,7 @@ function LoginPage() {
                           switchPage(page === LOGIN ? SIGNUP : LOGIN);
                         }}
                       >
-                        {t(page === LOGIN ? "createAccount" : "login")}
+                        {t(page === LOGIN ? 'createAccount' : 'login')}
                       </a>
                     </h6>
                   </div>
@@ -298,7 +298,7 @@ function LoginPage() {
                           switchPage(RESET);
                         }}
                       >
-                        {t("forgotPassword")}
+                        {t('forgotPassword')}
                       </a>
                     </h6>
                   </div>
