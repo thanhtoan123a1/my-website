@@ -124,6 +124,16 @@ const Post = (props) => {
     toggle();
   }
 
+  function handleViewImage(imgUrl) {
+    const newModalContent = (
+      <div>
+        <img src={imgUrl} alt="post" className="post-block__comment--img" />
+      </div>
+    );
+    setModalContent(newModalContent);
+    toggle();
+  }
+
   function removePreviewImage() {
     setImgRawData(null);
     setImgData(null);
@@ -232,11 +242,15 @@ const Post = (props) => {
                   src={image}
                   alt="user"
                   className="post-block__header--photo"
+                  onClick={() => handleViewImage(image)}
                 />
               );
             })
           ) : (
-            <div className="post-block__header--background">
+            <div
+              className="post-block__header--background"
+              onClick={() => handleViewImage(block.images[0])}
+            >
               <div
                 className="post-block__header--base-background"
                 style={{
@@ -381,7 +395,7 @@ const Post = (props) => {
           isOpen={openModal}
           toggle={toggle}
           centered
-          size="sm"
+          size="lg"
         >
           <ModalBody>{modalContent}</ModalBody>
         </Modal>

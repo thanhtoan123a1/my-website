@@ -1,34 +1,34 @@
-import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 // reactstrap components
-import { Container, Row, Input } from "reactstrap";
+import { Container, Row, Input } from 'reactstrap';
 
 // core components
-import CoverHeader from "components/Headers/CoverHeader";
-import { useTranslation } from "react-i18next";
-import { connect } from "react-redux";
-import { coursesActions } from "redux/modules/courses";
-import { CONTENT_TYPE } from "help/constants";
-import { CONTENTFUL_TAGS } from "help/constants";
-import { timeAgo } from "help/functions";
-import { TIME } from "help/constants";
+import CoverHeader from 'components/Headers/CoverHeader';
+import { useTranslation } from 'react-i18next';
+import { connect } from 'react-redux';
+import { coursesActions } from 'redux/modules/courses';
+import { CONTENT_TYPE } from 'help/constants';
+import { CONTENTFUL_TAGS } from 'help/constants';
+import { timeAgo } from 'help/functions';
+import { TIME } from 'help/constants';
 
 const items = [
   {
     key: CONTENTFUL_TAGS.REACTJS,
-    value: "ReactJS",
-    img: require("assets/img/icons/react.png"),
+    value: 'ReactJS',
+    img: require('assets/img/icons/react.png'),
   },
   {
     key: CONTENTFUL_TAGS.PHOTOSHOP,
-    value: "Photoshop",
-    img: require("assets/img/icons/photoshop.jpg"),
+    value: 'Photoshop',
+    img: require('assets/img/icons/photoshop.jpg'),
   },
   {
     key: CONTENTFUL_TAGS.OTHERS,
-    value: "Others",
-    img: require("assets/img/icons/everything.png"),
+    value: 'Others',
+    img: require('assets/img/icons/everything.png'),
   },
 ];
 
@@ -47,28 +47,26 @@ function Courses(props) {
     time: null,
   };
 
-  const history = useHistory();
-
   React.useEffect(() => {
-    document.body.classList.add("landing-page");
-    document.body.classList.add("sidebar-collapse");
-    document.documentElement.classList.remove("nav-open");
+    document.body.classList.add('landing-page');
+    document.body.classList.add('sidebar-collapse');
+    document.documentElement.classList.remove('nav-open');
     window.scrollTo(0, 0);
     document.body.scrollTop = 0;
     dispatch(coursesActions.getCourses(params));
     return function cleanup() {
-      document.body.classList.remove("landing-page");
-      document.body.classList.remove("sidebar-collapse");
+      document.body.classList.remove('landing-page');
+      document.body.classList.remove('sidebar-collapse');
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onSelect = (tagId) => {
     const newParams = { ...params };
-    if (tagId === "all") {
-      delete newParams["metadata.tags.sys.id[in]"];
+    if (tagId === 'all') {
+      delete newParams['metadata.tags.sys.id[in]'];
     } else {
-      newParams["metadata.tags.sys.id[in]"] = tagId;
+      newParams['metadata.tags.sys.id[in]'] = tagId;
     }
     setParams(newParams);
     dispatch(coursesActions.getCourses(newParams));
@@ -76,7 +74,7 @@ function Courses(props) {
 
   const handleChangeSearch = (e) => {
     const { value } = e.target;
-    const newParams = { ...params, "fields.title[match]": value };
+    const newParams = { ...params, 'fields.title[match]': value };
     clearTimeout(interval.time);
     setParams(newParams);
     interval.time = setTimeout(() => {
@@ -87,25 +85,25 @@ function Courses(props) {
   function convertOffset(offset) {
     switch (offset) {
       case TIME.SECONDS:
-        return t("seconds");
+        return t('seconds');
       case TIME.MINUTES:
-        return t("minutes");
+        return t('minutes');
       case TIME.HOURS:
-        return t("hours");
+        return t('hours');
       case TIME.DAYS:
-        return t("days");
+        return t('days');
       case TIME.MONTHS:
-        return t("months");
+        return t('months');
       case TIME.YEARS:
-        return t("years");
+        return t('years');
       default:
-        return t("seconds");
+        return t('seconds');
     }
   }
   const handleKeyDown = (e) => {
     if (e.keyCode === ENTER_KEY) {
       const { value } = e.target;
-      const newParams = { ...params, "fields.title[match]": value };
+      const newParams = { ...params, 'fields.title[match]': value };
       dispatch(coursesActions.getCourses(newParams));
     }
   };
@@ -123,58 +121,53 @@ function Courses(props) {
     onSelect(tagId);
   }
 
-  function handleClickArticle(courseId) {
-    history.push(`/courses/${courseId}`);
-  }
-
   function renderFirstBlock(item) {
     const createdAt = timeAgo(new Date(item.sys.createdAt));
     const timeAgoText = `${createdAt.number} ${convertOffset(
       createdAt.offset
     ).toLocaleLowerCase()}`;
     return (
-      <div
-        onClick={() => handleClickArticle(item.sys.id)}
-        className="course-section--first-block--card"
-      >
-        <img
-          src={item.fields.coverImage.fields.file.url}
-          alt="img"
-          className="course-section--first-block__image"
-        />
-        <div className="author-wrapper">
+      <Link to={`/courses/${item.sys.id}`} className="link-default">
+        <div className="course-section--first-block--card">
           <img
-            src={item.fields.author.fields.avatar.fields.file.url}
+            src={item.fields.coverImage.fields.file.url}
             alt="img"
-            className="course-section--first-block__avatar"
+            className="course-section--first-block__image"
           />
-          <div className="section-card-name">
-            {item.fields.author.fields.userName}
+          <div className="author-wrapper">
+            <img
+              src={item.fields.author.fields.avatar.fields.file.url}
+              alt="img"
+              className="course-section--first-block__avatar"
+            />
+            <div className="section-card-name">
+              {item.fields.author.fields.userName}
+            </div>
+            <div className="section-card-time">&nbsp;-&nbsp;{timeAgoText}</div>
           </div>
-          <div className="section-card-time">&nbsp;-&nbsp;{timeAgoText}</div>
+          <div className="section-card-title">{item.fields.title}</div>
+          <div className="section-card-description">
+            {item.fields.description}
+          </div>
+          <div className="section-card-tags">
+            {getTags(item.metadata.tags).map((tag) => {
+              return (
+                <span
+                  key={tag.key}
+                  className="section-card-tags--item"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    handleClickTag(tag.key);
+                  }}
+                >
+                  #{tag.value}
+                </span>
+              );
+            })}
+          </div>
         </div>
-        <div className="section-card-title">{item.fields.title}</div>
-        <div className="section-card-description">
-          {item.fields.description}
-        </div>
-        <div className="section-card-tags">
-          {getTags(item.metadata.tags).map((tag) => {
-            return (
-              <span
-                key={tag.key}
-                className="section-card-tags--item"
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  handleClickTag(tag.key);
-                }}
-              >
-                #{tag.value}
-              </span>
-            );
-          })}
-        </div>
-      </div>
+      </Link>
     );
   }
 
@@ -210,75 +203,14 @@ function Courses(props) {
       createdAt.offset
     ).toLocaleLowerCase()}`;
     return (
-      <div
-        onClick={() => handleClickArticle(item.sys.id)}
-        className="course-section--second-block--card"
-      >
-        <img
-          src={item.fields.coverImage.fields.file.url}
-          alt="img"
-          className="course-section--second-block__image"
-        />
-        <div className="section2-wrapper">
-          <div className="author-wrapper">
-            <img
-              src={item.fields.author.fields.avatar.fields.file.url}
-              alt="img"
-              className="course-section--first-block__avatar"
-            />
-            <div className="section-card-name">
-              {item.fields.author.fields.userName}
-            </div>
-            <div className="section-card-time">&nbsp;-&nbsp;{timeAgoText}</div>
-          </div>
-          <div className="section-card-title">{item.fields.title}</div>
-          <div className="section-card-description">
-            {item.fields.description}
-          </div>
-          <div className="section-card-tags">
-            {getTags(item.metadata.tags).map((tag) => {
-              return (
-                <span
-                  key={tag.key}
-                  className="section-card-tags--item"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    handleClickTag(tag.key);
-                  }}
-                >
-                  #{tag.value}
-                </span>
-              );
-            })}
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  function renderNormalArticle(item) {
-    const createdAt = timeAgo(new Date(item.sys.createdAt));
-    const timeAgoText = `${createdAt.number} ${convertOffset(
-      createdAt.offset
-    ).toLocaleLowerCase()}`;
-    return (
-      <div
-        key={item.sys.id}
-        onClick={() => handleClickArticle(item.sys.id)}
-        className="normal-card"
-      >
-        <div className="normal-card--image-wrapper">
+      <Link to={`/courses/${item.sys.id}`} className="link-default">
+        <div className="course-section--second-block--card">
           <img
             src={item.fields.coverImage.fields.file.url}
             alt="img"
-            className="normal-card__image"
+            className="course-section--second-block__image"
           />
-          <div className="normal-card__right">
-            <div className="section-card-title">{item.fields.title}</div>
-            <div className="section-card-description text-ellipsis">
-              {item.fields.description}
-            </div>
+          <div className="section2-wrapper">
             <div className="author-wrapper">
               <img
                 src={item.fields.author.fields.avatar.fields.file.url}
@@ -291,6 +223,10 @@ function Courses(props) {
               <div className="section-card-time">
                 &nbsp;-&nbsp;{timeAgoText}
               </div>
+            </div>
+            <div className="section-card-title">{item.fields.title}</div>
+            <div className="section-card-description">
+              {item.fields.description}
             </div>
             <div className="section-card-tags">
               {getTags(item.metadata.tags).map((tag) => {
@@ -311,7 +247,63 @@ function Courses(props) {
             </div>
           </div>
         </div>
-      </div>
+      </Link>
+    );
+  }
+
+  function renderNormalArticle(item) {
+    const createdAt = timeAgo(new Date(item.sys.createdAt));
+    const timeAgoText = `${createdAt.number} ${convertOffset(
+      createdAt.offset
+    ).toLocaleLowerCase()}`;
+    return (
+      <Link to={`/courses/${item.sys.id}`} className="link-default">
+        <div key={item.sys.id} className="normal-card">
+          <div className="normal-card--image-wrapper">
+            <img
+              src={item.fields.coverImage.fields.file.url}
+              alt="img"
+              className="normal-card__image"
+            />
+            <div className="normal-card__right">
+              <div className="section-card-title">{item.fields.title}</div>
+              <div className="section-card-description text-ellipsis">
+                {item.fields.description}
+              </div>
+              <div className="author-wrapper">
+                <img
+                  src={item.fields.author.fields.avatar.fields.file.url}
+                  alt="img"
+                  className="course-section--first-block__avatar"
+                />
+                <div className="section-card-name">
+                  {item.fields.author.fields.userName}
+                </div>
+                <div className="section-card-time">
+                  &nbsp;-&nbsp;{timeAgoText}
+                </div>
+              </div>
+              <div className="section-card-tags">
+                {getTags(item.metadata.tags).map((tag) => {
+                  return (
+                    <span
+                      key={tag.key}
+                      className="section-card-tags--item"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        handleClickTag(tag.key);
+                      }}
+                    >
+                      #{tag.value}
+                    </span>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        </div>
+      </Link>
     );
   }
 
@@ -319,8 +311,8 @@ function Courses(props) {
   return (
     <div className="wrapper">
       <CoverHeader
-        title={t("courses")}
-        coverPhoto={require("assets/img/courses-cover.png")}
+        title={t('courses')}
+        coverPhoto={require('assets/img/courses-cover.png')}
       />
       <div className="section section-about-us section-course">
         <Container>
@@ -345,7 +337,7 @@ function Courses(props) {
             </div>
             <div className="col-4 course-section-right">
               <div className="course-section-right--block">
-                <div className="section-card-title">{t("topics")}</div>
+                <div className="section-card-title">{t('topics')}</div>
                 <Container>{renderRightBlocks()}</Container>
               </div>
             </div>
