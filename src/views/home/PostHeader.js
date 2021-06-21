@@ -67,12 +67,11 @@ const PostHeader = (props) => {
           <div className="post-section__body--avt">
             <AvatarStatus src={currentUser.photoURL} isOnline />
           </div>
-          <input
-            type="text"
+          <textarea
             value={content}
             id="comment-input"
             onChange={handleWriteStatus}
-            placeholder="What's on your mind, Toan?"
+            placeholder={`${t('whatOnMind')}, ${currentUser.displayName}?`}
             className="comment-wrapper--text"
           />
         </div>
