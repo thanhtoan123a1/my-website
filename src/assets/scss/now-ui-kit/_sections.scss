@@ -1342,8 +1342,10 @@
 
 .link-default {
   color: inherit;
+  width: 100%;
 }
 
 .link-default:hover {
   color: inherit;
+  text-decoration: none;
 }
