@@ -251,13 +251,13 @@ function Courses(props) {
     );
   }
 
-  function renderNormalArticle(item) {
+  function renderNormalArticle(item, index) {
     const createdAt = timeAgo(new Date(item.sys.createdAt));
     const timeAgoText = `${createdAt.number} ${convertOffset(
       createdAt.offset
     ).toLocaleLowerCase()}`;
     return (
-      <Link to={`/courses/${item.sys.id}`} className="link-default">
+      <Link key={index} to={`/courses/${item.sys.id}`} className="link-default">
         <div key={item.sys.id} className="normal-card">
           <div className="normal-card--image-wrapper">
             <img
@@ -344,8 +344,8 @@ function Courses(props) {
           </Row>
           <Row>
             {courses.length > 2 &&
-              courses.slice(2).map((course) => {
-                return renderNormalArticle(course);
+              courses.slice(2).map((course, index) => {
+                return renderNormalArticle(course, index);
               })}
           </Row>
         </Container>
