@@ -35,6 +35,7 @@ function TopHeader(props) {
   const blocks = landingPageAccess.map(course => {
     return {
       src: course.fields.coverImage.fields.file.url,
+      link: course.fields.link,
     }
   });
 
