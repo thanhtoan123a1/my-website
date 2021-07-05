@@ -5,7 +5,7 @@ import { Row } from "reactstrap";
 import Col from "reactstrap/lib/Col";
 import FlipNumbers from "react-flip-numbers";
 
-const publishDate = new Date('June 01, 2021 00:00:00');
+const publishDate = new Date('August 01, 2021 00:00:00');
 
 // Random component
 const Completionist = () => <span>Bingo!</span>;
