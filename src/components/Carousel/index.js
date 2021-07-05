@@ -24,6 +24,12 @@ const CustomCarousel = (props) => {
     setActiveIndex(nextIndex);
   }
 
+  const handleClickLink = (link) => {
+    if (link) {
+      window.open(link, "_blank");
+    }
+  }
+
 
   const slides = items.map((item) => {
     return (
@@ -32,7 +38,7 @@ const CustomCarousel = (props) => {
         onExited={() => setAnimating(false)}
         key={item.src}
       >
-        <img className="carousel-image" src={item.src} alt={item.altText} />
+        <img className="carousel-image" src={item.src} alt={item.altText} onClick={() => handleClickLink(item.link)}/>
         {!isHideSlide && <CarouselCaption captionText={item.caption} captionHeader={item.caption} />}
       </CarouselItem>
     );
