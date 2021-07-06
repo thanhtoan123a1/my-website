@@ -163,7 +163,7 @@ const ChatRoom = (props) => {
                 isRoom ? "" : "full-width"
               }`}
             >
-              {item.lastMessage ? item.lastMessage : t("aImage")}
+              {item.lastMessage ? item.lastMessage : t("anImage")}
             </div>
             <div className="room-wrapper__item--last-update">
               {item.lastUpdateText}
