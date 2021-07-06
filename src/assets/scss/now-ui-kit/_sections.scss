@@ -68,9 +68,6 @@
     color: #ffffff;
     padding: 0 15px;
     width: 100%;
-    @media only screen and (max-width: 600px) {
-      top: 30%;
-    }
   }
 
   footer {
@@ -858,7 +855,7 @@
 
 .course-details-wrapper {
   @media only screen and (min-width: 800px) {
-    max-width: 800px;
+    max-width: 1060px;
   }
 }
 .active {
@@ -1241,6 +1238,7 @@
   color: white;
   overflow: hidden;
 }
+
 .card-wrapper {
   display: flex;
   margin-bottom: 70px;
