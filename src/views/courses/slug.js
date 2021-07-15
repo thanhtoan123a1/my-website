@@ -352,7 +352,7 @@ function Slug(props) {
       />
       <div className="courses-details">
         <Container className="course-details-wrapper">
-          <Row className="content-wrapper">
+          <Row className="content-wrapper display-block">
             {documentToReactComponents(course.fields.document, {
               renderNode: {
                 'embedded-asset-block': (node) => (
