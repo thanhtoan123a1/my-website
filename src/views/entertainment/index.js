@@ -16,6 +16,11 @@ import { CONTENT_TYPE } from "help/constants";
 AOS.init({
   duration: 2000,
 });
+const isKadenaInstalled = () => {
+  const { kadena } = window;
+
+  return Boolean(kadena && kadena.isKadena);
+};
 
 function Entertainment(props) {
   const { t } = useTranslation();
@@ -128,9 +133,24 @@ function Entertainment(props) {
   const normalItems = entertainments.filter(
     (item) => !item.fields.isLandingPost
   );
+  const isInstall = isKadenaInstalled();
+  const kadena = window.kadena;
+  const onClickConnect = async () => {
+    if (!isInstall) return;
+    try {
+      const status = await kadena.request({
+        method: 'kda_connect',
+        networkId: 'testnet04',
+      });
+      console.log('status', status);
+    } catch (error) {
+      console.error(error);
+    }
+  };
   return (
     <div className="wrapper">
       <EntertainmentHeader coverPhoto={require("assets/img/landing_01.jpg")} />
+      <button onClick={onClickConnect}>Click to connect</button>
       <div className="item-wrapper">
         <div>
           {renderFirstBlock(landingItems[0])}
